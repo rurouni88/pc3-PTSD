@@ -42,7 +42,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
   const timerRef = useRef<number | null>(null);
   const lastTickRef = useRef<number>(Date.now());
   const lastInterruptionRef = useRef<number>(0);
-  const promptIndexRef = useRef<number>(0);
+  const shownPromptIdsRef = useRef<Set<string>>(new Set());
   const completedRef = useRef(false);
 
   const calculateDrainRate = useCallback((issues: GameIssue[]): number => {
@@ -56,9 +56,12 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     const prompts = levelConfig.parentPrompts;
     if (prompts.length === 0) return;
 
-    const index = promptIndexRef.current % prompts.length;
-    promptIndexRef.current += 1;
-    const prompt = prompts[index];
+    // Find next unseen prompt
+    const available = prompts.filter((p) => !shownPromptIdsRef.current.has(p.id));
+    if (available.length === 0) return; // All prompts shown — no more interruptions
+
+    const prompt = available[Math.floor(RngEngine.random() * available.length)];
+    shownPromptIdsRef.current.add(prompt.id);
 
     setActivePrompt(prompt);
     setInterruptionCount((prev) => prev + 1);
@@ -73,7 +76,8 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     if (completedRef.current) return;
     completedRef.current = true;
 
-    const success = finalState.batteryLevel > 0 && finalState.timeRemaining > 0;
+    const allResolved = finalState.activeIssues.every((issue) => issue.isResolved);
+    const success = finalState.batteryLevel > 0 && finalState.timeRemaining > 0 && allResolved;
     const seed = RngEngine.seed;
 
     // Check achievements
@@ -129,6 +133,13 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
 
       // Autosave every tick (lightweight)
       SaveSystem.save(updated);
+
+      // Check victory: all issues resolved + battery + time still positive
+      const allResolved = updated.activeIssues.every((issue) => issue.isResolved);
+      if (allResolved && updated.batteryLevel > 0 && updated.timeRemaining > 0) {
+        handleGameEnd(updated);
+        return { ...updated, gameState: 'results' };
+      }
 
       if (newTimeRemaining <= 0 || newBattery <= 0) {
         handleGameEnd(updated);

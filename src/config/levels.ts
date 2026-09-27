@@ -51,6 +51,43 @@ export const levels: Record<string, LevelConfig> = {
           { label: 'I\'ll come check it out', timeCost: 5, batteryEffect: -3 },
         ],
       },
+      {
+        id: 'dad-q5',
+        difficulty: 'dad',
+        type: 'direct-question',
+        question: "Mate, why is my weather widget so big? I can't see the golf scores.",
+        options: [
+          { label: 'Drag it to the edge of the screen', timeCost: 3, batteryEffect: -1 },
+          { label: 'Just close the weather app', timeCost: 1, batteryEffect: -3 },
+        ],
+      },
+      {
+        id: 'dad-q6',
+        difficulty: 'dad',
+        type: 'direct-question',
+        question: "Is it true that if I buy more RAM, my phone gets faster?",
+        options: [
+          { label: 'No, your phone has built-in RAM', timeCost: 5, batteryEffect: 0 },
+          { label: 'Yeah, buy the 1TB one', timeCost: 0, batteryEffect: -8 },
+        ],
+      },
+      {
+        id: 'dad-q7',
+        difficulty: 'dad',
+        type: 'direct-question',
+        question: "I accidentally pressed 'Update Now'. Will that delete my golf forum?",
+        options: [
+          { label: 'No, updates just add features', timeCost: 4, batteryEffect: 0 },
+          { label: 'Let me check', timeCost: 3, batteryEffect: -2 },
+        ],
+      },
+      {
+        id: 'dad-q8',
+        difficulty: 'dad',
+        type: 'guilt-trip',
+        question: "Back in my day we didn't need all these widgets. But this weather one's useful.",
+        options: [],
+      },
     ],
     interruptionRate: 15,
   },
@@ -62,6 +99,7 @@ export const levels: Record<string, LevelConfig> = {
     initialIssues: [
       { id: 'mum-storage', type: 'duplicate-doom', isResolved: false, drainPenalty: 0.6 },
       { id: 'mum-text-size', type: 'blind-translation', isResolved: false, drainPenalty: 0.4 },
+      { id: 'mum-tabs', type: 'infinite-tab-sweep', isResolved: false, drainPenalty: 0.3 },
     ],
     parentPrompts: [
       {
@@ -101,6 +139,46 @@ export const levels: Record<string, LevelConfig> = {
         question: "You know, I only got this phone so I could see your photos. And now you're deleting them. After all I've done.",
         options: [],
       },
+      {
+        id: 'mum-q5',
+        difficulty: 'mum',
+        type: 'direct-question',
+        question: "Darling, can you help me? I accidentally downloaded something called 'WhatsApp'.",
+        options: [
+          { label: 'It\'s a messaging app, not a virus', timeCost: 4, batteryEffect: 0 },
+          { label: 'Just delete it', timeCost: 1, batteryEffect: -2 },
+        ],
+      },
+      {
+        id: 'mum-q6',
+        difficulty: 'mum',
+        type: 'direct-question',
+        question: "Is the cloud going to charge me for storing my photos? I thought it was free.",
+        options: [
+          { label: 'The first 5GB are free', timeCost: 5, batteryEffect: 0 },
+          { label: 'Just delete some photos', timeCost: 1, batteryEffect: -1 },
+        ],
+      },
+      {
+        id: 'mum-q7',
+        difficulty: 'mum',
+        type: 'direct-question',
+        question: "My friend Linda says if I turn off my phone for an hour, it saves battery. Should I?",
+        options: [
+          { label: 'No, that\'s not how it works', timeCost: 3, batteryEffect: -2 },
+          { label: 'Sure, give it a rest', timeCost: 1, batteryEffect: -5 },
+        ],
+      },
+      {
+        id: 'mum-q8',
+        difficulty: 'mum',
+        type: 'direct-question',
+        question: "I sent a photo to Linda but she says she didn't get it. Is it because I pressed 'Forward'?",
+        options: [
+          { label: 'You need to \'Share\', not \'Forward\'', timeCost: 4, batteryEffect: 0 },
+          { label: 'Just resend it', timeCost: 1, batteryEffect: -1 },
+        ],
+      },
     ],
     interruptionRate: 12,
   },
@@ -112,6 +190,9 @@ export const levels: Record<string, LevelConfig> = {
     initialIssues: [
       { id: 'grandma-language', type: 'blind-translation', isResolved: false, drainPenalty: 0.8 },
       { id: 'grandma-ghost-touch', type: 'physical-override', isResolved: false, drainPenalty: 0.7 },
+      { id: 'grandma-photos', type: 'duplicate-doom', isResolved: false, drainPenalty: 0.5 },
+      { id: 'grandma-tabs', type: 'infinite-tab-sweep', isResolved: false, drainPenalty: 0.4 },
+      { id: 'grandma-malware', type: 'antivirus-whack-a-mole', isResolved: false, drainPenalty: 0.6 },
     ],
     parentPrompts: [
       {
@@ -127,7 +208,7 @@ export const levels: Record<string, LevelConfig> = {
       {
         id: 'grandma-q2',
         difficulty: 'grandma',
-        type: 'backback-swiper',
+        type: 'backseat-swiper',
         question: "Oh wait, let me show you this photo of the neighbor's cat first!",
         options: [],
       },
@@ -146,6 +227,43 @@ export const levels: Record<string, LevelConfig> = {
         options: [
           { label: 'I\'ll change the language back', timeCost: 5, batteryEffect: -2 },
           { label: 'Just turn it off and on again', timeCost: 2, batteryEffect: -5 },
+        ],
+      },
+      {
+        id: 'grandma-q5',
+        difficulty: 'grandma',
+        type: 'backseat-swiper',
+        question: "Is this the button that makes the tea? It's hot.",
+        options: [],
+      },
+      {
+        id: 'grandma-q6',
+        difficulty: 'grandma',
+        type: 'direct-question',
+        question: "The phone is making a noise. Is that my alarm or my blood pressure machine?",
+        options: [
+          { label: 'That\'s a notification sound', timeCost: 4, batteryEffect: 0 },
+          { label: 'Check the volume button', timeCost: 2, batteryEffect: -2 },
+        ],
+      },
+      {
+        id: 'grandma-q7',
+        difficulty: 'grandma',
+        type: 'direct-question',
+        question: "I think I need to speak to it louder. Should I shout at the phone?",
+        options: [
+          { label: 'No, it\'s not a voice assistant', timeCost: 3, batteryEffect: -1 },
+          { label: 'Try turning up the volume', timeCost: 2, batteryEffect: -2 },
+        ],
+      },
+      {
+        id: 'grandma-q8',
+        difficulty: 'grandma',
+        type: 'direct-question',
+        question: "I pressed the red button. Is that going to call the police?",
+        options: [
+          { label: 'No, that\'s the end call button', timeCost: 3, batteryEffect: 0 },
+          { label: 'Don\'t press red buttons', timeCost: 1, batteryEffect: -3 },
         ],
       },
     ],

@@ -43,7 +43,7 @@ export function PhysicalOverride({ onComplete, onCancel }: PhysicalOverrideProps
     setToggles((prev) => {
       const item = prev[id];
       const updated = { ...item, isOn: !item.isOn };
-      if (item.isTarget && !item.isOn) {
+      if (item.isTarget && item.isOn) {
         setSolved(true);
       }
       return { ...prev, [id]: updated };
@@ -58,7 +58,7 @@ export function PhysicalOverride({ onComplete, onCancel }: PhysicalOverrideProps
         <p className="text-sm text-secondary mt-2">Battery drain reduced.</p>
         <button
           onClick={onComplete}
-          className="mt-6 px-6 py-3 bg-accent-green text-white font-bold rounded-xl"
+          className="mt-6 px-6 py-3 bg-accent-green text-primary font-bold rounded-xl"
         >
           Done
         </button>

@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from 'react';
 import { Icon } from '../Icon';
 
 interface InfiniteTabSweepProps {
+  difficulty: string;
   onComplete: () => void;
   onCancel: () => void;
 }
@@ -10,29 +11,73 @@ interface TabCard {
   id: number;
   title: string;
   url: string;
-  isClosed: boolean;
+  isClosed?: boolean;
 }
 
-const tabData: TabCard[] = [
-  { id: 1, title: 'Best Golf Putters 2026 - Review', url: 'golfdeals.net', isClosed: false },
-  { id: 2, title: 'Facebook - Home', url: 'facebook.com', isClosed: false },
-  { id: 3, title: 'How to Fix Slow Internet (10 Ways)', url: 'youtubewatch.com', isClosed: false },
-  { id: 4, title: 'Recipe: Grandma\'s Apple Pie', url: 'tastyrecipes.com', isClosed: false },
-  { id: 5, title: 'Golf Forum: My New Swing', url: 'golfdeals.net', isClosed: false },
-  { id: 6, title: 'WINNER!! You have been selected', url: 'spam-roulette.com', isClosed: false },
-  { id: 7, title: 'Facebook - Messages', url: 'facebook.com', isClosed: false },
-  { id: 8, title: 'Buy Cheap RAM - 90% OFF!', url: 'ramboost-mega.com', isClosed: false },
-  { id: 9, title: 'Golf Forum: 19 Iron Discussion', url: 'golfdeals.net', isClosed: false },
-  { id: 10, title: 'Your PC is Infected! (3 Viruses)', url: 'cleanmaster-max.com', isClosed: false },
-  { id: 11, title: 'Facebook - Notifications', url: 'facebook.com', isClosed: false },
-  { id: 12, title: 'How to Clean Your Screen (Video)', url: 'youtubewatch.com', isClosed: false },
+const dadTabs: TabCard[] = [
+  { id: 1, title: 'Best Golf Putters 2026 - Review', url: 'golfdeals.net' },
+  { id: 2, title: 'Facebook - Home', url: 'facebook.com' },
+  { id: 3, title: 'How to Fix Slow Internet (10 Ways)', url: 'youtubewatch.com' },
+  { id: 4, title: 'Recipe: Grandma\'s Apple Pie', url: 'tastyrecipes.com' },
+  { id: 5, title: 'Golf Forum: My New Swing', url: 'golfdeals.net' },
+  { id: 6, title: 'WINNER!! You have been selected', url: 'spam-roulette.com' },
+  { id: 7, title: 'Facebook - Messages', url: 'facebook.com' },
+  { id: 8, title: 'Buy Cheap RAM - 90% OFF!', url: 'ramboost-mega.com' },
+  { id: 9, title: 'Golf Forum: 19 Iron Discussion', url: 'golfdeals.net' },
+  { id: 10, title: 'Your PC is Infected! (3 Viruses)', url: 'cleanmaster-max.com' },
+  { id: 11, title: 'Facebook - Notifications', url: 'facebook.com' },
+  { id: 12, title: 'How to Clean Your Screen (Video)', url: 'youtubewatch.com' },
 ];
 
-const TOTAL_TABS = tabData.length;
+const mumTabs: TabCard[] = [
+  { id: 1, title: '10 Signs Your Kidneys Are Failing (You Have 3!)', url: 'healthscare.com' },
+  { id: 2, title: 'Facebook - Family Group Chat', url: 'facebook.com' },
+  { id: 3, title: 'TEMU: Free Shipping on 10,000 Items!', url: 'temu-deals.com' },
+  { id: 4, title: 'Recipe: 47-Step Slow Cooker Chicken', url: 'tastyrecipes.com' },
+  { id: 5, title: 'How to Video Call Your Grandkids (Tutorial)', url: 'youtubewatch.com' },
+  { id: 6, title: 'WINNER!! FREE iPad for you!', url: 'spam-roulette.com' },
+  { id: 7, title: 'Facebook - Marketplace', url: 'facebook.com' },
+  { id: 8, title: 'AliExpress: Buy 1 Get 1 Free (48 in cart)', url: 'aliexpress.com' },
+  { id: 9, title: 'Gardening: 12 Ways to Kill Your Roses', url: 'gardening-tips.com' },
+  { id: 10, title: 'Cloud Storage: You\'re at 99% Capacity', url: 'icloud.com' },
+  { id: 11, title: 'WhatsApp - 47 Unread Messages', url: 'whatsapp.com' },
+  { id: 12, title: '5 Foods That Cause Cancer (Number 3 is Bread)', url: 'healthscare.com' },
+];
+
+const grandmaTabs: TabCard[] = [
+  { id: 1, title: 'How to Use a Phone (2019 Tutorial)', url: 'youtubewatch.com' },
+  { id: 2, title: 'Facebook - 通知 (Notifications)', url: 'facebook.com' },
+  { id: 3, title: 'Neighbor\'s Cat - Photo 47 of 47', url: 'photos.local' },
+  { id: 4, title: 'What is Bluetooth? (For Seniors)', url: 'tech-help.com' },
+  { id: 5, title: 'Tea Recipe: Perfect Cup Every Time', url: 'tastyrecipes.com' },
+  { id: 6, title: 'FREE iPhone! (Must be 18+)', url: 'spam-roulette.com' },
+  { id: 7, title: 'How to Delete a Photo (Video)', url: 'youtubewatch.com' },
+  { id: 8, title: 'Gardening: Rose Bush Care (Spring 2024)', url: 'gardening-tips.com' },
+  { id: 9, title: 'Cloud Storage: What is it?', url: 'icloud.com' },
+  { id: 10, title: 'WhatsApp: 12 Unread Messages', url: 'whatsapp.com' },
+  { id: 11, title: '如何关闭手电筒 (Turn Off Flashlight)', url: 'tech-help.com' },
+  { id: 12, title: 'Video Call: How to See Your Grandkids', url: 'youtubewatch.com' },
+];
+
+const tabDataByLevel: Record<string, TabCard[]> = {
+  dad: dadTabs,
+  mum: mumTabs,
+  grandma: grandmaTabs,
+};
+
+const completionQuotes: Record<string, string> = {
+  dad: 'Dad: "But I liked that golf forum..."',
+  mum: 'Mum: "But I need that recipe for Sunday roast!"',
+  grandma: 'Grandma: "Was one of those the cat photos?"',
+};
+
 const AD_INTERVAL = 4;
 
-export function InfiniteTabSweep({ onComplete, onCancel }: InfiniteTabSweepProps) {
-  const [tabs, setTabs] = useState<TabCard[]>(tabData);
+export function InfiniteTabSweep({ difficulty, onComplete, onCancel }: InfiniteTabSweepProps) {
+  const totalTabs = (tabDataByLevel[difficulty] ?? dadTabs).length;
+  const [tabs, setTabs] = useState<TabCard[]>(
+    (tabDataByLevel[difficulty] ?? dadTabs).map((t) => ({ ...t, isClosed: false }))
+  );
   const [showAd, setShowAd] = useState(false);
   const [adMessage, setAdMessage] = useState('');
   const [closedCount, setClosedCount] = useState(0);
@@ -47,7 +92,7 @@ export function InfiniteTabSweep({ onComplete, onCancel }: InfiniteTabSweepProps
     setTabs((prev) => prev.map((t) => (t.id === tabId ? { ...t, isClosed: true } : t)));
     setClosedCount((prev) => {
       const next = prev + 1;
-      if (next % AD_INTERVAL === 0 && next < TOTAL_TABS) {
+      if (next % AD_INTERVAL === 0 && next < totalTabs) {
         const messages = [
           'Spin the Wheel to Win an iPhone! 🎰',
           'You have 3 unread emails! Open Now!',
@@ -90,10 +135,10 @@ export function InfiniteTabSweep({ onComplete, onCancel }: InfiniteTabSweepProps
       <div className="h-full flex flex-col items-center justify-center bg-primary p-6">
         <Icon name="check" size={48} className="text-accent-green mb-4" />
         <p className="text-xl font-bold text-primary">All tabs closed!</p>
-        <p className="text-sm text-secondary mt-2">Dad: "But I liked that golf forum..."</p>
+        <p className="text-sm text-secondary mt-2">{completionQuotes[difficulty] ?? completionQuotes.dad}</p>
         <button
           onClick={onComplete}
-          className="mt-6 px-6 py-3 bg-accent-green text-white font-bold rounded-xl"
+          className="mt-6 px-6 py-3 bg-accent-green text-primary font-bold rounded-xl"
         >
           Done
         </button>
@@ -111,7 +156,7 @@ export function InfiniteTabSweep({ onComplete, onCancel }: InfiniteTabSweepProps
           {openTabs.length} tabs open
         </span>
         <span className="text-xs text-muted">
-          {closedCount}/{TOTAL_TABS} closed
+          {closedCount}/{totalTabs} closed
         </span>
       </div>
 

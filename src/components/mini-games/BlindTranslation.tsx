@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Icon } from '../Icon';
+import { RngEngine } from '../../engine/seeded-rng';
 
 interface BlindTranslationProps {
   onComplete: () => void;
@@ -8,32 +9,128 @@ interface BlindTranslationProps {
 
 interface MenuOption {
   id: string;
-  greekLabel: string;
+  label: string;
   icon: string;
   isTarget: boolean;
 }
 
-const settingsMenu: MenuOption[] = [
-  { id: 'general', greekLabel: 'Γενικά', icon: 'settings', isTarget: false },
-  { id: 'display', greekLabel: 'Οθόνη', icon: 'display', isTarget: false },
-  { id: 'sound', greekLabel: 'Ήχος', icon: 'sound', isTarget: false },
-  { id: 'language', greekLabel: 'Γλώσσα και εισαγωγή', icon: 'globe', isTarget: true },
-  { id: 'battery', greekLabel: 'Μπαταρία', icon: 'battery', isTarget: false },
-  { id: 'wifi', greekLabel: 'Wi-Fi', icon: 'wifi', isTarget: false },
-  { id: 'bluetooth', greekLabel: 'Bluetooth', icon: 'bluetooth', isTarget: false },
-  { id: 'storage', greekLabel: 'Αποθήκευση', icon: 'storage', isTarget: false },
+type ForeignLanguage = 'greek' | 'arabic' | 'korean' | 'japanese' | 'hindi';
+
+const settingsMenuGreek: MenuOption[] = [
+  { id: 'general', label: 'Γενικά', icon: 'settings', isTarget: false },
+  { id: 'display', label: 'Οθόνη', icon: 'display', isTarget: false },
+  { id: 'sound', label: 'Ήχος', icon: 'sound', isTarget: false },
+  { id: 'language', label: 'Γλώσσα και εισαγωγή', icon: 'globe', isTarget: true },
+  { id: 'battery', label: 'Μπαταρία', icon: 'battery', isTarget: false },
+  { id: 'wifi', label: 'Wi-Fi', icon: 'wifi', isTarget: false },
+  { id: 'bluetooth', label: 'Bluetooth', icon: 'bluetooth', isTarget: false },
+  { id: 'storage', label: 'Αποθήκευση', icon: 'storage', isTarget: false },
+];
+
+const settingsMenuArabic: MenuOption[] = [
+  { id: 'general', label: 'عام', icon: 'settings', isTarget: false },
+  { id: 'display', label: 'الشاشة', icon: 'display', isTarget: false },
+  { id: 'sound', label: 'الصوت', icon: 'sound', isTarget: false },
+  { id: 'language', label: 'اللغة والإدخال', icon: 'globe', isTarget: true },
+  { id: 'battery', label: 'البطارية', icon: 'battery', isTarget: false },
+  { id: 'wifi', label: 'Wi-Fi', icon: 'wifi', isTarget: false },
+  { id: 'bluetooth', label: 'البلوتوث', icon: 'bluetooth', isTarget: false },
+  { id: 'storage', label: 'التخزين', icon: 'storage', isTarget: false },
+];
+
+const settingsMenuKorean: MenuOption[] = [
+  { id: 'general', label: '일반', icon: 'settings', isTarget: false },
+  { id: 'display', label: '디스플레이', icon: 'display', isTarget: false },
+  { id: 'sound', label: '소리', icon: 'sound', isTarget: false },
+  { id: 'language', label: '언어', icon: 'globe', isTarget: true },
+  { id: 'battery', label: '배터리', icon: 'battery', isTarget: false },
+  { id: 'wifi', label: 'Wi-Fi', icon: 'wifi', isTarget: false },
+  { id: 'bluetooth', label: '블루투스', icon: 'bluetooth', isTarget: false },
+  { id: 'storage', label: '저장공간', icon: 'storage', isTarget: false },
+];
+
+const settingsMenuJapanese: MenuOption[] = [
+  { id: 'general', label: '設定', icon: 'settings', isTarget: false },
+  { id: 'display', label: 'ディスプレイ', icon: 'display', isTarget: false },
+  { id: 'sound', label: 'サウンド', icon: 'sound', isTarget: false },
+  { id: 'language', label: '言語', icon: 'globe', isTarget: true },
+  { id: 'battery', label: 'バッテリー', icon: 'battery', isTarget: false },
+  { id: 'wifi', label: 'Wi-Fi', icon: 'wifi', isTarget: false },
+  { id: 'bluetooth', label: 'ブルートゥース', icon: 'bluetooth', isTarget: false },
+  { id: 'storage', label: 'ストレージ', icon: 'storage', isTarget: false },
+];
+
+const settingsMenuHindi: MenuOption[] = [
+  { id: 'general', label: 'सेटिंग्स', icon: 'settings', isTarget: false },
+  { id: 'display', label: 'डिस्प्ले', icon: 'display', isTarget: false },
+  { id: 'sound', label: 'साउंड', icon: 'sound', isTarget: false },
+  { id: 'language', label: 'भाषा', icon: 'globe', isTarget: true },
+  { id: 'battery', label: 'बैटरी', icon: 'battery', isTarget: false },
+  { id: 'wifi', label: 'Wi-Fi', icon: 'wifi', isTarget: false },
+  { id: 'bluetooth', label: 'ब्लूटूथ', icon: 'bluetooth', isTarget: false },
+  { id: 'storage', label: 'स्टोरेज', icon: 'storage', isTarget: false },
 ];
 
 const languageOptions: MenuOption[] = [
-  { id: 'greek', greekLabel: 'Ελληνικά', icon: 'globe', isTarget: false },
-  { id: 'english', greekLabel: 'English', icon: 'globe', isTarget: true },
-  { id: 'chinese', greekLabel: '中文', icon: 'globe', isTarget: false },
-  { id: 'spanish', greekLabel: 'Español', icon: 'globe', isTarget: false },
-  { id: 'french', greekLabel: 'Français', icon: 'globe', isTarget: false },
-  { id: 'arabic', greekLabel: 'العربية', icon: 'globe', isTarget: false },
+  { id: 'greek', label: 'Ελληνικά', icon: 'globe', isTarget: false },
+  { id: 'english', label: 'English', icon: 'globe', isTarget: true },
+  { id: 'chinese', label: '中文', icon: 'globe', isTarget: false },
+  { id: 'korean', label: '한국어', icon: 'globe', isTarget: false },
+  { id: 'japanese', label: '日本語', icon: 'globe', isTarget: false },
+  { id: 'hindi', label: 'हिन्दी', icon: 'globe', isTarget: false },
+  { id: 'spanish', label: 'Español', icon: 'globe', isTarget: false },
+  { id: 'french', label: 'Français', icon: 'globe', isTarget: false },
+  { id: 'arabic', label: 'العربية', icon: 'globe', isTarget: false },
 ];
 
+const headerLabels: Record<ForeignLanguage, { settings: string; language: string; hintSettings: string; hintLanguage: string }> = {
+  greek: {
+    settings: 'Ρυθμίσεις',
+    language: 'Γλώσσα',
+    hintSettings: 'Find the globe icon — you can\'t read Greek!',
+    hintLanguage: 'Find "English" — it\'s the only one you can read!',
+  },
+  arabic: {
+    settings: 'الإعدادات',
+    language: 'اللغة',
+    hintSettings: 'Find the globe icon — you can\'t read Arabic!',
+    hintLanguage: 'Find "English" — it\'s the only one you can read!',
+  },
+  korean: {
+    settings: '설정',
+    language: '언어',
+    hintSettings: 'Find the globe icon — you can\'t read Korean!',
+    hintLanguage: 'Find "English" — it\'s the only one you can read!',
+  },
+  japanese: {
+    settings: '設定',
+    language: '言語',
+    hintSettings: 'Find the globe icon — you can\'t read Japanese!',
+    hintLanguage: 'Find "English" — it\'s the only one you can read!',
+  },
+  hindi: {
+    settings: 'सेटिंग्स',
+    language: 'भाषा',
+    hintSettings: 'Find the globe icon — you can\'t read Hindi!',
+    hintLanguage: 'Find "English" — it\'s the only one you can read!',
+  },
+};
+
+const allSettingsMenus: Record<ForeignLanguage, MenuOption[]> = {
+  greek: settingsMenuGreek,
+  arabic: settingsMenuArabic,
+  korean: settingsMenuKorean,
+  japanese: settingsMenuJapanese,
+  hindi: settingsMenuHindi,
+};
+
 export function BlindTranslation({ onComplete, onCancel }: BlindTranslationProps) {
+  const languages: ForeignLanguage[] = ['greek', 'arabic', 'korean', 'japanese', 'hindi'];
+  const [foreignLang] = useState<ForeignLanguage>(() =>
+    languages[Math.floor(RngEngine.random() * languages.length)]
+  );
+  const settingsMenu = allSettingsMenus[foreignLang];
+  const headers = headerLabels[foreignLang];
   const [currentScreen, setCurrentScreen] = useState<'settings' | 'language' | 'done'>('settings');
   const [wrongPick, setWrongPick] = useState(false);
 
@@ -71,7 +168,7 @@ export function BlindTranslation({ onComplete, onCancel }: BlindTranslationProps
         </p>
         <button
           onClick={onComplete}
-          className="mt-6 px-6 py-3 bg-accent-green text-white font-bold rounded-xl"
+          className="mt-6 px-6 py-3 bg-accent-green text-primary font-bold rounded-xl"
         >
           Done
         </button>
@@ -89,7 +186,7 @@ export function BlindTranslation({ onComplete, onCancel }: BlindTranslationProps
           ← {currentScreen === 'language' ? 'Back' : 'Home'}
         </button>
         <span className="text-sm font-bold text-primary">
-          {currentScreen === 'settings' ? 'Ρυθμίσεις' : 'Γλώσσα'}
+          {currentScreen === 'settings' ? headers.settings : headers.language}
         </span>
         <span className="text-xs text-muted">
           {currentScreen === 'settings' ? 'Settings' : 'Language'}
@@ -114,7 +211,7 @@ export function BlindTranslation({ onComplete, onCancel }: BlindTranslationProps
                 className="flex items-center gap-3 p-4 bg-secondary rounded-xl border border-theme active:bg-tertiary transition-colors"
               >
                 <Icon name={option.icon} size={24} className="text-primary" />
-                <span className="text-base text-primary">{option.greekLabel}</span>
+                <span className="text-base text-primary" dir={foreignLang === 'arabic' ? 'rtl' : 'ltr'}>{option.label}</span>
               </button>
             ))}
           </div>
@@ -129,7 +226,7 @@ export function BlindTranslation({ onComplete, onCancel }: BlindTranslationProps
                 className="flex items-center gap-3 p-4 bg-secondary rounded-xl border border-theme active:bg-tertiary transition-colors"
               >
                 <Icon name={option.icon} size={24} className="text-primary" />
-                <span className="text-base text-primary">{option.greekLabel}</span>
+                <span className="text-base text-primary" dir={option.id === 'arabic' ? 'rtl' : 'ltr'}>{option.label}</span>
               </button>
             ))}
           </div>
@@ -138,12 +235,12 @@ export function BlindTranslation({ onComplete, onCancel }: BlindTranslationProps
 
       {currentScreen === 'settings' && (
         <p className="text-center text-[10px] text-muted p-3">
-          Find the globe icon — you can't read Greek!
+          {headers.hintSettings}
         </p>
       )}
       {currentScreen === 'language' && (
         <p className="text-center text-[10px] text-muted p-3">
-          Find "English" — it's the only one you can read!
+          {headers.hintLanguage}
         </p>
       )}
     </div>

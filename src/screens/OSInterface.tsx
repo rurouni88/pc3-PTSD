@@ -35,16 +35,18 @@ const issueLabels: Record<MiniGameType, { label: string; icon: string }> = {
 
 function MiniGameView({
   type,
+  difficulty,
   onComplete,
   onCancel,
 }: {
   type: MiniGameType;
+  difficulty: string;
   onComplete: () => void;
   onCancel: () => void;
 }) {
   switch (type) {
     case 'infinite-tab-sweep':
-      return <InfiniteTabSweep onComplete={onComplete} onCancel={onCancel} />;
+      return <InfiniteTabSweep difficulty={difficulty} onComplete={onComplete} onCancel={onCancel} />;
     case 'physical-override':
       return <PhysicalOverride onComplete={onComplete} onCancel={onCancel} />;
     case 'duplicate-doom':
@@ -100,6 +102,7 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
       <div className="h-dvh bg-primary select-none overflow-hidden">
         <MiniGameView
           type={activeMiniGame}
+          difficulty={levelConfig.difficulty}
           onComplete={handleMiniGameComplete}
           onCancel={handleMiniGameCancel}
         />
@@ -125,7 +128,7 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
               resume();
               setShowPauseMenu(false);
             }}
-            className="w-full py-3 bg-accent-green text-white font-bold rounded-xl active:scale-95 transition-transform"
+            className="w-full py-3 bg-accent-green text-primary font-bold rounded-xl active:scale-95 transition-transform"
           >
             Resume
           </button>
@@ -172,7 +175,7 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
             <div className="flex flex-col items-center justify-center h-full">
               <span className="text-5xl mb-4">✅</span>
               <p className="text-lg font-bold text-primary">All issues resolved!</p>
-              <p className="text-sm text-secondary">Waiting for timer to end...</p>
+              <p className="text-sm text-secondary">Survive until the timer ends — don't let the battery die!</p>
             </div>
           ) : (
             <>

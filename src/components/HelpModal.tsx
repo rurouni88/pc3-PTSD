@@ -58,8 +58,9 @@ export function HelpModal({ onClose }: HelpModalProps) {
               </li>
               <li>
                 <strong className="text-primary">Duplicate Doom</strong> — Find and
-                delete duplicate photos. Mum has 34 copies of the same sunset. You're
-                not allowed to delete the "pretty" ones.
+                delete duplicate photos. Mum has 34 copies of the same sunset. Grandma
+                has 47 of the neighbor's cat. You're not allowed to delete the
+                "pretty" ones.
               </li>
               <li>
                 <strong className="text-primary">Antivirus Whack-A-Mole</strong> —
@@ -68,8 +69,8 @@ export function HelpModal({ onClose }: HelpModalProps) {
               </li>
               <li>
                 <strong className="text-primary">Blind Translation</strong> — Navigate
-                Grandma's phone settings in a language you can't read. Find the globe
-                icon, then find English. Good luck.
+                Mum's or Grandma's phone settings in a language you can't read. Find
+                the globe icon, then find English. Good luck.
               </li>
             </ul>
           </div>

@@ -76,7 +76,7 @@ export function DuplicateDoom({ onComplete, onCancel }: DuplicateDoomProps) {
         </p>
         <button
           onClick={onComplete}
-          className="mt-6 px-6 py-3 bg-accent-green text-white font-bold rounded-xl"
+          className="mt-6 px-6 py-3 bg-accent-green text-primary font-bold rounded-xl"
         >
           Done
         </button>
@@ -115,7 +115,7 @@ export function DuplicateDoom({ onComplete, onCancel }: DuplicateDoomProps) {
                 <Icon name={photo.icon} size={40} className={photo.isBlurry ? 'opacity-50' : ''} />
                 {isSelected && (
                   <div className="absolute top-1 right-1 w-5 h-5 bg-accent-red rounded-full flex items-center justify-center">
-                    <Icon name="check" size={12} className="text-white" />
+                    <Icon name="check" size={12} className="text-primary" />
                   </div>
                 )}
               </button>
@@ -128,9 +128,9 @@ export function DuplicateDoom({ onComplete, onCancel }: DuplicateDoomProps) {
         <button
           onClick={handleDelete}
           disabled={selected.size === 0}
-          className="w-full py-3 bg-accent-red text-white font-bold rounded-xl disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 transition-transform flex items-center justify-center gap-2"
+          className="w-full py-3 bg-accent-red text-primary font-bold rounded-xl disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 transition-transform flex items-center justify-center gap-2"
         >
-          <Icon name="trash" size={16} className="text-white" />
+          <Icon name="trash" size={16} className="text-primary" />
           Delete {selected.size > 0 ? `(${selected.size})` : ''}
         </button>
       </div>

@@ -68,8 +68,15 @@
 @utility animate-slam-in { animation: slam-in 0.4s ease-out; }
 @utility animate-jiggle { animation: jiggle 0.5s ease-in-out infinite; }
 @utility animate-spin-slow { animation: spin-slow 3s linear infinite; }
+@utility animate-signal { animation: signal-pulse 3s ease-in-out infinite; }
 
 @keyframes spin-slow {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+@keyframes signal-fill {
+  0%, 15% { opacity: 0; }
+  20%, 75% { opacity: 1; }
+  85%, 100% { opacity: 0; }
 }

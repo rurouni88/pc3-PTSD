@@ -152,7 +152,7 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
       <div className="flex flex-col gap-3 w-full max-w-xs">
         <button
           onClick={handleStart}
-          className="w-full py-3 bg-accent-red text-white font-bold rounded-xl text-lg active:scale-95 transition-transform"
+          className="w-full py-3 bg-accent-red text-primary font-bold rounded-xl text-lg active:scale-95 transition-transform"
         >
           Start
         </button>
