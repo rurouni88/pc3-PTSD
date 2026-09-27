@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { StatusBar } from '../components/StatusBar';
 import { BottomBar } from '../components/BottomBar';
 import { Notification } from '../components/Notification';
-import { Interrupt } from '../components/Interrupt';
 import { useGameEngine } from '../hooks/useGameEngine';
 import { LevelConfig, MiniGameType } from '../types/game';
+import { InfiniteTabSweep } from '../components/mini-games/InfiniteTabSweep';
+import { PhysicalOverride } from '../components/mini-games/PhysicalOverride';
+import { DuplicateDoom } from '../components/mini-games/DuplicateDoom';
+import { AntivirusWhackAMole } from '../components/mini-games/AntivirusWhackAMole';
+import { BlindTranslation } from '../components/mini-games/BlindTranslation';
 
 interface OSInterfaceProps {
   levelConfig: LevelConfig;
@@ -19,20 +23,69 @@ const issueLabels: Record<MiniGameType, { label: string; icon: string }> = {
   'physical-override': { label: 'Battery draining', icon: '🔦' },
 };
 
+function MiniGameView({
+  type,
+  onComplete,
+  onCancel,
+}: {
+  type: MiniGameType;
+  onComplete: () => void;
+  onCancel: () => void;
+}) {
+  switch (type) {
+    case 'infinite-tab-sweep':
+      return <InfiniteTabSweep onComplete={onComplete} onCancel={onCancel} />;
+    case 'physical-override':
+      return <PhysicalOverride onComplete={onComplete} onCancel={onCancel} />;
+    case 'duplicate-doom':
+      return <DuplicateDoom onComplete={onComplete} onCancel={onCancel} />;
+    case 'antivirus-whack-a-mole':
+      return <AntivirusWhackAMole onComplete={onComplete} onCancel={onCancel} />;
+    case 'blind-translation':
+      return <BlindTranslation onComplete={onComplete} onCancel={onCancel} />;
+  }
+}
+
 export function OSInterface({ levelConfig, onComplete }: OSInterfaceProps) {
   const { state, resolveIssue } = useGameEngine({ levelConfig, onComplete });
   const [activeNotification, setActiveNotification] = useState<string | null>(null);
-  const [activeInterrupt, setActiveInterrupt] = useState<string | null>(null);
+  const [activeMiniGame, setActiveMiniGame] = useState<MiniGameType | null>(null);
+  const [activeIssueId, setActiveIssueId] = useState<string | null>(null);
 
-  const handleIssueTap = (issueId: string) => {
+  const handleIssueTap = useCallback((issueId: string, issueType: MiniGameType) => {
     if (navigator.vibrate) navigator.vibrate(50);
-    // In full implementation, this would open the mini-game
-    // For prototype, resolve immediately
-    resolveIssue(issueId);
-    if (navigator.vibrate) navigator.vibrate(100);
-  };
+    setActiveIssueId(issueId);
+    setActiveMiniGame(issueType);
+  }, []);
+
+  const handleMiniGameComplete = useCallback(() => {
+    if (activeIssueId) {
+      resolveIssue(activeIssueId);
+    }
+    setActiveMiniGame(null);
+    setActiveIssueId(null);
+    if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+  }, [activeIssueId, resolveIssue]);
+
+  const handleMiniGameCancel = useCallback(() => {
+    setActiveMiniGame(null);
+    setActiveIssueId(null);
+  }, []);
 
   const activeIssueList = state.activeIssues.filter((i) => !i.isResolved);
+
+  // If a mini-game is open, show it full-screen
+  if (activeMiniGame) {
+    return (
+      <div className="h-dvh bg-primary select-none overflow-hidden">
+        <MiniGameView
+          type={activeMiniGame}
+          onComplete={handleMiniGameComplete}
+          onCancel={handleMiniGameCancel}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="h-dvh flex flex-col bg-primary select-none overflow-hidden">
@@ -65,7 +118,7 @@ export function OSInterface({ levelConfig, onComplete }: OSInterfaceProps) {
               {activeIssueList.map((issue) => (
                 <button
                   key={issue.id}
-                  onClick={() => handleIssueTap(issue.id)}
+                  onClick={() => handleIssueTap(issue.id, issue.type)}
                   className="flex items-center gap-3 p-4 bg-secondary rounded-xl border border-theme active:scale-95 transition-transform"
                 >
                   <span className="text-2xl">{issueLabels[issue.type].icon}</span>
@@ -85,17 +138,7 @@ export function OSInterface({ levelConfig, onComplete }: OSInterfaceProps) {
         </div>
       </div>
 
-      <BottomBar
-        onHome={() => {}}
-        onBack={() => {}}
-      />
-
-      {activeInterrupt && (
-        <Interrupt
-          message={activeInterrupt}
-          onClose={() => setActiveInterrupt(null)}
-        />
-      )}
+      <BottomBar onHome={() => {}} onBack={() => {}} />
     </div>
   );
 }

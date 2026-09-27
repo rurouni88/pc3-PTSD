@@ -26,3 +26,30 @@
 @utility text-accent-green { color: var(--accent-green); }
 @utility text-accent-yellow { color: var(--accent-yellow); }
 @utility text-accent-blue { color: var(--accent-blue); }
+
+@keyframes slide-down {
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slam-in {
+  0% { transform: scale(0.5) rotate(-5deg); opacity: 0; }
+  70% { transform: scale(1.05) rotate(1deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes jiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+
+@utility animate-slide-down { animation: slide-down 0.3s ease-out; }
+@utility animate-slide-up { animation: slide-up 0.3s ease-out; }
+@utility animate-slam-in { animation: slam-in 0.4s ease-out; }
+@utility animate-jiggle { animation: jiggle 0.5s ease-in-out infinite; }
