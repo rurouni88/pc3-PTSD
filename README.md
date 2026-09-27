@@ -19,4 +19,4 @@ Will you survive the afternoon, or will your patience (and the battery) hit zero
 
 ---
 
-*Built with ☕, 💻, and questionable life choices.*
+*Built with ☕, 💻, and questionable life choices and PTSD*
