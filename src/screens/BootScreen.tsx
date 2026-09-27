@@ -88,7 +88,7 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
         </div>
         <h1 className="text-4xl font-black text-primary tracking-widest mb-1">PTSD</h1>
         <p className="text-secondary text-sm">Parents Tech Support Dungeon</p>
-        <p className="text-accent-red/80 text-xs mt-4 italic max-w-xs animate-pulse">
+        <p className="text-accent-red text-xs mt-4 italic max-w-xs animate-pulse">
           {displayedTagline}
         </p>
       </div>
