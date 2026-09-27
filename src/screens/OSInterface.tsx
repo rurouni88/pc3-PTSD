@@ -1,10 +1,12 @@
 import { useState, useCallback } from 'react';
 import { StatusBar } from '../components/StatusBar';
 import { BottomBar } from '../components/BottomBar';
-import { Notification } from '../components/Notification';
 import { ParentInterrupt } from '../components/ParentInterrupt';
+import { Charger } from '../components/Charger';
+import { SpamSystem } from '../components/SpamSystem';
 import { useGameEngine } from '../hooks/useGameEngine';
 import { LevelConfig, MiniGameType } from '../types/game';
+import type { Achievement } from '../engine/achievements';
 import { InfiniteTabSweep } from '../components/mini-games/InfiniteTabSweep';
 import { PhysicalOverride } from '../components/mini-games/PhysicalOverride';
 import { DuplicateDoom } from '../components/mini-games/DuplicateDoom';
@@ -13,7 +15,13 @@ import { BlindTranslation } from '../components/mini-games/BlindTranslation';
 
 interface OSInterfaceProps {
   levelConfig: LevelConfig;
-  onComplete: (success: boolean) => void;
+  onComplete: (result: {
+    success: boolean;
+    timeRemaining: number;
+    batteryLevel: number;
+    seed: string;
+    achievements: Achievement[];
+  }) => void;
 }
 
 const issueLabels: Record<MiniGameType, { label: string; icon: string }> = {
@@ -55,8 +63,9 @@ export function OSInterface({ levelConfig, onComplete }: OSInterfaceProps) {
     resolveIssue,
     handlePromptAnswer,
     dismissPrompt,
+    useCharger,
+    applySpamDrain,
   } = useGameEngine({ levelConfig, onComplete });
-  const [activeNotification, setActiveNotification] = useState<string | null>(null);
   const [activeMiniGame, setActiveMiniGame] = useState<MiniGameType | null>(null);
   const [activeIssueId, setActiveIssueId] = useState<string | null>(null);
 
@@ -82,7 +91,6 @@ export function OSInterface({ levelConfig, onComplete }: OSInterfaceProps) {
 
   const activeIssueList = state.activeIssues.filter((i) => !i.isResolved);
 
-  // If a mini-game is open, show it full-screen
   if (activeMiniGame) {
     return (
       <div className="h-dvh bg-primary select-none overflow-hidden">
@@ -97,7 +105,6 @@ export function OSInterface({ levelConfig, onComplete }: OSInterfaceProps) {
 
   return (
     <div className="h-dvh flex flex-col bg-primary select-none overflow-hidden">
-      {/* Guilt trip visual effect */}
       {guiltTripActive && (
         <div className="absolute inset-0 border-8 border-gray-600/40 pointer-events-none z-30" />
       )}
@@ -107,13 +114,7 @@ export function OSInterface({ levelConfig, onComplete }: OSInterfaceProps) {
         timeRemaining={state.timeRemaining}
       />
 
-      {activeNotification && (
-        <Notification
-          message={activeNotification}
-          app="System"
-          onDismiss={() => setActiveNotification(null)}
-        />
-      )}
+      <SpamSystem active={!activePrompt} onBatteryDrain={applySpamDrain} />
 
       <div className="flex-1 min-h-0 overflow-y-auto p-4">
         <div className="flex flex-col gap-3">
@@ -151,9 +152,11 @@ export function OSInterface({ levelConfig, onComplete }: OSInterfaceProps) {
         </div>
       </div>
 
-      <BottomBar onHome={() => {}} onBack={() => {}} />
+      <div className="flex items-center justify-between p-3 border-t border-theme">
+        <Charger onCharge={useCharger} />
+        <BottomBar onHome={() => {}} onBack={() => {}} />
+      </div>
 
-      {/* Parent interruption overlay */}
       {activePrompt && state.difficulty && (
         <ParentInterrupt
           prompt={activePrompt}

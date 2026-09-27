@@ -6,10 +6,20 @@ import {
   ParentPrompt,
   MiniGameType,
 } from '../types/game';
+import { RngEngine } from '../engine/seeded-rng';
+import { SaveSystem } from '../engine/save';
+import { MetaStore, RunRecord } from '../engine/meta';
+import { checkAchievements, Achievement } from '../engine/achievements';
 
 interface UseGameEngineProps {
   levelConfig: LevelConfig;
-  onComplete: (success: boolean) => void;
+  onComplete: (result: {
+    success: boolean;
+    timeRemaining: number;
+    batteryLevel: number;
+    seed: string;
+    achievements: Achievement[];
+  }) => void;
 }
 
 export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
@@ -26,11 +36,14 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
 
   const [activePrompt, setActivePrompt] = useState<ParentPrompt | null>(null);
   const [guiltTripActive, setGuiltTripActive] = useState(false);
+  const [interruptionCount, setInterruptionCount] = useState(0);
+  const [chargerUsed, setChargerUsed] = useState(false);
 
   const timerRef = useRef<number | null>(null);
   const lastTickRef = useRef<number>(Date.now());
   const lastInterruptionRef = useRef<number>(0);
   const promptIndexRef = useRef<number>(0);
+  const completedRef = useRef(false);
 
   const calculateDrainRate = useCallback((issues: GameIssue[]): number => {
     const baseDrain = 0.05;
@@ -48,12 +61,47 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     const prompt = prompts[index];
 
     setActivePrompt(prompt);
+    setInterruptionCount((prev) => prev + 1);
 
     if (prompt.type === 'guilt-trip') {
       setGuiltTripActive(true);
       setTimeout(() => setGuiltTripActive(false), 10000);
     }
   }, [levelConfig.parentPrompts]);
+
+  const handleGameEnd = useCallback((finalState: GameEngineState) => {
+    if (completedRef.current) return;
+    completedRef.current = true;
+
+    const success = finalState.batteryLevel > 0 && finalState.timeRemaining > 0;
+    const seed = RngEngine.seed;
+
+    // Check achievements
+    const finalStateWithResult = { ...finalState, gameState: 'results' as const };
+    const newAchievements = checkAchievements(finalStateWithResult);
+
+    // Record in meta
+    const record: RunRecord = {
+      difficulty: finalState.difficulty!,
+      won: success,
+      timeRemaining: Math.round(finalState.timeRemaining),
+      batteryLevel: Math.round(finalState.batteryLevel),
+      seed,
+      date: new Date().toISOString(),
+    };
+    MetaStore.recordRunComplete(record);
+
+    // Clear save on completion
+    SaveSystem.deleteSave();
+
+    onComplete({
+      success,
+      timeRemaining: finalState.timeRemaining,
+      batteryLevel: finalState.batteryLevel,
+      seed,
+      achievements: newAchievements,
+    });
+  }, [onComplete]);
 
   const tick = useCallback(() => {
     const now = Date.now();
@@ -73,14 +121,23 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
       const drainRate = calculateDrainRate(prev.activeIssues);
       const newBattery = Math.max(0, prev.batteryLevel - drainRate * delta);
 
+      const updated: GameEngineState = {
+        ...prev,
+        timeRemaining: newTimeRemaining,
+        batteryLevel: newBattery,
+      };
+
+      // Autosave every tick (lightweight)
+      SaveSystem.save(updated);
+
       if (newTimeRemaining <= 0 || newBattery <= 0) {
-        onComplete(newBattery > 0 && newTimeRemaining > 0);
-        return { ...prev, timeRemaining: 0, batteryLevel: newBattery, gameState: 'results' };
+        handleGameEnd(updated);
+        return { ...updated, timeRemaining: 0, batteryLevel: newBattery, gameState: 'results' };
       }
 
-      return { ...prev, timeRemaining: newTimeRemaining, batteryLevel: newBattery };
+      return updated;
     });
-  }, [calculateDrainRate, levelConfig.interruptionRate, onComplete, triggerPrompt]);
+  }, [calculateDrainRate, levelConfig.interruptionRate, handleGameEnd, triggerPrompt]);
 
   useEffect(() => {
     timerRef.current = window.setInterval(tick, 100);
@@ -120,7 +177,6 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     if (!activePrompt) return;
     const option = activePrompt.options[optionIndex];
     if (option) {
-      // Deduct time cost
       setState((prev) => ({
         ...prev,
         timeRemaining: Math.max(0, prev.timeRemaining - option.timeCost),
@@ -136,10 +192,27 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     if (navigator.vibrate) navigator.vibrate(50);
   }, []);
 
+  const useCharger = useCallback((batteryGain: number) => {
+    setChargerUsed(true);
+    setState((prev) => ({
+      ...prev,
+      batteryLevel: Math.min(100, prev.batteryLevel + batteryGain),
+    }));
+  }, []);
+
+  const applySpamDrain = useCallback((amount: number) => {
+    setState((prev) => ({
+      ...prev,
+      batteryLevel: Math.max(0, prev.batteryLevel - amount),
+    }));
+  }, []);
+
   return {
     state,
     activePrompt,
     guiltTripActive,
+    interruptionCount,
+    chargerUsed,
     pause,
     resume,
     resolveIssue,
@@ -147,5 +220,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     endMiniGame,
     handlePromptAnswer,
     dismissPrompt,
+    useCharger,
+    applySpamDrain,
   };
 }
