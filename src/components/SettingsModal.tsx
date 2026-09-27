@@ -42,7 +42,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
   };
 
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const v = parseFloat(e.target.value);
+    const v = parseFloat(e.target.value) / 100;
     setVolume(v);
     saveVolume(v);
     if (audioOn) playSound('click');

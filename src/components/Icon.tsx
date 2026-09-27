@@ -1,4 +1,4 @@
-// Icon — renders a named icon from the SVG sprite.
+// Icon — renders a named icon from the inline SVG sprite.
 // All icons are stroke-based, 24x24 viewBox, 2px stroke.
 // Usage: <Icon name="wifi" size={24} className="text-primary" />
 
@@ -16,7 +16,7 @@ export function Icon({ name, size = 24, className = '' }: IconProps) {
       className={className}
       aria-hidden="true"
     >
-      <use href={`/icons/sprite.svg#${name}`} />
+      <use href={`#icon-${name}`} />
     </svg>
   );
 }

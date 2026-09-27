@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { RngEngine } from '../engine/seeded-rng';
 import { SettingsModal } from '../components/SettingsModal';
 import { AchievementsModal } from '../components/AchievementsModal';
+import { HelpModal } from '../components/HelpModal';
 import { loadUnlocked } from '../engine/achievements';
 import { ACHIEVEMENTS } from '../engine/achievements';
 
@@ -56,6 +57,7 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
   const [taglineIndex, setTaglineIndex] = useState(0);
   const [showSettings, setShowSettings] = useState(false);
   const [showAchievements, setShowAchievements] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
 
   // Cycle through taglines every 4 seconds while loading
   useEffect(() => {
@@ -134,6 +136,12 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
           🏅 Achievements ({unlockedCount}/{ACHIEVEMENTS.length})
         </button>
         <button
+          onClick={() => setShowHelp(true)}
+          className="px-2.5 py-1 rounded bg-tertiary border border-theme text-secondary text-xs hover:border-accent-red/50 hover:text-primary transition-colors"
+        >
+          📖 How To Play
+        </button>
+        <button
           onClick={() => setShowSettings(true)}
           className="px-2.5 py-1 rounded bg-tertiary border border-theme text-secondary text-xs hover:border-accent-red/50 hover:text-primary transition-colors"
         >
@@ -165,6 +173,7 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
       {/* Modals */}
       {showSettings && <SettingsModal onClose={() => setShowSettings(false)} />}
       {showAchievements && <AchievementsModal onClose={() => setShowAchievements(false)} />}
+      {showHelp && <HelpModal onClose={() => setShowHelp(false)} />}
     </div>
   );
 }
