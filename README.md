@@ -1,7 +1,8 @@
 # PTSD
-Parent (and above) Tech Support Dungeon
 
+Parent (and above) Tech Support Dungeon
 Parents Tech Support Dungeon (PTSD) is a satirical, rapid-fire roguelike puzzle game designed specifically for mobile browsers, where the player’s smartphone screen transforms into a relative's chaotic device.
+
 ------------------------------
 ## 🎮 Core Gameplay
 You have exactly one afternoon (a 2-minute real-time countdown) to navigate a simulated mobile OS, dig through messy menus, and fix a randomized checklist of technical issues before the Battery (your health pool) hits 0%.
@@ -22,11 +23,3 @@ You have exactly one afternoon (a 2-minute real-time countdown) to navigate a si
 
 * Passive Drain: The battery naturally decays over the 2 minutes, but unclosed background apps, maxed brightness, and flashlight traps multiply the drain speed.
 * The Clutch Mechanic: Players can text or ask the parent for a charger, triggering a micro-search (like digging through a virtual junk drawer) to restore a chunk of battery life at the expense of precious seconds.
-
-Now that the complete concept is mapped out, how would you like to proceed? We can:
-
-* Design the exact layout and user journey for the Main Menu selection screen.
-* Flesh out the hilarious text responses for the parent conversation interrupts.
-* Start looking at the React component architecture to make this fake OS work.
-
-
