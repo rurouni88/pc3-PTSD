@@ -15,13 +15,13 @@
 }
 
 [data-theme="light"] {
-  --bg-primary: #f8fafc;
+  --bg-primary: #f1f5f9;
   --bg-secondary: #e2e8f0;
   --bg-tertiary: #ffffff;
   --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  --border-theme: #cbd5e1;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --border-theme: #94a3b8;
   --accent-red: #dc2626;
   --accent-green: #16a34a;
   --accent-yellow: #ca8a04;
