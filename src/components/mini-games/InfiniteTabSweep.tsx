@@ -37,8 +37,8 @@ export function InfiniteTabSweep({ onComplete, onCancel }: InfiniteTabSweepProps
   const [adMessage, setAdMessage] = useState('');
   const [closedCount, setClosedCount] = useState(0);
   const touchStartX = useRef(0);
-  const [dragOffset, setDragOffset] = useState(0);
-  const [dragging, setDragging] = useState(false);
+  const [activeDragTab, setActiveDragTab] = useState<number | null>(null);
+  const [dragOffsets, setDragOffsets] = useState<Record<number, number>>({});
 
   const openTabs = tabs.filter((t) => !t.isClosed);
   const allClosed = openTabs.length === 0;
@@ -61,23 +61,28 @@ export function InfiniteTabSweep({ onComplete, onCancel }: InfiniteTabSweepProps
     });
   }, []);
 
-  const handleTouchStart = (e: React.TouchEvent) => {
+  const handleTouchStart = (e: React.TouchEvent, tabId: number) => {
     touchStartX.current = e.touches[0].clientX;
-    setDragging(true);
+    setActiveDragTab(tabId);
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (!dragging) return;
+    if (activeDragTab === null) return;
     const dx = e.touches[0].clientX - touchStartX.current;
-    setDragOffset(dx);
+    setDragOffsets((prev) => ({ ...prev, [activeDragTab]: dx }));
   };
 
   const handleTouchEnd = (tabId: number) => {
-    setDragging(false);
-    if (Math.abs(dragOffset) > 80) {
+    const offset = dragOffsets[tabId] ?? 0;
+    setActiveDragTab(null);
+    if (Math.abs(offset) > 80) {
       closeTab(tabId);
     }
-    setDragOffset(0);
+    setDragOffsets((prev) => {
+      const next = { ...prev };
+      delete next[tabId];
+      return next;
+    });
   };
 
   if (allClosed) {
@@ -111,21 +116,24 @@ export function InfiniteTabSweep({ onComplete, onCancel }: InfiniteTabSweepProps
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-2">
-        {openTabs.map((tab) => (
-          <div
-            key={tab.id}
-            className="relative"
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={() => handleTouchEnd(tab.id)}
-          >
+        {openTabs.map((tab) => {
+          const isDragging = activeDragTab === tab.id;
+          const offset = dragOffsets[tab.id] ?? 0;
+          return (
             <div
-              className="flex items-center gap-3 p-3 bg-secondary rounded-xl border border-theme transition-transform"
-              style={{
-                transform: `translateX(${dragOffset}px)`,
-                transition: dragging ? 'none' : 'transform 0.2s ease-out',
-              }}
+              key={tab.id}
+              className="relative"
+              onTouchStart={(e) => handleTouchStart(e, tab.id)}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={() => handleTouchEnd(tab.id)}
             >
+              <div
+                className="flex items-center gap-3 p-3 bg-secondary rounded-xl border border-theme"
+                style={{
+                  transform: `translateX(${offset}px)`,
+                  transition: isDragging ? 'none' : 'transform 0.2s ease-out',
+                }}
+              >
               <div className="w-8 h-8 bg-tertiary rounded-lg flex items-center justify-center">
                 <Icon name="globe-web" size={16} className="text-muted" />
               </div>
@@ -136,7 +144,8 @@ export function InfiniteTabSweep({ onComplete, onCancel }: InfiniteTabSweepProps
               <span className="text-xs text-muted">swipe →</span>
             </div>
           </div>
-        ))}
+        );
+        })}
       </div>
 
       {showAd && (
