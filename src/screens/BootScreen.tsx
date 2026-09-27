@@ -84,8 +84,14 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
       <div className="text-center mb-6">
         {/* Spinning phone logo — bigger + satirical loading spinner */}
         <div className="w-28 h-28 mx-auto mb-4 animate-spin-slow">
-          <div className="w-full h-full bg-secondary rounded-3xl flex items-center justify-center border-2 border-accent-red/30">
+          <div className="w-full h-full bg-secondary rounded-3xl flex items-center justify-center border-2 border-accent-red/30 relative overflow-hidden">
             <span className="text-5xl">📱</span>
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute top-[20%] left-[15%] w-[70%] h-[2px] bg-white/60 rotate-[25deg]" />
+              <div className="absolute top-[20%] left-[30%] w-[50%] h-[1.5px] bg-white/40 rotate-[60deg]" />
+              <div className="absolute top-[35%] left-[10%] w-[40%] h-[1px] bg-white/30 rotate-[-15deg]" />
+              <div className="absolute bottom-[25%] right-[15%] w-[55%] h-[1.5px] bg-white/50 rotate-[40deg]" />
+            </div>
           </div>
         </div>
         <h1 className="text-5xl font-black text-primary tracking-widest mb-2">PTSD</h1>
