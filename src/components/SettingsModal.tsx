@@ -1,5 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Theme, loadTheme, saveTheme, applyTheme, toggleTheme } from '../engine/theme';
+import {
+  loadAudioPref,
+  saveAudioPref,
+  loadVolume,
+  saveVolume,
+  toggleAudio,
+  playSound,
+} from '../engine/sound';
 
 interface SettingsModalProps {
   onClose: () => void;
@@ -7,17 +15,37 @@ interface SettingsModalProps {
 
 export function SettingsModal({ onClose }: SettingsModalProps) {
   const [theme, setTheme] = useState<Theme>(loadTheme());
+  const [audioOn, setAudioOn] = useState<boolean>(loadAudioPref);
+  const [volume, setVolume] = useState<number>(loadVolume);
 
-  // Sync if theme changes externally (e.g. from another modal)
+  // Sync if settings change externally
   useEffect(() => {
-    const handler = () => setTheme(loadTheme());
+    const handler = () => {
+      setTheme(loadTheme());
+      setAudioOn(loadAudioPref);
+      setVolume(loadVolume);
+    };
     window.addEventListener('storage', handler);
     return () => window.removeEventListener('storage', handler);
   }, []);
 
-  const handleToggle = () => {
+  const handleThemeToggle = () => {
     const next = toggleTheme();
     setTheme(next);
+    playSound('click');
+  };
+
+  const handleAudioToggle = () => {
+    const next = toggleAudio();
+    setAudioOn(next);
+    if (next) playSound('click');
+  };
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const v = parseFloat(e.target.value);
+    setVolume(v);
+    saveVolume(v);
+    if (audioOn) playSound('click');
   };
 
   return (
@@ -50,13 +78,55 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
               </p>
             </div>
             <button
-              onClick={handleToggle}
+              onClick={handleThemeToggle}
               className={`w-12 h-7 rounded-full transition-colors ${theme === 'dark' ? 'bg-accent-green' : 'bg-secondary border border-theme'}`}
             >
               <div
                 className={`w-5 h-5 bg-white rounded-full shadow-md transition-transform ${theme === 'dark' ? 'translate-x-6' : 'translate-x-1'}`}
               />
             </button>
+          </div>
+
+          {/* Divider */}
+          <div className="border-t border-theme" />
+
+          {/* Audio toggle */}
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-primary">
+                {audioOn ? '🔊 Sound On' : '🔇 Sound Off'}
+              </p>
+              <p className="text-xs text-muted">
+                {audioOn
+                  ? 'Beep boop. Your ears will thank you.'
+                  : 'Silence is golden. Or at least quieter.'}
+              </p>
+            </div>
+            <button
+              onClick={handleAudioToggle}
+              className={`w-12 h-7 rounded-full transition-colors ${audioOn ? 'bg-accent-green' : 'bg-secondary border border-theme'}`}
+            >
+              <div
+                className={`w-5 h-5 bg-white rounded-full shadow-md transition-transform ${audioOn ? 'translate-x-6' : 'translate-x-1'}`}
+              />
+            </button>
+          </div>
+
+          {/* Volume slider */}
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <p className="text-xs font-medium text-muted">Volume</p>
+              <p className="text-xs font-mono text-muted">{Math.round(volume * 100)}%</p>
+            </div>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={Math.round(volume * 100)}
+              onChange={(e) => handleVolumeChange(e)}
+              disabled={!audioOn}
+              className="w-full h-2 bg-tertiary rounded-full appearance-none cursor-pointer accent-accent-green disabled:opacity-50 disabled:cursor-not-allowed"
+            />
           </div>
 
           {/* Divider */}
