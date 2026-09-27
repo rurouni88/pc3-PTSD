@@ -132,7 +132,7 @@ These prompts trigger based on what the player is actively doing inside the phon
 - **Victory**: Resolve all issues AND keep the battery above 0% until the 2-minute timer expires.
 - **Defeat**: Battery hits 0% at any point, timer expires with unresolved issues, or timer expires with battery at 0%.
 - **Scoring**: Based on time remaining, battery level, and issues resolved.
-- **Achievements**: 25 satirical achievements unlock across multiple runs (e.g., "Air Fryer Survivor", "Golf Forum Explorer", "Tea Spill Veteran").
+- **Achievements**: 20 satirical achievements unlock across multiple runs (e.g., "Air Fryer Survivor", "Golf Forum Explorer", "Tea Spill Veteran").
 
 ## 🎲 Seeded Runs
 

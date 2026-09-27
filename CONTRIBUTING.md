@@ -8,12 +8,11 @@ pc3-PTSD/
 │   ├── assets/
 │   │   └── icons/          # SVG sprite sheet (inlined into index.html)
 │   ├── components/
-│   │   ├── AchievementsModal.tsx  # Flat list of all 25 achievements
+│   │   ├── AchievementsModal.tsx  # Flat list of all 20 achievements
 │   │   ├── BottomBar.tsx          # Simulated home indicator
 │   │   ├── Charger.tsx            # Charger micro-interaction
 │   │   ├── HelpModal.tsx          # "How To Play" instructions
 │   │   ├── Icon.tsx               # SVG sprite icon renderer
-│   │   ├── Interrupt.tsx          # (legacy — replaced by ParentInterrupt)
 │   │   ├── Notification.tsx       # Slide-down banner alerts
 │   │   ├── ParentInterrupt.tsx    # Couch Interruption overlay
 │   │   ├── SettingsModal.tsx      # Theme, audio, volume controls
@@ -21,7 +20,7 @@ pc3-PTSD/
 │   │   ├── StatusBar.tsx          # Fake battery, Wi-Fi, time display
 │   │   └── mini-games/
 │   │       ├── AntivirusWhackAMole.tsx  # Long-press uninstall
-│   │       ├── BlindTranslation.tsx     # Greek settings navigation
+│   │       ├── BlindTranslation.tsx     # Foreign language settings navigation (5 languages)
 │   │       ├── DuplicateDoom.tsx        # Photo gallery dedup
 │   │       ├── InfiniteTabSweep.tsx     # Swipe-to-close tabs
 │   │       └── PhysicalOverride.tsx     # Quick Settings toggle hunt
@@ -124,7 +123,7 @@ This is a prototype/vertical slice. Planned features:
 - [ ] More mini-game variants per level
 - [ ] Haptic patterns for different event types
 - [ ] Shareable run summaries (seed + transcript)
-- [ ] More achievements (beyond 25)
+- [ ] More achievements (beyond 20)
 - [ ] Behavioral achievement tracking (event log for "lied to Mum", "ignored Grandma", etc.)
 - [ ] Dynamic interruption timing (scale with player progress, not fixed interval)
 - [ ] Error boundaries + graceful fallback UI (if a mini-game crashes, return to main view)
@@ -145,7 +144,7 @@ These were evaluated against our YAGNI/KISS guardrails and deferred. Revisit if 
 Current state:
 - 5 mini-games across 3 difficulty levels ✓
 - Seeded runs (reproducible + re-enter seed) ✓
-- 25 satirical achievements ✓
+- 20 satirical achievements ✓
 - Meta progression (best times, runs completed) ✓
 - Autosave (every tick, validate on load) ✓
 - Dark/light theme (WCAG AA contrast) ✓
