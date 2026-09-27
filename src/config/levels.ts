@@ -5,7 +5,7 @@ export const levels: Record<string, LevelConfig> = {
     difficulty: 'dad',
     name: 'Dad',
     description: 'Logical but specific errors. RAM Boosters and misplaced widgets.',
-    durationSeconds: 120,
+    durationSeconds: 60,
     initialIssues: [
       { id: 'dad-ram-booster', type: 'antivirus-whack-a-mole', isResolved: false, drainPenalty: 0.5 },
       { id: 'dad-weather-widget', type: 'infinite-tab-sweep', isResolved: false, drainPenalty: 0.3 },
@@ -119,7 +119,7 @@ export const levels: Record<string, LevelConfig> = {
     difficulty: 'mum',
     name: 'Mum',
     description: 'Maxed-out cloud storage, huge text sizes, hidden subscriptions.',
-    durationSeconds: 120,
+    durationSeconds: 60,
     initialIssues: [
       { id: 'mum-storage', type: 'duplicate-doom', isResolved: false, drainPenalty: 0.6 },
       { id: 'mum-text-size', type: 'blind-translation', isResolved: false, drainPenalty: 0.4 },
@@ -240,7 +240,7 @@ export const levels: Record<string, LevelConfig> = {
     difficulty: 'grandma',
     name: 'Grandma',
     description: 'Phone in Chinese, ghost touches from tea spill, mute switch toggled.',
-    durationSeconds: 120,
+    durationSeconds: 60,
     initialIssues: [
       { id: 'grandma-language', type: 'blind-translation', isResolved: false, drainPenalty: 0.8 },
       { id: 'grandma-ghost-touch', type: 'physical-override', isResolved: false, drainPenalty: 0.7 },

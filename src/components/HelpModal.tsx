@@ -26,9 +26,8 @@ export function HelpModal({ onClose }: HelpModalProps) {
           <div>
             <h3 className="text-primary font-bold mb-1">🎯 Objective</h3>
             <p>
-              You have <strong className="text-primary">2 minutes</strong> to fix your
-              relative's phone before the battery dies. Each issue you resolve gives you
-              more time — but every second counts.
+              You have <strong className="text-primary">60 seconds</strong> to fix your
+              relative's phone before the battery dies. Every second counts.
             </p>
           </div>
 
@@ -53,8 +52,8 @@ export function HelpModal({ onClose }: HelpModalProps) {
               </li>
               <li>
                 <strong className="text-primary">Physical Override</strong> — Swipe down
-                to open Quick Settings and find the flashlight. It's on page 2 of 6.
-                Your relative's customisation is a war crime.
+                to open Quick Settings and find the flashlight. Your relative's
+                customisation is a war crime.
               </li>
               <li>
                 <strong className="text-primary">Duplicate Doom</strong> — Find and
@@ -114,7 +113,7 @@ export function HelpModal({ onClose }: HelpModalProps) {
             <h3 className="text-primary font-bold mb-1">🏅 Achievements</h3>
             <p>
               Complete runs to unlock satirical achievements. They track your
-              accomplishments — and your failures. There are 25 total. Check them on
+              accomplishments — and your failures. There are 20 total. Check them on
               the title screen.
             </p>
           </div>

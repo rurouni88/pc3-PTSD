@@ -5,9 +5,16 @@ import type { PhotoTheme } from '../../types/game';
 
 interface DuplicateDoomProps {
   photoTheme: PhotoTheme;
+  difficulty: string;
   onComplete: () => void;
   onCancel: () => void;
 }
+
+const completionQuotes: Record<string, string> = {
+  dad: 'Dad: "You didn\'t delete the lucky scorecard, did you?"',
+  mum: 'Mum: "You didn\'t delete the pretty ones, did you?"',
+  grandma: 'Grandma: "The cat is still there, yes? Good."',
+};
 
 interface Photo {
   id: number;
@@ -33,7 +40,7 @@ function buildPhotos(theme: PhotoTheme): Photo[] {
   return photos;
 }
 
-export function DuplicateDoom({ photoTheme, onComplete, onCancel }: DuplicateDoomProps) {
+export function DuplicateDoom({ photoTheme, difficulty, onComplete, onCancel }: DuplicateDoomProps) {
   const [photos] = useState(() => buildPhotos(photoTheme));
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [deleted, setDeleted] = useState<Set<number>>(new Set());
@@ -77,7 +84,7 @@ export function DuplicateDoom({ photoTheme, onComplete, onCancel }: DuplicateDoo
         <Icon name="photos" size={48} className="text-accent-blue mb-4" />
         <p className="text-xl font-bold text-primary">Storage freed!</p>
         <p className="text-sm text-secondary mt-2">
-          {photoTheme.confirmPrompt}
+          {completionQuotes[difficulty] ?? photoTheme.confirmPrompt}
         </p>
         <button
           onClick={() => { playSound('success'); onComplete(); }}

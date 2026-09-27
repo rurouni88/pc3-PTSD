@@ -50,11 +50,11 @@ function MiniGameView({
     case 'infinite-tab-sweep':
       return <InfiniteTabSweep difficulty={difficulty} onComplete={onComplete} onCancel={onCancel} />;
     case 'physical-override':
-      return <PhysicalOverride quickSettingsConfig={levelConfig.quickSettingsConfig} onComplete={onComplete} onCancel={onCancel} />;
+      return <PhysicalOverride quickSettingsConfig={levelConfig.quickSettingsConfig} difficulty={difficulty} onComplete={onComplete} onCancel={onCancel} />;
     case 'duplicate-doom':
-      return <DuplicateDoom photoTheme={levelConfig.photoTheme} onComplete={onComplete} onCancel={onCancel} />;
+      return <DuplicateDoom photoTheme={levelConfig.photoTheme} difficulty={difficulty} onComplete={onComplete} onCancel={onCancel} />;
     case 'antivirus-whack-a-mole':
-      return <AntivirusWhackAMole malwareConfig={levelConfig.malwareConfig} onComplete={onComplete} onCancel={onCancel} />;
+      return <AntivirusWhackAMole malwareConfig={levelConfig.malwareConfig} difficulty={difficulty} onComplete={onComplete} onCancel={onCancel} />;
     case 'blind-translation':
       return <BlindTranslation difficulty={difficulty} onComplete={onComplete} onCancel={onCancel} />;
   }

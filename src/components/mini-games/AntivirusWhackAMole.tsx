@@ -5,9 +5,16 @@ import type { MalwareConfig } from '../../types/game';
 
 interface AntivirusWhackAMoleProps {
   malwareConfig: MalwareConfig;
+  difficulty: string;
   onComplete: () => void;
   onCancel: () => void;
 }
+
+const completionQuotes: Record<string, string> = {
+  dad: 'Dad: "But it said it would make my phone faster..."',
+  mum: 'Mum: "Oh good. Now can you get it back? Linda sent it to me."',
+  grandma: 'Grandma: "Was that the cat protector? It was keeping the cat photos safe."',
+};
 
 interface AppIcon {
   id: string;
@@ -19,7 +26,7 @@ interface AppIcon {
 
 const LONG_PRESS_MS = 800;
 
-export function AntivirusWhackAMole({ malwareConfig, onComplete, onCancel }: AntivirusWhackAMoleProps) {
+export function AntivirusWhackAMole({ malwareConfig, difficulty, onComplete, onCancel }: AntivirusWhackAMoleProps) {
   const [apps, setApps] = useState<AppIcon[]>(() => [
     { id: 'whatsapp', label: 'WhatsApp', icon: 'whatsapp', isTarget: false, isJiggling: false },
     { id: 'malware', label: malwareConfig.name, icon: 'shield', isTarget: true, isJiggling: false },
@@ -97,7 +104,7 @@ export function AntivirusWhackAMole({ malwareConfig, onComplete, onCancel }: Ant
         <Icon name="trash" size={48} className="text-accent-red mb-4" />
         <p className="text-xl font-bold text-primary">{malwareConfig.name} removed!</p>
         <p className="text-sm text-secondary mt-2">
-          Dad: "But it said it would make my phone faster..."
+          {completionQuotes[difficulty] ?? completionQuotes.dad}
         </p>
         <button
           onClick={() => { playSound('success'); onComplete(); }}

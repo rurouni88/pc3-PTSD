@@ -5,9 +5,16 @@ import type { QuickSettingsConfig } from '../../types/game';
 
 interface PhysicalOverrideProps {
   quickSettingsConfig: QuickSettingsConfig;
+  difficulty: string;
   onComplete: () => void;
   onCancel: () => void;
 }
+
+const completionQuotes: Record<string, string> = {
+  dad: 'Dad: "I turned that on to read the golf scores in the dark. It was a solution."',
+  mum: 'Mum: "I was using it to read the WhatsApp messages in bed. You can\'t be too careful."',
+  grandma: 'Grandma: "It was the moon. I was trying to talk to the moon."',
+};
 
 interface Toggle {
   id: string;
@@ -17,7 +24,7 @@ interface Toggle {
   isTarget: boolean;
 }
 
-export function PhysicalOverride({ quickSettingsConfig, onComplete, onCancel }: PhysicalOverrideProps) {
+export function PhysicalOverride({ quickSettingsConfig, difficulty, onComplete, onCancel }: PhysicalOverrideProps) {
   const [panelOpen, setPanelOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [solved, setSolved] = useState(false);
@@ -55,7 +62,9 @@ export function PhysicalOverride({ quickSettingsConfig, onComplete, onCancel }: 
       <div className="h-full flex flex-col items-center justify-center bg-primary p-6">
         <Icon name="check" size={48} className="text-accent-green mb-4" />
         <p className="text-xl font-bold text-primary">Flashlight off!</p>
-        <p className="text-sm text-secondary mt-2">Battery drain reduced.</p>
+        <p className="text-sm text-secondary mt-2">
+          {completionQuotes[difficulty] ?? completionQuotes.dad}
+        </p>
         <button
           onClick={() => { playSound('success'); onComplete(); }}
           className="mt-6 px-6 py-3 bg-accent-green text-primary font-bold rounded-xl"

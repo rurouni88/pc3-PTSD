@@ -18,6 +18,8 @@ export type MiniGameType =
   | 'antivirus-whack-a-mole'
   | 'physical-override';
 
+export type ForeignLanguage = 'greek' | 'arabic' | 'korean' | 'japanese' | 'hindi';
+
 export interface ParentPrompt {
   id: string;
   difficulty: Difficulty;
