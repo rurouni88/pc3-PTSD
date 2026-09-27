@@ -72,8 +72,11 @@ This component structures the game canvas by using absolute CSS positioning. It 
 ## Mini Games
 
 The mini-games are the "rooms" or "monsters" of your dungeon. Because this runs in a mobile browser, these mini-games shouldn't feel like traditional abstract puzzles—they should look and feel exactly like interacting with a broken, frustrating mobile operating system.
+
 When a player taps on a broken feature or a messy app icon, a full-screen viewport layer opens up. Clearing the task updates the issues state array to isResolved: true, instantly dropping the battery's passive drain penalty.
-Here are the designs for the core interactive mini-games tailored for each dungeon.
+
+Below are the designs for each dungeon type.
+
 ------------------------------
 ## 🌐 1. The Infinite Tab Sweep (Clutter Category - Dad/Mum)
 
