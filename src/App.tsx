@@ -109,20 +109,10 @@ export function App() {
 
   return (
     <>
-      {/* Desktop: frame around BootScreen and gameplay */}
-      {isDesktop && (gameState === 'boot' || difficulty) ? (
+      {/* Desktop: frame around all screens */}
+      {isDesktop ? (
         <div className="min-h-screen w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4 sm:p-8">
-          <Frame>
-            {gameState === 'boot' ? (
-              <BootScreen onReady={handleBoot} onContinue={hasSave ? handleContinue : undefined} />
-            ) : difficulty ? (
-              <OSInterface
-                levelConfig={levels[difficulty]}
-                onComplete={handleComplete}
-                onExit={handleExitToBoot}
-              />
-            ) : null}
-          </Frame>
+          <Frame>{renderGame()}</Frame>
         </div>
       ) : (
         <div className="h-dvh w-screen overflow-hidden">{renderGame()}</div>
