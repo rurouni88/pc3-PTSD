@@ -96,7 +96,7 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
       </div>
 
       {/* Seed row */}
-      <div className="flex items-center gap-2 font-mono text-xs mb-4">
+      <div className="flex items-center gap-2 font-mono text-sm mb-4">
         <span className="text-muted">SEED</span>
         {editing ? (
           <input
@@ -131,19 +131,19 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
       <div className="flex gap-2 mb-4 flex-wrap justify-center">
         <button
           onClick={() => setShowAchievements(true)}
-          className="px-2.5 py-1 rounded bg-tertiary border border-theme text-secondary text-xs hover:border-accent-red/50 hover:text-primary transition-colors"
+          className="px-3 py-1.5 rounded bg-tertiary border border-theme text-secondary text-sm hover:border-accent-red/50 hover:text-primary transition-colors"
         >
           🏅 Achievements ({unlockedCount}/{ACHIEVEMENTS.length})
         </button>
         <button
           onClick={() => setShowHelp(true)}
-          className="px-2.5 py-1 rounded bg-tertiary border border-theme text-secondary text-xs hover:border-accent-red/50 hover:text-primary transition-colors"
+          className="px-3 py-1.5 rounded bg-tertiary border border-theme text-secondary text-sm hover:border-accent-red/50 hover:text-primary transition-colors"
         >
           📖 How To Play
         </button>
         <button
           onClick={() => setShowSettings(true)}
-          className="px-2.5 py-1 rounded bg-tertiary border border-theme text-secondary text-xs hover:border-accent-red/50 hover:text-primary transition-colors"
+          className="px-3 py-1.5 rounded bg-tertiary border border-theme text-secondary text-sm hover:border-accent-red/50 hover:text-primary transition-colors"
         >
           ⚙️ Settings
         </button>
