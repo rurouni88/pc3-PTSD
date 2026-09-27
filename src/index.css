@@ -53,3 +53,9 @@
 @utility animate-slide-up { animation: slide-up 0.3s ease-out; }
 @utility animate-slam-in { animation: slam-in 0.4s ease-out; }
 @utility animate-jiggle { animation: jiggle 0.5s ease-in-out infinite; }
+@utility animate-spin-slow { animation: spin-slow 3s linear infinite; }
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

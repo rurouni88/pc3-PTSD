@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { RngEngine } from '../engine/seeded-rng';
 
 interface BootScreenProps {
@@ -44,7 +44,15 @@ const SEED_RE = /^[A-Z0-9]{8}$/;
 export function BootScreen({ onReady, onContinue }: BootScreenProps) {
   const [seed, setSeed] = useState<string>(() => RngEngine.generateSeed());
   const [editing, setEditing] = useState(false);
-  const tagline = pickTagline(seed);
+  const [taglineIndex, setTaglineIndex] = useState(0);
+
+  // Cycle through taglines every 4 seconds while loading
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTaglineIndex((prev) => (prev + 1) % TAGLINES.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleStart = () => {
     if (SEED_RE.test(seed)) {
@@ -55,16 +63,21 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
     onReady(seed);
   };
 
+  const displayedTagline = TAGLINES[taglineIndex];
+
   return (
     <div className="h-dvh flex flex-col items-center justify-center bg-primary select-none p-4">
       <div className="text-center mb-6">
-        <div className="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center mb-4 animate-pulse">
-          <span className="text-3xl">📱</span>
+        {/* Spinning phone logo — bigger + satirical loading spinner */}
+        <div className="w-28 h-28 mx-auto mb-4 animate-spin-slow">
+          <div className="w-full h-full bg-secondary rounded-3xl flex items-center justify-center border-2 border-accent-red/30">
+            <span className="text-5xl">📱</span>
+          </div>
         </div>
-        <h1 className="text-3xl font-black text-primary tracking-widest mb-1">PTSD</h1>
+        <h1 className="text-4xl font-black text-primary tracking-widest mb-1">PTSD</h1>
         <p className="text-secondary text-sm">Parents Tech Support Dungeon</p>
-        <p className="text-accent-red/80 text-xs mt-3 italic max-w-xs">
-          {tagline}
+        <p className="text-accent-red/80 text-xs mt-4 italic max-w-xs animate-pulse">
+          {displayedTagline}
         </p>
       </div>
 
