@@ -21,7 +21,7 @@ export type MiniGameType =
 export interface ParentPrompt {
   id: string;
   difficulty: Difficulty;
-  type: 'direct-question' | 'backback-swiper' | 'guilt-trip';
+  type: 'direct-question' | 'backseat-swiper' | 'guilt-trip';
   question: string;
   options: {
     label: string;

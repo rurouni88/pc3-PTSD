@@ -99,7 +99,7 @@ export function AntivirusWhackAMole({ onComplete, onCancel }: AntivirusWhackAMol
         </p>
         <button
           onClick={onComplete}
-          className="mt-6 px-6 py-3 bg-accent-green text-white font-bold rounded-xl"
+          className="mt-6 px-6 py-3 bg-accent-green text-primary font-bold rounded-xl"
         >
           Done
         </button>

@@ -15,14 +15,14 @@ const avatars: Record<Difficulty, string> = {
 
 const expressions: Record<string, string> = {
   'direct-question': '❓',
-  'backback-swiper': '🤔',
+  'backseat-swiper': '🤔',
   'guilt-trip': '😔',
 };
 
 export function ParentInterrupt({ prompt, difficulty, onAnswer, onDismiss }: ParentInterruptProps) {
   const isDialogue = prompt.type === 'direct-question';
   const isGuiltTrip = prompt.type === 'guilt-trip';
-  const isBackseat = prompt.type === 'backback-swiper';
+  const isBackseat = prompt.type === 'backseat-swiper';
 
   return (
     <div className="absolute inset-0 z-50 flex items-center justify-center">

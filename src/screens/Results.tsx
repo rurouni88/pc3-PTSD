@@ -95,7 +95,7 @@ export function Results({ result, difficulty, onReplay, onMenu }: ResultsProps) 
         </button>
         <button
           onClick={onReplay}
-          className="flex-1 py-3 bg-accent-red text-white font-bold rounded-xl active:scale-95 transition-transform"
+          className="flex-1 py-3 bg-accent-red text-primary font-bold rounded-xl active:scale-95 transition-transform"
         >
           Retry
         </button>

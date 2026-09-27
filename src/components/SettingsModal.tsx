@@ -79,7 +79,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
             </div>
             <button
               onClick={handleThemeToggle}
-              className={`w-12 h-7 rounded-full transition-colors ${theme === 'dark' ? 'bg-accent-green' : 'bg-secondary border-2 border-accent-blue/40'}`}
+              className={`w-12 h-7 rounded-full transition-colors ${theme === 'dark' ? 'bg-accent-green border-2 border-accent-green/50' : 'bg-secondary border-2 border-accent-blue/40'}`}
             >
               <div
                 className={`w-5 h-5 bg-white rounded-full shadow-md transition-transform ${theme === 'dark' ? 'translate-x-6' : 'translate-x-1'}`}
@@ -104,7 +104,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
             </div>
             <button
               onClick={handleAudioToggle}
-              className={`w-12 h-7 rounded-full transition-colors ${audioOn ? 'bg-accent-green' : 'bg-secondary border-2 border-accent-blue/40'}`}
+              className={`w-12 h-7 rounded-full transition-colors ${audioOn ? 'bg-accent-green border-2 border-accent-green/50' : 'bg-secondary border-2 border-accent-blue/40'}`}
             >
               <div
                 className={`w-5 h-5 bg-white rounded-full shadow-md transition-transform ${audioOn ? 'translate-x-6' : 'translate-x-1'}`}
