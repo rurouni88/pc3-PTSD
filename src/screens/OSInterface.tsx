@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { StatusBar } from '../components/StatusBar';
 import { BottomBar } from '../components/BottomBar';
 import { Notification } from '../components/Notification';
+import { ParentInterrupt } from '../components/ParentInterrupt';
 import { useGameEngine } from '../hooks/useGameEngine';
 import { LevelConfig, MiniGameType } from '../types/game';
 import { InfiniteTabSweep } from '../components/mini-games/InfiniteTabSweep';
@@ -47,7 +48,14 @@ function MiniGameView({
 }
 
 export function OSInterface({ levelConfig, onComplete }: OSInterfaceProps) {
-  const { state, resolveIssue } = useGameEngine({ levelConfig, onComplete });
+  const {
+    state,
+    activePrompt,
+    guiltTripActive,
+    resolveIssue,
+    handlePromptAnswer,
+    dismissPrompt,
+  } = useGameEngine({ levelConfig, onComplete });
   const [activeNotification, setActiveNotification] = useState<string | null>(null);
   const [activeMiniGame, setActiveMiniGame] = useState<MiniGameType | null>(null);
   const [activeIssueId, setActiveIssueId] = useState<string | null>(null);
@@ -89,6 +97,11 @@ export function OSInterface({ levelConfig, onComplete }: OSInterfaceProps) {
 
   return (
     <div className="h-dvh flex flex-col bg-primary select-none overflow-hidden">
+      {/* Guilt trip visual effect */}
+      {guiltTripActive && (
+        <div className="absolute inset-0 border-8 border-gray-600/40 pointer-events-none z-30" />
+      )}
+
       <StatusBar
         batteryLevel={state.batteryLevel}
         timeRemaining={state.timeRemaining}
@@ -139,6 +152,16 @@ export function OSInterface({ levelConfig, onComplete }: OSInterfaceProps) {
       </div>
 
       <BottomBar onHome={() => {}} onBack={() => {}} />
+
+      {/* Parent interruption overlay */}
+      {activePrompt && state.difficulty && (
+        <ParentInterrupt
+          prompt={activePrompt}
+          difficulty={state.difficulty}
+          onAnswer={handlePromptAnswer}
+          onDismiss={dismissPrompt}
+        />
+      )}
     </div>
   );
 }
