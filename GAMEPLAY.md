@@ -3,7 +3,7 @@
 ## Quick Start
 
 1. **Choose your relative** — Dad (Easy), Mum (Normal), or Grandma (Hardest)
-2. **Get the phone** — You have exactly one afternoon (a 2-minute real-time countdown)
+2. **Get the phone** — You have exactly one afternoon (a 60-second real-time countdown)
 3. **Fix the issues** — Navigate a simulated mobile OS, dig through messy menus, and clear a randomized checklist of technical issues
 4. **Survive the interruptions** — Spam calls, fake antivirus pop-ups, and the parent breathing down your neck
 5. **Don't let the battery hit 0%** — The Battery is your health pool. When it dies, so does your afternoon.
@@ -30,7 +30,7 @@
 
 ## 🔋 The Battery Engine
 
-- **Passive Drain**: The battery naturally decays over the 2 minutes. Unclosed background apps, maxed brightness, and flashlight traps multiply the drain speed.
+- **Passive Drain**: The battery naturally decays over the 60 seconds. Unclosed background apps, maxed brightness, and flashlight traps multiply the drain speed.
 - **Issue Penalties**: Each unresolved issue adds a drain penalty. Resolving issues (completing mini-games) removes the penalty.
 - **The Clutch Mechanic**: Players can ask the parent for a charger, triggering a micro-search (like digging through a virtual junk drawer) to restore a chunk of battery life at the expense of precious seconds.
 - **Guilt Trip Drain**: A "Generational Guilt Trip" prompt causes a temporary battery drain increase for 10 seconds.
@@ -99,7 +99,7 @@ The parent asks an absurd question that demands an answer before you can see wha
 - **Example Prompt (Mum)**: "Darling, an email said if I forward it to all my contacts, I will be sent a free air fryer. Is that true?"
 - **The Mechanics**: You are presented with two thumb-sized buttons:
   - **Button A (The Long Explanation)**: "No Mum, it's a data-harvesting scam..."
-    - Result: Wastes 5 seconds of your 2-minute timer while you "explain" it, but doesn't harm the phone.
+    - Result: Wastes 5 seconds of your 60-second timer while you "explain" it, but doesn't harm the phone.
   - **Button B (The Quick Lie)**: "No, they ran out of air fryers."
     - Result: Instantly dismisses the prompt (0 seconds wasted), but Mum sighs, lowering your battery-saving efficiency because she's disappointed.
 
@@ -129,7 +129,7 @@ These prompts trigger based on what the player is actively doing inside the phon
 
 ## 🏆 Victory & Defeat
 
-- **Victory**: Resolve all issues AND keep the battery above 0% until the 2-minute timer expires.
+- **Victory**: Resolve all issues AND keep the battery above 0% until the 60-second timer expires.
 - **Defeat**: Battery hits 0% at any point, timer expires with unresolved issues, or timer expires with battery at 0%.
 - **Scoring**: Based on time remaining, battery level, and issues resolved.
 - **Achievements**: 20 satirical achievements unlock across multiple runs (e.g., "Air Fryer Survivor", "Golf Forum Explorer", "Tea Spill Veteran").

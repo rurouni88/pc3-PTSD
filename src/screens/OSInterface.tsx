@@ -36,11 +36,13 @@ const issueLabels: Record<MiniGameType, { label: string; icon: string }> = {
 function MiniGameView({
   type,
   difficulty,
+  levelConfig,
   onComplete,
   onCancel,
 }: {
   type: MiniGameType;
   difficulty: string;
+  levelConfig: LevelConfig;
   onComplete: () => void;
   onCancel: () => void;
 }) {
@@ -48,13 +50,13 @@ function MiniGameView({
     case 'infinite-tab-sweep':
       return <InfiniteTabSweep difficulty={difficulty} onComplete={onComplete} onCancel={onCancel} />;
     case 'physical-override':
-      return <PhysicalOverride onComplete={onComplete} onCancel={onCancel} />;
+      return <PhysicalOverride quickSettingsConfig={levelConfig.quickSettingsConfig} difficulty={difficulty} onComplete={onComplete} onCancel={onCancel} />;
     case 'duplicate-doom':
-      return <DuplicateDoom onComplete={onComplete} onCancel={onCancel} />;
+      return <DuplicateDoom photoTheme={levelConfig.photoTheme} difficulty={difficulty} onComplete={onComplete} onCancel={onCancel} />;
     case 'antivirus-whack-a-mole':
-      return <AntivirusWhackAMole onComplete={onComplete} onCancel={onCancel} />;
+      return <AntivirusWhackAMole malwareConfig={levelConfig.malwareConfig} difficulty={difficulty} onComplete={onComplete} onCancel={onCancel} />;
     case 'blind-translation':
-      return <BlindTranslation onComplete={onComplete} onCancel={onCancel} />;
+      return <BlindTranslation difficulty={difficulty} onComplete={onComplete} onCancel={onCancel} />;
   }
 }
 
@@ -103,6 +105,7 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
         <MiniGameView
           type={activeMiniGame}
           difficulty={levelConfig.difficulty}
+          levelConfig={levelConfig}
           onComplete={handleMiniGameComplete}
           onCancel={handleMiniGameCancel}
         />

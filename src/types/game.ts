@@ -18,6 +18,8 @@ export type MiniGameType =
   | 'antivirus-whack-a-mole'
   | 'physical-override';
 
+export type ForeignLanguage = 'greek' | 'arabic' | 'korean' | 'japanese' | 'hindi';
+
 export interface ParentPrompt {
   id: string;
   difficulty: Difficulty;
@@ -37,6 +39,28 @@ export interface InterruptEvent {
   data: ParentPrompt | null;
 }
 
+// --- Mini-game variant configs ---
+
+export interface PhotoTheme {
+  importantLabel: string;
+  importantIcon: string;
+  decoyLabels: string[];
+  decoyIcon: string;
+  confirmPrompt: string;
+}
+
+export interface MalwareConfig {
+  name: string;
+  scanMessage: string;
+  decoyAppLabel: string;
+  decoyAppIcon: string;
+}
+
+export interface QuickSettingsConfig {
+  flashlightPage: number; // 0-indexed
+  pages: { id: string; label: string; icon: string; isOn: boolean }[][];
+}
+
 export interface LevelConfig {
   difficulty: Difficulty;
   name: string;
@@ -45,6 +69,9 @@ export interface LevelConfig {
   initialIssues: GameIssue[];
   parentPrompts: ParentPrompt[];
   interruptionRate: number; // seconds between random interruptions
+  photoTheme: PhotoTheme;
+  malwareConfig: MalwareConfig;
+  quickSettingsConfig: QuickSettingsConfig;
 }
 
 export interface GameEngineState {

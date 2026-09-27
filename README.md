@@ -4,7 +4,7 @@
 > *"Doing IT for parents with them giving direction is a form of torture."*  
 > — Sonny
 
-PTSD is a satirical, rapid-fire roguelike puzzle game designed for mobile browsers. Your smartphone screen transforms into a relative's chaotic device — and you have exactly one afternoon (2 minutes) to fix it before the battery dies.
+PTSD is a satirical, rapid-fire roguelike puzzle game designed for mobile browsers. Your smartphone screen transforms into a relative's chaotic device — and you have exactly 60 seconds to fix it before the battery dies.
 
 Will you survive the afternoon, or will your patience (and the battery) hit zero?
 

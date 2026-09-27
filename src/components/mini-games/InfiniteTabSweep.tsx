@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import { Icon } from '../Icon';
+import { playSound } from '../../engine/sound';
 
 interface InfiniteTabSweepProps {
   difficulty: string;
@@ -81,9 +82,9 @@ export function InfiniteTabSweep({ difficulty, onComplete, onCancel }: InfiniteT
   const [showAd, setShowAd] = useState(false);
   const [adMessage, setAdMessage] = useState('');
   const [closedCount, setClosedCount] = useState(0);
-  const touchStartX = useRef(0);
   const [activeDragTab, setActiveDragTab] = useState<number | null>(null);
   const [dragOffsets, setDragOffsets] = useState<Record<number, number>>({});
+  const pointerStartX = useRef(0);
 
   const openTabs = tabs.filter((t) => !t.isClosed);
   const allClosed = openTabs.length === 0;
@@ -104,20 +105,22 @@ export function InfiniteTabSweep({ difficulty, onComplete, onCancel }: InfiniteT
       }
       return next;
     });
+    playSound('click');
+  }, [totalTabs]);
+
+  const handlePointerDown = useCallback((e: React.PointerEvent, tabId: number) => {
+    pointerStartX.current = e.clientX;
+    setActiveDragTab(tabId);
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
   }, []);
 
-  const handleTouchStart = (e: React.TouchEvent, tabId: number) => {
-    touchStartX.current = e.touches[0].clientX;
-    setActiveDragTab(tabId);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
+  const handlePointerMove = useCallback((e: React.PointerEvent) => {
     if (activeDragTab === null) return;
-    const dx = e.touches[0].clientX - touchStartX.current;
+    const dx = e.clientX - pointerStartX.current;
     setDragOffsets((prev) => ({ ...prev, [activeDragTab]: dx }));
-  };
+  }, [activeDragTab]);
 
-  const handleTouchEnd = (tabId: number) => {
+  const handlePointerUp = useCallback((tabId: number) => {
     const offset = dragOffsets[tabId] ?? 0;
     setActiveDragTab(null);
     if (Math.abs(offset) > 80) {
@@ -128,7 +131,7 @@ export function InfiniteTabSweep({ difficulty, onComplete, onCancel }: InfiniteT
       delete next[tabId];
       return next;
     });
-  };
+  }, [dragOffsets, closeTab]);
 
   if (allClosed) {
     return (
@@ -137,7 +140,7 @@ export function InfiniteTabSweep({ difficulty, onComplete, onCancel }: InfiniteT
         <p className="text-xl font-bold text-primary">All tabs closed!</p>
         <p className="text-sm text-secondary mt-2">{completionQuotes[difficulty] ?? completionQuotes.dad}</p>
         <button
-          onClick={onComplete}
+          onClick={() => { playSound('success'); onComplete(); }}
           className="mt-6 px-6 py-3 bg-accent-green text-primary font-bold rounded-xl"
         >
           Done
@@ -168,9 +171,10 @@ export function InfiniteTabSweep({ difficulty, onComplete, onCancel }: InfiniteT
             <div
               key={tab.id}
               className="relative"
-              onTouchStart={(e) => handleTouchStart(e, tab.id)}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={() => handleTouchEnd(tab.id)}
+              onPointerDown={(e) => handlePointerDown(e, tab.id)}
+              onPointerMove={handlePointerMove}
+              onPointerUp={() => handlePointerUp(tab.id)}
+              onPointerCancel={() => handlePointerUp(tab.id)}
             >
               <div
                 className="flex items-center gap-3 p-3 bg-secondary rounded-xl border border-theme"
@@ -179,17 +183,24 @@ export function InfiniteTabSweep({ difficulty, onComplete, onCancel }: InfiniteT
                   transition: isDragging ? 'none' : 'transform 0.2s ease-out',
                 }}
               >
-              <div className="w-8 h-8 bg-tertiary rounded-lg flex items-center justify-center">
-                <Icon name="globe-web" size={16} className="text-muted" />
+                <div className="w-8 h-8 bg-tertiary rounded-lg flex items-center justify-center shrink-0">
+                  <Icon name="globe-web" size={16} className="text-muted" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-primary truncate">{tab.title}</p>
+                  <p className="text-xs text-muted">{tab.url}</p>
+                </div>
+                <button
+                  onClick={(e) => { e.stopPropagation(); closeTab(tab.id); }}
+                  onPointerDown={(e) => e.stopPropagation()}
+                  className="w-8 h-8 flex items-center justify-center rounded-full bg-tertiary text-muted hover:text-primary hover:bg-accent-red/20 active:scale-90 transition-all shrink-0"
+                  aria-label={`Close tab: ${tab.title}`}
+                >
+                  ×
+                </button>
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-primary truncate">{tab.title}</p>
-                <p className="text-xs text-muted">{tab.url}</p>
-              </div>
-              <span className="text-xs text-muted">swipe →</span>
             </div>
-          </div>
-        );
+          );
         })}
       </div>
 
