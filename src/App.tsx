@@ -109,8 +109,17 @@ export function App() {
 
   return (
     <>
-      {isDesktop ? (
-        <Frame>{renderGame()}</Frame>
+      {/* Desktop: frame only around gameplay, menus are full-screen */}
+      {isDesktop && gameState === 'playing' && difficulty ? (
+        <div className="min-h-screen w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4 sm:p-8">
+          <Frame>
+            <OSInterface
+              levelConfig={levels[difficulty]}
+              onComplete={handleComplete}
+              onExit={handleExitToBoot}
+            />
+          </Frame>
+        </div>
       ) : (
         <div className="h-dvh w-screen overflow-hidden">{renderGame()}</div>
       )}
