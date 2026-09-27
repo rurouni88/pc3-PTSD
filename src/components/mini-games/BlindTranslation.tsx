@@ -19,7 +19,7 @@ const settingsMenu: MenuOption[] = [
   { id: 'language', greekLabel: 'Γλώσσα και εισαγωγή', icon: '🌐', isTarget: true },
   { id: 'battery', greekLabel: 'Μπαταρία', icon: '🔋', isTarget: false },
   { id: 'wifi', greekLabel: 'Wi-Fi', icon: '📶', isTarget: false },
-  { id: 'bluetooth', greekLabel: 'Bluetooth', icon: '🔗', isTarget: false },
+  { id: 'bluetooth', greekLabel: 'Bluetooth', icon: '🔵', isTarget: false },
   { id: 'storage', greekLabel: 'Αποθήκευση', icon: '💾', isTarget: false },
 ];
 

@@ -15,15 +15,15 @@ interface Toggle {
 
 const quickSettingsPage1: Toggle[] = [
   { id: 'wifi', label: 'Wi-Fi', icon: '📶', isOn: true, isTarget: false },
-  { id: 'bluetooth', label: 'Bluetooth', icon: '🔗', isOn: true, isTarget: false },
+  { id: 'bluetooth', label: 'Bluetooth', icon: '🔵', isOn: true, isTarget: false },
   { id: 'airplane', label: 'Airplane Mode', icon: '✈️', isOn: false, isTarget: false },
-  { id: 'nfc', label: 'NFC', icon: '📡', isOn: false, isTarget: false },
+  { id: 'nfc', label: 'NFC', icon: '💳', isOn: false, isTarget: false },
 ];
 
 const quickSettingsPage2: Toggle[] = [
   { id: 'location', label: 'Location', icon: '📍', isOn: true, isTarget: false },
   { id: 'flashlight', label: 'Flashlight', icon: '🔦', isOn: true, isTarget: true },
-  { id: 'torch', label: 'Torch', icon: '🕯️', isOn: false, isTarget: false },
+  { id: 'brightness', label: 'Brightness', icon: '🔆', isOn: false, isTarget: false },
   { id: 'rotation', label: 'Rotation', icon: '🔄', isOn: false, isTarget: false },
 ];
 
