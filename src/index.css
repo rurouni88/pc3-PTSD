@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+:root, [data-theme="normal"] {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-tertiary: #334155;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border-theme: #334155;
+  --accent-red: #ef4444;
+  --accent-green: #22c55e;
+  --accent-yellow: #eab308;
+  --accent-blue: #3b82f6;
+}
+
+@utility bg-primary { background-color: var(--bg-primary); }
+@utility bg-secondary { background-color: var(--bg-secondary); }
+@utility bg-tertiary { background-color: var(--bg-tertiary); }
+@utility text-primary { color: var(--text-primary); }
+@utility text-secondary { color: var(--text-secondary); }
+@utility text-muted { color: var(--text-muted); }
+@utility border-theme { border-color: var(--border-theme); }
+@utility text-accent-red { color: var(--accent-red); }
+@utility bg-accent-red { background-color: var(--accent-red); }
+@utility text-accent-green { color: var(--accent-green); }
+@utility text-accent-yellow { color: var(--accent-yellow); }
+@utility text-accent-blue { color: var(--accent-blue); }
