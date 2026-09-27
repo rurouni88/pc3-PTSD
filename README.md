@@ -1,6 +1,7 @@
-# PTSD
+# PTSD Simulation
 
-Parent (and above) Tech Support Dungeon
+Parents (and above) Tech Support Dungeon.
+
 Parents Tech Support Dungeon (PTSD) is a satirical, rapid-fire roguelike puzzle game designed specifically for mobile browsers, where the player’s smartphone screen transforms into a relative's chaotic device.
 
 To quote my friend, Sonny,
