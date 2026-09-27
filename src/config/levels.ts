@@ -277,7 +277,7 @@ export const levels: Record<string, LevelConfig> = {
         id: 'grandma-q4',
         difficulty: 'grandma',
         type: 'direct-question',
-        question: "I think I pressed something. Now everything is in Chinese. Can you speak to it?",
+        question: "I think I pressed something. Now everything is in Hindi. Can you speak to it?",
         options: [
           { label: 'I\'ll change the language back', timeCost: 5, batteryEffect: -2 },
           { label: 'Just turn it off and on again', timeCost: 2, batteryEffect: -5 },
