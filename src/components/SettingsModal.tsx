@@ -8,6 +8,7 @@ import {
   toggleAudio,
   playSound,
 } from '../engine/sound';
+import { saveUnlocked, loadUnlocked } from '../engine/achievements';
 
 interface SettingsModalProps {
   onClose: () => void;
@@ -132,6 +133,12 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
           {/* Divider */}
           <div className="border-t border-theme" />
 
+          {/* Reset Achievements */}
+          <ResetAchievements />
+
+          {/* Divider */}
+          <div className="border-t border-theme" />
+
           {/* Credits */}
           <div className="text-center">
             <p className="text-xs text-muted">Copyright 2026 PC3 Enterprises</p>
@@ -139,6 +146,55 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function ResetAchievements() {
+  const [confirming, setConfirming] = useState(false);
+  const [count] = useState(() => loadUnlocked().length);
+
+  if (confirming) {
+    return (
+      <div className="flex flex-col gap-2">
+        <p className="text-xs text-accent-red font-medium">Reset all achievements? This cannot be undone.</p>
+        <div className="flex gap-2">
+          <button
+            onClick={() => {
+              saveUnlocked([]);
+              setConfirming(false);
+              playSound('click');
+            }}
+            className="flex-1 py-2 bg-accent-red text-primary text-xs font-bold rounded-lg active:scale-95 transition-transform"
+          >
+            Yes, reset
+          </button>
+          <button
+            onClick={() => setConfirming(false)}
+            className="flex-1 py-2 bg-tertiary text-primary text-xs font-medium rounded-lg active:scale-95 transition-transform"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center justify-between">
+      <div>
+        <p className="text-sm font-medium text-primary">Reset Achievements</p>
+        <p className="text-xs text-muted">
+          {count > 0 ? `${count} unlocked. Start fresh?` : 'Nothing to reset.'}
+        </p>
+      </div>
+      <button
+        onClick={() => setConfirming(true)}
+        disabled={count === 0}
+        className="px-3 py-1.5 text-xs font-medium text-accent-red border border-accent-red/40 rounded-lg active:scale-95 transition-transform disabled:opacity-40 disabled:cursor-not-allowed"
+      >
+        Reset
+      </button>
     </div>
   );
 }

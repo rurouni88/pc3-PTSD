@@ -21,7 +21,7 @@ export function LevelSelect({ onSelect }: LevelSelectProps) {
   const levelEntries = Object.entries(levels) as [Difficulty, (typeof levels)[Difficulty]][];
 
   return (
-    <div className="h-dvh flex flex-col bg-primary select-none">
+    <div className="h-full flex flex-col bg-primary select-none">
       <div className="flex-1 flex flex-col items-center justify-center p-6 gap-6">
         <h1 className="text-2xl font-bold text-primary text-center mb-2">
           Choose Your Relative
