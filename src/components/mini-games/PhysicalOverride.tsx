@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { Icon } from '../Icon';
 
 interface PhysicalOverrideProps {
   onComplete: () => void;
@@ -14,17 +15,17 @@ interface Toggle {
 }
 
 const quickSettingsPage1: Toggle[] = [
-  { id: 'wifi', label: 'Wi-Fi', icon: '📶', isOn: true, isTarget: false },
-  { id: 'bluetooth', label: 'Bluetooth', icon: '🔗', isOn: true, isTarget: false },
-  { id: 'airplane', label: 'Airplane Mode', icon: '✈️', isOn: false, isTarget: false },
-  { id: 'nfc', label: 'NFC', icon: '📡', isOn: false, isTarget: false },
+  { id: 'wifi', label: 'Wi-Fi', icon: 'wifi', isOn: true, isTarget: false },
+  { id: 'bluetooth', label: 'Bluetooth', icon: 'bluetooth', isOn: true, isTarget: false },
+  { id: 'airplane', label: 'Airplane Mode', icon: 'airplane', isOn: false, isTarget: false },
+  { id: 'nfc', label: 'NFC', icon: 'nfc', isOn: false, isTarget: false },
 ];
 
 const quickSettingsPage2: Toggle[] = [
-  { id: 'location', label: 'Location', icon: '📍', isOn: true, isTarget: false },
-  { id: 'flashlight', label: 'Flashlight', icon: '🔦', isOn: true, isTarget: true },
-  { id: 'torch', label: 'Torch', icon: '🕯️', isOn: false, isTarget: false },
-  { id: 'rotation', label: 'Rotation', icon: '🔄', isOn: false, isTarget: false },
+  { id: 'location', label: 'Location', icon: 'location', isOn: true, isTarget: false },
+  { id: 'flashlight', label: 'Flashlight', icon: 'flashlight', isOn: true, isTarget: true },
+  { id: 'brightness', label: 'Brightness', icon: 'brightness', isOn: false, isTarget: false },
+  { id: 'rotation', label: 'Rotation', icon: 'rotation', isOn: false, isTarget: false },
 ];
 
 export function PhysicalOverride({ onComplete, onCancel }: PhysicalOverrideProps) {
@@ -52,7 +53,7 @@ export function PhysicalOverride({ onComplete, onCancel }: PhysicalOverrideProps
   if (solved) {
     return (
       <div className="h-full flex flex-col items-center justify-center bg-primary p-6">
-        <span className="text-5xl mb-4">✅</span>
+        <Icon name="check" size={48} className="text-accent-green mb-4" />
         <p className="text-xl font-bold text-primary">Flashlight off!</p>
         <p className="text-sm text-secondary mt-2">Battery drain reduced.</p>
         <button
@@ -124,7 +125,7 @@ export function PhysicalOverride({ onComplete, onCancel }: PhysicalOverrideProps
                         : 'bg-secondary border-theme'
                     }`}
                   >
-                    <span className="text-2xl">{state.icon}</span>
+                    <Icon name={state.icon} size={32} className={state.isOn ? 'text-accent-blue' : 'text-primary'} />
                     <span className="text-xs text-primary">{state.label}</span>
                     <span
                       className={`text-[10px] font-bold ${

@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { Icon } from '../Icon';
 
 interface BlindTranslationProps {
   onComplete: () => void;
@@ -13,23 +14,23 @@ interface MenuOption {
 }
 
 const settingsMenu: MenuOption[] = [
-  { id: 'general', greekLabel: 'Γενικά', icon: '⚙️', isTarget: false },
-  { id: 'display', greekLabel: 'Οθόνη', icon: '🖥️', isTarget: false },
-  { id: 'sound', greekLabel: 'Ήχος', icon: '🔊', isTarget: false },
-  { id: 'language', greekLabel: 'Γλώσσα και εισαγωγή', icon: '🌐', isTarget: true },
-  { id: 'battery', greekLabel: 'Μπαταρία', icon: '🔋', isTarget: false },
-  { id: 'wifi', greekLabel: 'Wi-Fi', icon: '📶', isTarget: false },
-  { id: 'bluetooth', greekLabel: 'Bluetooth', icon: '🔗', isTarget: false },
-  { id: 'storage', greekLabel: 'Αποθήκευση', icon: '💾', isTarget: false },
+  { id: 'general', greekLabel: 'Γενικά', icon: 'settings', isTarget: false },
+  { id: 'display', greekLabel: 'Οθόνη', icon: 'display', isTarget: false },
+  { id: 'sound', greekLabel: 'Ήχος', icon: 'sound', isTarget: false },
+  { id: 'language', greekLabel: 'Γλώσσα και εισαγωγή', icon: 'globe', isTarget: true },
+  { id: 'battery', greekLabel: 'Μπαταρία', icon: 'battery', isTarget: false },
+  { id: 'wifi', greekLabel: 'Wi-Fi', icon: 'wifi', isTarget: false },
+  { id: 'bluetooth', greekLabel: 'Bluetooth', icon: 'bluetooth', isTarget: false },
+  { id: 'storage', greekLabel: 'Αποθήκευση', icon: 'storage', isTarget: false },
 ];
 
 const languageOptions: MenuOption[] = [
-  { id: 'greek', greekLabel: 'Ελληνικά', icon: '🇬🇷', isTarget: false },
-  { id: 'english', greekLabel: 'English', icon: '🇬🇧', isTarget: true },
-  { id: 'chinese', greekLabel: '中文', icon: '🇨🇳', isTarget: false },
-  { id: 'spanish', greekLabel: 'Español', icon: '🇪🇸', isTarget: false },
-  { id: 'french', greekLabel: 'Français', icon: '🇫🇷', isTarget: false },
-  { id: 'arabic', greekLabel: 'العربية', icon: '🇸🇦', isTarget: false },
+  { id: 'greek', greekLabel: 'Ελληνικά', icon: 'globe', isTarget: false },
+  { id: 'english', greekLabel: 'English', icon: 'globe', isTarget: true },
+  { id: 'chinese', greekLabel: '中文', icon: 'globe', isTarget: false },
+  { id: 'spanish', greekLabel: 'Español', icon: 'globe', isTarget: false },
+  { id: 'french', greekLabel: 'Français', icon: 'globe', isTarget: false },
+  { id: 'arabic', greekLabel: 'العربية', icon: 'globe', isTarget: false },
 ];
 
 export function BlindTranslation({ onComplete, onCancel }: BlindTranslationProps) {
@@ -63,7 +64,7 @@ export function BlindTranslation({ onComplete, onCancel }: BlindTranslationProps
   if (currentScreen === 'done') {
     return (
       <div className="h-full flex flex-col items-center justify-center bg-primary p-6">
-        <span className="text-5xl mb-4">🌐</span>
+        <Icon name="globe" size={48} className="text-accent-blue mb-4" />
         <p className="text-xl font-bold text-primary">Language: English</p>
         <p className="text-sm text-secondary mt-2">
           Grandma: "Oh thank you, I thought I broke the phone."
@@ -112,7 +113,7 @@ export function BlindTranslation({ onComplete, onCancel }: BlindTranslationProps
                 onClick={() => handleSettingsTap(option.id)}
                 className="flex items-center gap-3 p-4 bg-secondary rounded-xl border border-theme active:bg-tertiary transition-colors"
               >
-                <span className="text-xl">{option.icon}</span>
+                <Icon name={option.icon} size={24} className="text-primary" />
                 <span className="text-base text-primary">{option.greekLabel}</span>
               </button>
             ))}
@@ -127,7 +128,7 @@ export function BlindTranslation({ onComplete, onCancel }: BlindTranslationProps
                 onClick={() => handleLanguageTap(option.id)}
                 className="flex items-center gap-3 p-4 bg-secondary rounded-xl border border-theme active:bg-tertiary transition-colors"
               >
-                <span className="text-xl">{option.icon}</span>
+                <Icon name={option.icon} size={24} className="text-primary" />
                 <span className="text-base text-primary">{option.greekLabel}</span>
               </button>
             ))}
@@ -137,7 +138,7 @@ export function BlindTranslation({ onComplete, onCancel }: BlindTranslationProps
 
       {currentScreen === 'settings' && (
         <p className="text-center text-[10px] text-muted p-3">
-          Find the 🌐 globe icon — you can't read Greek!
+          Find the globe icon — you can't read Greek!
         </p>
       )}
       {currentScreen === 'language' && (

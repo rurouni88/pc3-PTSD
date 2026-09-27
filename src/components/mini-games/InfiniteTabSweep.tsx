@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
+import { Icon } from '../Icon';
 
 interface InfiniteTabSweepProps {
   onComplete: () => void;
@@ -82,7 +83,7 @@ export function InfiniteTabSweep({ onComplete, onCancel }: InfiniteTabSweepProps
   if (allClosed) {
     return (
       <div className="h-full flex flex-col items-center justify-center bg-primary p-6">
-        <span className="text-5xl mb-4">🎉</span>
+        <Icon name="check" size={48} className="text-accent-green mb-4" />
         <p className="text-xl font-bold text-primary">All tabs closed!</p>
         <p className="text-sm text-secondary mt-2">Dad: "But I liked that golf forum..."</p>
         <button
@@ -125,8 +126,8 @@ export function InfiniteTabSweep({ onComplete, onCancel }: InfiniteTabSweepProps
                 transition: dragging ? 'none' : 'transform 0.2s ease-out',
               }}
             >
-              <div className="w-8 h-8 bg-tertiary rounded-lg flex items-center justify-center text-xs">
-                🌐
+              <div className="w-8 h-8 bg-tertiary rounded-lg flex items-center justify-center">
+                <Icon name="globe-web" size={16} className="text-muted" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-primary truncate">{tab.title}</p>

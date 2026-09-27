@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
+import { Icon } from '../Icon';
 
 interface AntivirusWhackAMoleProps {
   onComplete: () => void;
@@ -8,21 +9,21 @@ interface AntivirusWhackAMoleProps {
 interface AppIcon {
   id: string;
   label: string;
-  emoji: string;
+  icon: string;
   isTarget: boolean;
   isJiggling: boolean;
   position: number;
 }
 
 const initialApps: AppIcon[] = [
-  { id: 'whatsapp', label: 'WhatsApp', emoji: '💬', isTarget: false, isJiggling: false, position: 0 },
-  { id: 'cleanmaster', label: 'Clean Master Max', emoji: '🛡️', isTarget: true, isJiggling: false, position: 1 },
-  { id: 'photos', label: 'Photos', emoji: '📷', isTarget: false, isJiggling: false, position: 2 },
-  { id: 'settings', label: 'Settings', emoji: '⚙️', isTarget: false, isJiggling: false, position: 3 },
-  { id: 'safari', label: 'Safari', emoji: '🧭', isTarget: false, isJiggling: false, position: 4 },
-  { id: 'clock', label: 'Clock', emoji: '⏰', isTarget: false, isJiggling: false, position: 5 },
-  { id: 'mail', label: 'Mail', emoji: '✉️', isTarget: false, isJiggling: false, position: 6 },
-  { id: 'notes', label: 'Notes', emoji: '📝', isTarget: false, isJiggling: false, position: 7 },
+  { id: 'whatsapp', label: 'WhatsApp', icon: 'whatsapp', isTarget: false, isJiggling: false, position: 0 },
+  { id: 'cleanmaster', label: 'Clean Master Max', icon: 'shield', isTarget: true, isJiggling: false, position: 1 },
+  { id: 'photos', label: 'Photos', icon: 'photos', isTarget: false, isJiggling: false, position: 2 },
+  { id: 'settings', label: 'Settings', icon: 'settings', isTarget: false, isJiggling: false, position: 3 },
+  { id: 'safari', label: 'Safari', icon: 'safari', isTarget: false, isJiggling: false, position: 4 },
+  { id: 'clock', label: 'Clock', icon: 'clock', isTarget: false, isJiggling: false, position: 5 },
+  { id: 'mail', label: 'Mail', icon: 'mail', isTarget: false, isJiggling: false, position: 6 },
+  { id: 'notes', label: 'Notes', icon: 'notes', isTarget: false, isJiggling: false, position: 7 },
 ];
 
 const LONG_PRESS_MS = 800;
@@ -91,7 +92,7 @@ export function AntivirusWhackAMole({ onComplete, onCancel }: AntivirusWhackAMol
   if (solved) {
     return (
       <div className="h-full flex flex-col items-center justify-center bg-primary p-6">
-        <span className="text-5xl mb-4">🗑️</span>
+        <Icon name="trash" size={48} className="text-accent-red mb-4" />
         <p className="text-xl font-bold text-primary">Clean Master Max removed!</p>
         <p className="text-sm text-secondary mt-2">
           Dad: "But it said it would make my phone faster..."
@@ -155,16 +156,16 @@ export function AntivirusWhackAMole({ onComplete, onCancel }: AntivirusWhackAMol
               } ${scanning ? 'opacity-50' : ''}`}
             >
               <div
-                className={`w-14 h-14 rounded-2xl flex items-center justify-center text-2xl ${
+                className={`w-14 h-14 rounded-2xl flex items-center justify-center ${
                   app.isTarget ? 'bg-red-900/40' : 'bg-secondary'
                 }`}
               >
-                {app.emoji}
+                <Icon name={app.icon} size={28} className="text-primary" />
               </div>
               {app.isJiggling && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-gray-800 rounded-full flex items-center justify-center text-white text-xs border-2 border-gray-400">
+                <div className="absolute -top-1 -right-1 w-5 h-5 bg-gray-800 rounded-full flex items-center justify-center text-white text-xs border-2 border-gray-400">
                   −
-                </span>
+                </div>
               )}
               <span className="text-[10px] text-primary text-center">{app.label}</span>
             </button>
