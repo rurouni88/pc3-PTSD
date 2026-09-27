@@ -1,8 +1,10 @@
 import { useState, useCallback } from 'react';
 import { Icon } from '../Icon';
 import { RngEngine } from '../../engine/seeded-rng';
+import { playSound } from '../../engine/sound';
 
 interface BlindTranslationProps {
+  difficulty: string;
   onComplete: () => void;
   onCancel: () => void;
 }
@@ -124,7 +126,15 @@ const allSettingsMenus: Record<ForeignLanguage, MenuOption[]> = {
   hindi: settingsMenuHindi,
 };
 
-export function BlindTranslation({ onComplete, onCancel }: BlindTranslationProps) {
+const completionQuotes: Record<string, string> = {
+  dad: 'Dad: "So that\'s how you change the language. I could\'ve done that myself."',
+  mum: 'Mum: "Oh thank you, I thought I broke the phone. Can you also fix the text size?"',
+  grandma: 'Grandma: "Oh thank you, I thought I broke the phone."',
+};
+
+const grandmaChineseQuote = '奶奶：「谢谢你，我以为手机坏了。其实中文挺好的。」';
+
+export function BlindTranslation({ difficulty, onComplete, onCancel }: BlindTranslationProps) {
   const languages: ForeignLanguage[] = ['greek', 'arabic', 'korean', 'japanese', 'hindi'];
   const [foreignLang] = useState<ForeignLanguage>(() =>
     languages[Math.floor(RngEngine.random() * languages.length)]
@@ -133,14 +143,17 @@ export function BlindTranslation({ onComplete, onCancel }: BlindTranslationProps
   const headers = headerLabels[foreignLang];
   const [currentScreen, setCurrentScreen] = useState<'settings' | 'language' | 'done'>('settings');
   const [wrongPick, setWrongPick] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>('English');
 
   const handleSettingsTap = useCallback((id: string) => {
     const option = settingsMenu.find((o) => o.id === id);
     if (option?.isTarget) {
       setCurrentScreen('language');
+      playSound('click');
       if (navigator.vibrate) navigator.vibrate(50);
     } else {
       setWrongPick(true);
+      playSound('failure');
       if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
       setTimeout(() => setWrongPick(false), 1500);
     }
@@ -148,26 +161,32 @@ export function BlindTranslation({ onComplete, onCancel }: BlindTranslationProps
 
   const handleLanguageTap = useCallback((id: string) => {
     const option = languageOptions.find((o) => o.id === id);
-    if (option?.isTarget) {
+    const isEasterEgg = difficulty === 'grandma' && id === 'chinese';
+    if (option?.isTarget || isEasterEgg) {
+      setSelectedLanguage(option?.label ?? 'English');
       setCurrentScreen('done');
+      playSound('success');
       if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
     } else {
       setWrongPick(true);
+      playSound('failure');
       if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
       setTimeout(() => setWrongPick(false), 1500);
     }
-  }, []);
+  }, [difficulty]);
 
   if (currentScreen === 'done') {
+    const isChinese = selectedLanguage === '中文';
+    const quote = isChinese ? grandmaChineseQuote : (completionQuotes[difficulty] ?? completionQuotes.grandma);
     return (
       <div className="h-full flex flex-col items-center justify-center bg-primary p-6">
         <Icon name="globe" size={48} className="text-accent-blue mb-4" />
-        <p className="text-xl font-bold text-primary">Language: English</p>
-        <p className="text-sm text-secondary mt-2">
-          Grandma: "Oh thank you, I thought I broke the phone."
+        <p className="text-xl font-bold text-primary">Language: {selectedLanguage}</p>
+        <p className="text-sm text-secondary mt-2" dir={isChinese ? 'ltr' : 'auto'}>
+          {quote}
         </p>
         <button
-          onClick={onComplete}
+          onClick={() => { playSound('success'); onComplete(); }}
           className="mt-6 px-6 py-3 bg-accent-green text-primary font-bold rounded-xl"
         >
           Done

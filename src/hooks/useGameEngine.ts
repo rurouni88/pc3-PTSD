@@ -10,6 +10,7 @@ import { RngEngine } from '../engine/seeded-rng';
 import { SaveSystem } from '../engine/save';
 import { MetaStore, RunRecord } from '../engine/meta';
 import { checkAchievements, Achievement } from '../engine/achievements';
+import { playSound } from '../engine/sound';
 
 interface UseGameEngineProps {
   levelConfig: LevelConfig;
@@ -65,6 +66,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
 
     setActivePrompt(prompt);
     setInterruptionCount((prev) => prev + 1);
+    playSound('interrupt');
 
     if (prompt.type === 'guilt-trip') {
       setGuiltTripActive(true);
@@ -205,6 +207,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
 
   const useCharger = useCallback((batteryGain: number) => {
     setChargerUsed(true);
+    playSound('charger');
     setState((prev) => ({
       ...prev,
       batteryLevel: Math.min(100, prev.batteryLevel + batteryGain),

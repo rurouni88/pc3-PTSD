@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Icon } from '../Icon';
+import { playSound } from '../../engine/sound';
 import type { PhotoTheme } from '../../types/game';
 
 interface DuplicateDoomProps {
@@ -60,11 +61,13 @@ export function DuplicateDoom({ photoTheme, onComplete, onCancel }: DuplicateDoo
     if (hasWrongPick) {
       setWrongPick(true);
       setShowConfirm(true);
+      playSound('failure');
       return;
     }
 
     setDeleted((prev) => new Set([...prev, ...selected]));
     setSelected(new Set());
+    playSound('click');
     if (navigator.vibrate) navigator.vibrate(100);
   }, [selected, photos]);
 
@@ -77,7 +80,7 @@ export function DuplicateDoom({ photoTheme, onComplete, onCancel }: DuplicateDoo
           {photoTheme.confirmPrompt}
         </p>
         <button
-          onClick={onComplete}
+          onClick={() => { playSound('success'); onComplete(); }}
           className="mt-6 px-6 py-3 bg-accent-green text-primary font-bold rounded-xl"
         >
           Done

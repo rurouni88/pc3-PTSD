@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Icon } from '../Icon';
+import { playSound } from '../../engine/sound';
 import type { QuickSettingsConfig } from '../../types/game';
 
 interface PhysicalOverrideProps {
@@ -41,6 +42,9 @@ export function PhysicalOverride({ quickSettingsConfig, onComplete, onCancel }: 
       const updated = { ...item, isOn: !item.isOn };
       if (item.isTarget && item.isOn) {
         setSolved(true);
+        playSound('success');
+      } else {
+        playSound('click');
       }
       return { ...prev, [id]: updated };
     });
@@ -53,7 +57,7 @@ export function PhysicalOverride({ quickSettingsConfig, onComplete, onCancel }: 
         <p className="text-xl font-bold text-primary">Flashlight off!</p>
         <p className="text-sm text-secondary mt-2">Battery drain reduced.</p>
         <button
-          onClick={onComplete}
+          onClick={() => { playSound('success'); onComplete(); }}
           className="mt-6 px-6 py-3 bg-accent-green text-primary font-bold rounded-xl"
         >
           Done

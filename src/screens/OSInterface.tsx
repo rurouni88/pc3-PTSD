@@ -56,7 +56,7 @@ function MiniGameView({
     case 'antivirus-whack-a-mole':
       return <AntivirusWhackAMole malwareConfig={levelConfig.malwareConfig} onComplete={onComplete} onCancel={onCancel} />;
     case 'blind-translation':
-      return <BlindTranslation onComplete={onComplete} onCancel={onCancel} />;
+      return <BlindTranslation difficulty={difficulty} onComplete={onComplete} onCancel={onCancel} />;
   }
 }
 

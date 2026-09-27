@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Icon } from '../Icon';
+import { playSound } from '../../engine/sound';
 import type { MalwareConfig } from '../../types/game';
 
 interface AntivirusWhackAMoleProps {
@@ -70,6 +71,7 @@ export function AntivirusWhackAMole({ malwareConfig, onComplete, onCancel }: Ant
       setApps((prev) =>
         prev.map((a) => (a.id === appId ? { ...a, isJiggling: true } : a))
       );
+      playSound('click');
       if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
     }, LONG_PRESS_MS);
 
@@ -84,6 +86,7 @@ export function AntivirusWhackAMole({ malwareConfig, onComplete, onCancel }: Ant
     const app = apps.find((a) => a.id === appId);
     if (app?.isJiggling) {
       setSolved(true);
+      playSound('success');
       if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
     }
   }, [apps, pressTimer]);
@@ -97,7 +100,7 @@ export function AntivirusWhackAMole({ malwareConfig, onComplete, onCancel }: Ant
           Dad: "But it said it would make my phone faster..."
         </p>
         <button
-          onClick={onComplete}
+          onClick={() => { playSound('success'); onComplete(); }}
           className="mt-6 px-6 py-3 bg-accent-green text-primary font-bold rounded-xl"
         >
           Done
