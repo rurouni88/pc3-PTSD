@@ -10,6 +10,7 @@ import { RngEngine } from './engine/seeded-rng';
 import { SaveSystem } from './engine/save';
 import { applyTheme, loadTheme } from './engine/theme';
 import type { Achievement } from './engine/achievements';
+import { useIsDesktop } from './hooks/useIsDesktop';
 
 interface GameResult {
   success: boolean;
@@ -73,8 +74,7 @@ export function App() {
   }, []);
 
   const hasSave = gameState === 'boot' && SaveSystem.hasSave();
-
-  const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
+  const isDesktop = useIsDesktop();
 
   const renderGame = () => {
     if (gameState === 'boot') {
