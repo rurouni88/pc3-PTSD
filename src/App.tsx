@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { BootScreen } from './screens/BootScreen';
 import { LevelSelect } from './screens/LevelSelect';
 import { OSInterface } from './screens/OSInterface';
@@ -7,6 +7,7 @@ import { levels } from './config/levels';
 import { Difficulty, GameState } from './types/game';
 import { RngEngine } from './engine/seeded-rng';
 import { SaveSystem } from './engine/save';
+import { applyTheme, loadTheme } from './engine/theme';
 import type { Achievement } from './engine/achievements';
 
 interface GameResult {
@@ -21,6 +22,11 @@ export function App() {
   const [gameState, setGameState] = useState<GameState>('boot');
   const [difficulty, setDifficulty] = useState<Difficulty | null>(null);
   const [lastResult, setLastResult] = useState<GameResult | null>(null);
+
+  // Apply saved theme on mount
+  useEffect(() => {
+    applyTheme(loadTheme());
+  }, []);
 
   const handleBoot = useCallback((seed: string) => {
     // Seed is already set by BootScreen before calling this

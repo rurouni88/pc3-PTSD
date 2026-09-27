@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react';
 import { RngEngine } from '../engine/seeded-rng';
+import { SettingsModal } from '../components/SettingsModal';
+import { AchievementsModal } from '../components/AchievementsModal';
+import { loadUnlocked } from '../engine/achievements';
+import { ACHIEVEMENTS } from '../engine/achievements';
 
 interface BootScreenProps {
   onReady: (seed: string) => void;
@@ -50,6 +54,8 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
   const [seed, setSeed] = useState<string>(() => RngEngine.generateSeed());
   const [editing, setEditing] = useState(false);
   const [taglineIndex, setTaglineIndex] = useState(0);
+  const [showSettings, setShowSettings] = useState(false);
+  const [showAchievements, setShowAchievements] = useState(false);
 
   // Cycle through taglines every 4 seconds while loading
   useEffect(() => {
@@ -69,6 +75,7 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
   };
 
   const displayedTagline = TAGLINES[taglineIndex];
+  const unlockedCount = loadUnlocked().length;
 
   return (
     <div className="h-dvh flex flex-col items-center justify-center bg-primary select-none p-4">
@@ -87,7 +94,7 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
       </div>
 
       {/* Seed row */}
-      <div className="flex items-center gap-2 font-mono text-xs mb-6">
+      <div className="flex items-center gap-2 font-mono text-xs mb-4">
         <span className="text-muted">SEED</span>
         {editing ? (
           <input
@@ -118,6 +125,22 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
         </button>
       </div>
 
+      {/* Action buttons */}
+      <div className="flex gap-2 mb-4 flex-wrap justify-center">
+        <button
+          onClick={() => setShowAchievements(true)}
+          className="px-2.5 py-1 rounded bg-tertiary border border-theme text-secondary text-xs hover:border-accent-red/50 hover:text-primary transition-colors"
+        >
+          🏅 Achievements ({unlockedCount}/{ACHIEVEMENTS.length})
+        </button>
+        <button
+          onClick={() => setShowSettings(true)}
+          className="px-2.5 py-1 rounded bg-tertiary border border-theme text-secondary text-xs hover:border-accent-red/50 hover:text-primary transition-colors"
+        >
+          ⚙️ Settings
+        </button>
+      </div>
+
       <div className="flex flex-col gap-3 w-full max-w-xs">
         <button
           onClick={handleStart}
@@ -138,6 +161,10 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
       <p className="absolute bottom-6 text-[10px] text-muted">
         Copyright 2026 PC3 Enterprises
       </p>
+
+      {/* Modals */}
+      {showSettings && <SettingsModal onClose={() => setShowSettings(false)} />}
+      {showAchievements && <AchievementsModal onClose={() => setShowAchievements(false)} />}
     </div>
   );
 }
