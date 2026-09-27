@@ -31,8 +31,8 @@ export function iPhoneFrame({ children }: iPhoneFrameProps) {
               </div>
             </div>
 
-            {/* Screen content */}
-            <div className="relative w-full h-full overflow-hidden">
+            {/* Screen content — padded to clear notch + home indicator */}
+            <div className="relative w-full h-full overflow-hidden pt-8 pb-3">
               {children}
             </div>
 

@@ -99,7 +99,7 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
 
   if (activeMiniGame) {
     return (
-      <div className="h-dvh bg-primary select-none overflow-hidden">
+      <div className="h-full bg-primary select-none overflow-hidden">
         <MiniGameView
           type={activeMiniGame}
           difficulty={levelConfig.difficulty}
@@ -112,7 +112,7 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
 
   if (showPauseMenu) {
     return (
-      <div className="h-dvh flex flex-col items-center justify-center bg-primary select-none">
+      <div className="h-full flex flex-col items-center justify-center bg-primary select-none">
         <span className="text-5xl mb-6">⏸️</span>
         <h2 className="text-2xl font-bold text-primary mb-2">Paused</h2>
         <p className="text-sm text-secondary mb-8">
@@ -144,7 +144,7 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
   }
 
   return (
-    <div className="h-dvh flex flex-col bg-primary select-none overflow-hidden">
+    <div className="h-full flex flex-col bg-primary select-none overflow-hidden">
       {guiltTripActive && (
         <div className="absolute inset-0 border-8 border-gray-600/40 pointer-events-none z-30" />
       )}

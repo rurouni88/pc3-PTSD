@@ -80,7 +80,7 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
   const unlockedCount = loadUnlocked().length;
 
   return (
-    <div className="h-dvh flex flex-col items-center justify-center bg-primary select-none p-4">
+    <div className="h-full flex flex-col items-center justify-center bg-primary select-none p-4">
       <div className="text-center mb-6">
         {/* Spinning phone logo — bigger + satirical loading spinner */}
         <div className="w-28 h-28 mx-auto mb-4 animate-spin-slow">

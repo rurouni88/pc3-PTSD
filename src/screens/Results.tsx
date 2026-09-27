@@ -27,7 +27,7 @@ export function Results({ result, difficulty, onReplay, onMenu }: ResultsProps) 
   const bestBattery = meta.bestBatteries[difficulty];
 
   return (
-    <div className="h-dvh flex flex-col items-center bg-primary p-6 select-none overflow-y-auto">
+    <div className="h-full flex flex-col items-center bg-primary p-6 select-none overflow-y-auto">
       <div className="flex flex-col items-center mt-8">
         <span className="text-6xl mb-4">{result.success ? '🎉' : '💀'}</span>
         <h1 className={`text-3xl font-bold mb-2 ${result.success ? 'text-accent-green' : 'text-accent-red'}`}>
