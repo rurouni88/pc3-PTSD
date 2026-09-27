@@ -27,6 +27,11 @@ const TAGLINES = [
   'The quick settings page has 47 toggles. The flashlight is on page 2. Of 6.',
   'You are not a technician. You are a hostage negotiator.',
   'The only "cloud" in this game is the one Mum can\'t find her photos in.',
+  'Dad thinks the cloud is a weather app. He has a theory about cumulus.',
+  'Mum forwarded you an email about a free air fryer. It is not free.',
+  'Grandma pressed every button. The phone is now in Greek. She is proud.',
+  'You have 47 WhatsApp groups. You are the admin of 46 of them.',
+  'The phone is at 1%. The guilt trip is at 100%. The outcome is uncertain.',
 ];
 
 function pickTagline(seed: string): string {

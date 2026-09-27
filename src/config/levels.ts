@@ -15,7 +15,7 @@ export const levels: Record<string, LevelConfig> = {
         id: 'dad-q1',
         difficulty: 'dad',
         type: 'direct-question',
-        question: "Darling, is it true that if I clear my cache, I lose all my bookmarks?",
+        question: "Mate, is it true that if I clear my cache, I lose all my bookmarks?",
         options: [
           { label: 'No, bookmarks are saved separately', timeCost: 5, batteryEffect: 0 },
           { label: 'Just clear it, you\'ll be fine', timeCost: 2, batteryEffect: -5 },
@@ -29,6 +29,26 @@ export const levels: Record<string, LevelConfig> = {
         options: [
           { label: 'I\'ll explain what\'s happening', timeCost: 5, batteryEffect: 0 },
           { label: 'Just nod and fix it', timeCost: 1, batteryEffect: -3 },
+        ],
+      },
+      {
+        id: 'dad-q3',
+        difficulty: 'dad',
+        type: 'direct-question',
+        question: "This RAM Booster is telling me I need to pay $9.99. Is that normal? It looks official.",
+        options: [
+          { label: 'That\'s a scam. Uninstall it now.', timeCost: 3, batteryEffect: -2 },
+          { label: 'Yeah, probably needs it', timeCost: 0, batteryEffect: -8 },
+        ],
+      },
+      {
+        id: 'dad-q4',
+        difficulty: 'dad',
+        type: 'direct-question',
+        question: "I put the charger in the fridge. Will that charge it faster?",
+        options: [
+          { label: 'NO! Take it out immediately!', timeCost: 1, batteryEffect: 0 },
+          { label: 'I\'ll come check it out', timeCost: 5, batteryEffect: -3 },
         ],
       },
     ],
@@ -63,6 +83,23 @@ export const levels: Record<string, LevelConfig> = {
           { label: 'I won\'t delete it, I promise', timeCost: 3, batteryEffect: -2 },
           { label: 'It\'s a duplicate, I need to free space', timeCost: 2, batteryEffect: -3 },
         ],
+      },
+      {
+        id: 'mum-q3',
+        difficulty: 'mum',
+        type: 'direct-question',
+        question: "Why is my phone so slow? I only have 47 photos and 12 apps!",
+        options: [
+          { label: 'It\'s the cloud backups, not the photos', timeCost: 5, batteryEffect: 0 },
+          { label: 'Have you tried turning it off and on?', timeCost: 2, batteryEffect: -3 },
+        ],
+      },
+      {
+        id: 'mum-q4',
+        difficulty: 'mum',
+        type: 'guilt-trip',
+        question: "You know, I only got this phone so I could see your photos. And now you're deleting them. After all I've done.",
+        options: [],
       },
     ],
     interruptionRate: 12,
@@ -100,6 +137,16 @@ export const levels: Record<string, LevelConfig> = {
         type: 'guilt-trip',
         question: "You know, back in my day, we didn't look at screens all afternoon. We went outside and played.",
         options: [],
+      },
+      {
+        id: 'grandma-q4',
+        difficulty: 'grandma',
+        type: 'direct-question',
+        question: "I think I pressed something. Now everything is in Chinese. Can you speak to it?",
+        options: [
+          { label: 'I\'ll change the language back', timeCost: 5, batteryEffect: -2 },
+          { label: 'Just turn it off and on again', timeCost: 2, batteryEffect: -5 },
+        ],
       },
     ],
     interruptionRate: 8,

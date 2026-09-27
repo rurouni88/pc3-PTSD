@@ -13,6 +13,7 @@ interface SpamSystemProps {
 }
 
 const spamMessages: Omit<SpamNotification, 'id'>[] = [
+  // --- Generic spam ---
   { message: 'You have 47 new messages!', app: 'WhatsApp' },
   { message: 'Your device is SLOW. Click to fix!', app: 'Clean Master' },
   { message: 'FREE RAM! Boost now or lose data!', app: 'RAM Booster' },
@@ -21,8 +22,26 @@ const spamMessages: Omit<SpamNotification, 'id'>[] = [
   { message: 'New photo from Mum (x34)', app: 'iCloud' },
   { message: 'Your Wi-Fi password has expired!', app: 'Network' },
   { message: 'Update available (2.3 GB)', app: 'System' },
-  { message: 'Dad is calling...', app: 'Phone' },
   { message: 'Battery optimization: OFF', app: 'Settings' },
+
+  // --- Dad-specific ---
+  { message: 'Golf tip: How to drive 300 yards!', app: 'Golf Digest' },
+  { message: 'Your RAM Booster trial is EXPIRING!', app: 'Clean Master' },
+  { message: 'Breaking: Tech stocks surge!', app: 'News' },
+  { message: 'Widget updated: Weather + Stocks', app: 'Widgets' },
+
+  // --- Mum-specific ---
+  { message: 'Aunt Carol shared 23 photos!', app: 'WhatsApp' },
+  { message: 'Your iCloud storage is 99% full!', app: 'iCloud' },
+  { message: 'Free air fryer recipe PDF inside!', app: 'Email' },
+  { message: 'Your family plan payment failed', app: 'Telstra' },
+  { message: 'New WhatsApp status: Funny cat video', app: 'WhatsApp' },
+
+  // --- Grandma-specific ---
+  { message: 'You won a FREE iPhone 15!', app: 'Email' },
+  { message: 'Tea recipe: 500 ways to brew!', app: 'Email' },
+  { message: 'Your phone has been hacked! Call now', app: 'Phone' },
+  { message: 'Neighbor\'s cat has 1,000 new followers!', app: 'Instagram' },
 ];
 
 export function SpamSystem({ active, onBatteryDrain }: SpamSystemProps) {
