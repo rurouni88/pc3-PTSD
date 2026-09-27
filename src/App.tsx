@@ -3,6 +3,7 @@ import { BootScreen } from './screens/BootScreen';
 import { LevelSelect } from './screens/LevelSelect';
 import { OSInterface } from './screens/OSInterface';
 import { Results } from './screens/Results';
+import { iPhoneFrame } from './components/iPhoneFrame';
 import { levels } from './config/levels';
 import { Difficulty, GameState } from './types/game';
 import { RngEngine } from './engine/seeded-rng';
@@ -73,27 +74,46 @@ export function App() {
 
   const hasSave = gameState === 'boot' && SaveSystem.hasSave();
 
-  return (
-    <div className="h-dvh w-screen overflow-hidden">
-      {gameState === 'boot' && (
-        <BootScreen onReady={handleBoot} onContinue={hasSave ? handleContinue : undefined} />
-      )}
-      {gameState === 'level-select' && <LevelSelect onSelect={handleSelectLevel} />}
-      {gameState === 'playing' && difficulty && (
+  const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
+
+  const renderGame = () => {
+    if (gameState === 'boot') {
+      return <BootScreen onReady={handleBoot} onContinue={hasSave ? handleContinue : undefined} />;
+    }
+    if (gameState === 'level-select') {
+      return <LevelSelect onSelect={handleSelectLevel} />;
+    }
+    if (gameState === 'playing' && difficulty) {
+      return (
         <OSInterface
           levelConfig={levels[difficulty]}
           onComplete={handleComplete}
           onExit={handleExitToBoot}
         />
-      )}
-      {gameState === 'results' && difficulty && lastResult && (
+      );
+    }
+    if (gameState === 'results' && difficulty && lastResult) {
+      return (
         <Results
           result={lastResult}
           difficulty={difficulty}
           onReplay={handleReplay}
           onMenu={handleMenu}
         />
+      );
+    }
+    return null;
+  };
+
+  const Frame = iPhoneFrame;
+
+  return (
+    <>
+      {isDesktop ? (
+        <Frame>{renderGame()}</Frame>
+      ) : (
+        <div className="h-dvh w-screen overflow-hidden">{renderGame()}</div>
       )}
-    </div>
+    </>
   );
 }
