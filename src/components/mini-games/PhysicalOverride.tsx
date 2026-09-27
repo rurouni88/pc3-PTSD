@@ -1,7 +1,9 @@
 import { useState, useCallback } from 'react';
 import { Icon } from '../Icon';
+import type { QuickSettingsConfig } from '../../types/game';
 
 interface PhysicalOverrideProps {
+  quickSettingsConfig: QuickSettingsConfig;
   onComplete: () => void;
   onCancel: () => void;
 }
@@ -14,29 +16,23 @@ interface Toggle {
   isTarget: boolean;
 }
 
-const quickSettingsPage1: Toggle[] = [
-  { id: 'wifi', label: 'Wi-Fi', icon: 'wifi', isOn: true, isTarget: false },
-  { id: 'bluetooth', label: 'Bluetooth', icon: 'bluetooth', isOn: true, isTarget: false },
-  { id: 'airplane', label: 'Airplane Mode', icon: 'airplane', isOn: false, isTarget: false },
-  { id: 'nfc', label: 'NFC', icon: 'nfc', isOn: false, isTarget: false },
-];
-
-const quickSettingsPage2: Toggle[] = [
-  { id: 'location', label: 'Location', icon: 'location', isOn: true, isTarget: false },
-  { id: 'flashlight', label: 'Flashlight', icon: 'flashlight', isOn: true, isTarget: true },
-  { id: 'brightness', label: 'Brightness', icon: 'brightness', isOn: false, isTarget: false },
-  { id: 'rotation', label: 'Rotation', icon: 'rotation', isOn: false, isTarget: false },
-];
-
-export function PhysicalOverride({ onComplete, onCancel }: PhysicalOverrideProps) {
+export function PhysicalOverride({ quickSettingsConfig, onComplete, onCancel }: PhysicalOverrideProps) {
   const [panelOpen, setPanelOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
-  const [toggles, setToggles] = useState<Record<string, Toggle>>(
-    Object.fromEntries([...quickSettingsPage1, ...quickSettingsPage2].map((t) => [t.id, t]))
-  );
   const [solved, setSolved] = useState(false);
 
-  const pages: Toggle[][] = [quickSettingsPage1, quickSettingsPage2];
+  // Build toggle state from config, marking the flashlight as target
+  const [toggles, setToggles] = useState<Record<string, Toggle>>(() => {
+    const all: Record<string, Toggle> = {};
+    quickSettingsConfig.pages.forEach((page) => {
+      page.forEach((t) => {
+        all[t.id] = { ...t, isTarget: t.id === 'flashlight' };
+      });
+    });
+    return all;
+  });
+
+  const pages = quickSettingsConfig.pages;
   const flashlight = toggles['flashlight'];
 
   const toggleItem = useCallback((id: string) => {
@@ -69,7 +65,7 @@ export function PhysicalOverride({ onComplete, onCancel }: PhysicalOverrideProps
   return (
     <div className="h-full flex flex-col bg-primary relative overflow-hidden">
       {/* Flashlight glow effect */}
-      {flashlight.isOn && (
+      {flashlight?.isOn && (
         <div className="absolute inset-0 pointer-events-none z-0">
           <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent" />
           <div className="absolute top-0 left-0 right-0 h-1 bg-white/30" />
@@ -115,6 +111,7 @@ export function PhysicalOverride({ onComplete, onCancel }: PhysicalOverrideProps
             <div className="grid grid-cols-2 gap-3">
               {pages[currentPage].map((item) => {
                 const state = toggles[item.id];
+                if (!state) return null;
                 return (
                   <button
                     key={item.id}
@@ -140,21 +137,25 @@ export function PhysicalOverride({ onComplete, onCancel }: PhysicalOverrideProps
             </div>
 
             {/* Page navigation */}
-            <div className="flex justify-center gap-2 mt-6">
-              {pages.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrentPage(i)}
-                  className={`w-2 h-2 rounded-full ${
-                    i === currentPage ? 'bg-primary' : 'bg-tertiary'
-                  }`}
-                />
-              ))}
-            </div>
+            {pages.length > 1 && (
+              <div className="flex justify-center gap-2 mt-6">
+                {pages.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentPage(i)}
+                    className={`w-2 h-2 rounded-full ${
+                      i === currentPage ? 'bg-primary' : 'bg-tertiary'
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
 
-            <p className="text-center text-[10px] text-muted mt-3">
-              ← Swipe or tap dots to find the flashlight →
-            </p>
+            {pages.length > 1 && (
+              <p className="text-center text-[10px] text-muted mt-3">
+                ← Swipe or tap dots to find the flashlight →
+              </p>
+            )}
           </div>
         </div>
       )}

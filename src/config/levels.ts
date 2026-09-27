@@ -90,6 +90,30 @@ export const levels: Record<string, LevelConfig> = {
       },
     ],
     interruptionRate: 15,
+    photoTheme: {
+      importantLabel: 'Scorecard (sharp)',
+      importantIcon: 'golf',
+      decoyLabels: ['Golf mag p.1', 'Golf mag p.2', 'Golf mag p.3', 'Golf mag p.4', 'Golf mag p.5', 'Golf mag p.6', 'Golf mag p.7', 'Golf mag p.8'],
+      decoyIcon: 'golf',
+      confirmPrompt: 'Are you sure? Dad thinks that one is his lucky scorecard.',
+    },
+    malwareConfig: {
+      name: 'RAM Booster Pro 2026',
+      scanMessage: 'Your RAM is 99% full! Click to optimize!',
+      decoyAppLabel: 'Golf Score',
+      decoyAppIcon: 'golf',
+    },
+    quickSettingsConfig: {
+      flashlightPage: 0,
+      pages: [
+        [
+          { id: 'wifi', label: 'Wi-Fi', icon: 'wifi', isOn: true },
+          { id: 'bluetooth', label: 'Bluetooth', icon: 'bluetooth', isOn: true },
+          { id: 'dnd', label: 'Do Not Disturb', icon: 'bell', isOn: false },
+          { id: 'flashlight', label: 'Flashlight', icon: 'flashlight', isOn: true },
+        ],
+      ],
+    },
   },
   mum: {
     difficulty: 'mum',
@@ -181,6 +205,36 @@ export const levels: Record<string, LevelConfig> = {
       },
     ],
     interruptionRate: 12,
+    photoTheme: {
+      importantLabel: 'Sunset (sharp)',
+      importantIcon: 'sunset',
+      decoyLabels: ['Sunset 2', 'Sunset 3', 'Sunset 4', 'Cloud 1', 'Cloud 2', 'Cloud 3', 'Sunset 5', 'Sunset 6', 'Cloud 4', 'Sunset 7', 'Sunset 8', 'Cloud 5'],
+      decoyIcon: 'sunset',
+      confirmPrompt: 'Are you sure? Mum thinks that one is pretty.',
+    },
+    malwareConfig: {
+      name: 'Cloud Storage Optimizer',
+      scanMessage: 'You\'re using 98% of your cloud! Fix now!',
+      decoyAppLabel: 'WhatsApp',
+      decoyAppIcon: 'whatsapp',
+    },
+    quickSettingsConfig: {
+      flashlightPage: 1,
+      pages: [
+        [
+          { id: 'wifi', label: 'Wi-Fi', icon: 'wifi', isOn: true },
+          { id: 'bluetooth', label: 'Bluetooth', icon: 'bluetooth', isOn: true },
+          { id: 'dnd', label: 'Do Not Disturb', icon: 'bell', isOn: false },
+          { id: 'whatsapp', label: 'WhatsApp', icon: 'whatsapp', isOn: false },
+        ],
+        [
+          { id: 'location', label: 'Location', icon: 'location', isOn: true },
+          { id: 'flashlight', label: 'Flashlight', icon: 'flashlight', isOn: true },
+          { id: 'brightness', label: 'Brightness', icon: 'brightness', isOn: false },
+          { id: 'rotation', label: 'Rotation', icon: 'rotation', isOn: false },
+        ],
+      ],
+    },
   },
   grandma: {
     difficulty: 'grandma',
@@ -268,5 +322,41 @@ export const levels: Record<string, LevelConfig> = {
       },
     ],
     interruptionRate: 8,
+    photoTheme: {
+      importantLabel: 'Cat portrait (sharp)',
+      importantIcon: 'cat',
+      decoyLabels: ['Cat blurry 1', 'Cat blurry 2', 'Cat blurry 3', 'Cat overexposed 1', 'Cat overexposed 2', 'Cat blurry 4', 'Cat blurry 5', 'Cat overexposed 3', 'Cat blurry 6', 'Cat overexposed 4', 'Cat blurry 7', 'Cat overexposed 5', 'Cat blurry 8', 'Cat overexposed 6', 'Cat blurry 9'],
+      decoyIcon: 'cat',
+      confirmPrompt: 'Are you sure? Grandma thinks that cat is her grandchild.',
+    },
+    malwareConfig: {
+      name: 'Family Photo Protector',
+      scanMessage: 'Your photos are at risk! Scan now!',
+      decoyAppLabel: 'Phone Cleaner',
+      decoyAppIcon: 'shield',
+    },
+    quickSettingsConfig: {
+      flashlightPage: 2,
+      pages: [
+        [
+          { id: 'wifi', label: 'Wi-Fi', icon: 'wifi', isOn: true },
+          { id: 'bluetooth', label: 'Bluetooth', icon: 'bluetooth', isOn: true },
+          { id: 'dnd', label: 'Do Not Disturb', icon: 'bell', isOn: false },
+          { id: 'nfc', label: 'NFC', icon: 'nfc', isOn: false },
+        ],
+        [
+          { id: 'airplane', label: 'Airplane Mode', icon: 'airplane', isOn: false },
+          { id: 'location', label: 'Location', icon: 'location', isOn: true },
+          { id: 'brightness', label: 'Brightness', icon: 'brightness', isOn: false },
+          { id: 'rotation', label: 'Rotation', icon: 'rotation', isOn: false },
+        ],
+        [
+          { id: 'cleaner', label: 'Phone Cleaner', icon: 'shield', isOn: false },
+          { id: 'flashlight', label: 'Flashlight', icon: 'flashlight', isOn: true },
+          { id: 'dnd2', label: 'Silent', icon: 'bell', isOn: false },
+          { id: 'hotspot', label: 'Hotspot', icon: 'wifi', isOn: false },
+        ],
+      ],
+    },
   },
 };

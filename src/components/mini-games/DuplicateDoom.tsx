@@ -1,7 +1,9 @@
 import { useState, useCallback } from 'react';
 import { Icon } from '../Icon';
+import type { PhotoTheme } from '../../types/game';
 
 interface DuplicateDoomProps {
+  photoTheme: PhotoTheme;
   onComplete: () => void;
   onCancel: () => void;
 }
@@ -14,24 +16,24 @@ interface Photo {
   isBlurry: boolean;
 }
 
-const photos: Photo[] = [
-  { id: 1, label: 'Rose Bush (sharp)', icon: 'rose', isDuplicate: false, isBlurry: false },
-  { id: 2, label: 'Rose Bush (blurry)', icon: 'rose', isDuplicate: true, isBlurry: true },
-  { id: 3, label: 'Rose Bush (blurry)', icon: 'rose', isDuplicate: true, isBlurry: true },
-  { id: 4, label: 'Rose Bush (dup)', icon: 'rose', isDuplicate: true, isBlurry: false },
-  { id: 5, label: 'Sunset (sharp)', icon: 'sunset', isDuplicate: false, isBlurry: false },
-  { id: 6, label: 'Sunset (blurry)', icon: 'sunset', isDuplicate: true, isBlurry: true },
-  { id: 7, label: 'Coffee (sharp)', icon: 'coffee', isDuplicate: false, isBlurry: false },
-  { id: 8, label: 'Coffee (blurry)', icon: 'coffee', isDuplicate: true, isBlurry: true },
-  { id: 9, label: 'Coffee (dup)', icon: 'coffee', isDuplicate: true, isBlurry: false },
-  { id: 10, label: 'Sunset (dup)', icon: 'sunset', isDuplicate: true, isBlurry: false },
-  { id: 11, label: 'Cat (sharp)', icon: 'cat', isDuplicate: false, isBlurry: false },
-  { id: 12, label: 'Cat (blurry)', icon: 'cat', isDuplicate: true, isBlurry: true },
-];
+function buildPhotos(theme: PhotoTheme): Photo[] {
+  const photos: Photo[] = [
+    { id: 1, label: theme.importantLabel, icon: theme.importantIcon, isDuplicate: false, isBlurry: false },
+  ];
+  theme.decoyLabels.forEach((label, i) => {
+    photos.push({
+      id: i + 2,
+      label,
+      icon: theme.decoyIcon,
+      isDuplicate: true,
+      isBlurry: i % 2 === 0,
+    });
+  });
+  return photos;
+}
 
-const DUPLICATES_TO_DELETE = photos.filter((p) => p.isDuplicate).length;
-
-export function DuplicateDoom({ onComplete, onCancel }: DuplicateDoomProps) {
+export function DuplicateDoom({ photoTheme, onComplete, onCancel }: DuplicateDoomProps) {
+  const [photos] = useState(() => buildPhotos(photoTheme));
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [deleted, setDeleted] = useState<Set<number>>(new Set());
   const [showConfirm, setShowConfirm] = useState(false);
@@ -64,7 +66,7 @@ export function DuplicateDoom({ onComplete, onCancel }: DuplicateDoomProps) {
     setDeleted((prev) => new Set([...prev, ...selected]));
     setSelected(new Set());
     if (navigator.vibrate) navigator.vibrate(100);
-  }, [selected]);
+  }, [selected, photos]);
 
   if (duplicatesRemaining === 0) {
     return (
@@ -72,7 +74,7 @@ export function DuplicateDoom({ onComplete, onCancel }: DuplicateDoomProps) {
         <Icon name="photos" size={48} className="text-accent-blue mb-4" />
         <p className="text-xl font-bold text-primary">Storage freed!</p>
         <p className="text-sm text-secondary mt-2">
-          Mum: "You didn't delete the pretty ones, did you?"
+          {photoTheme.confirmPrompt}
         </p>
         <button
           onClick={onComplete}
@@ -113,6 +115,7 @@ export function DuplicateDoom({ onComplete, onCancel }: DuplicateDoomProps) {
                 } ${photo.isBlurry ? 'blur-[1px]' : ''}`}
               >
                 <Icon name={photo.icon} size={40} className={photo.isBlurry ? 'opacity-50' : ''} />
+                <span className="text-[8px] text-muted mt-1 px-1 truncate w-full text-center">{photo.label}</span>
                 {isSelected && (
                   <div className="absolute top-1 right-1 w-5 h-5 bg-accent-red rounded-full flex items-center justify-center">
                     <Icon name="check" size={12} className="text-primary" />
@@ -139,7 +142,7 @@ export function DuplicateDoom({ onComplete, onCancel }: DuplicateDoomProps) {
         <div className="absolute inset-0 flex items-center justify-center bg-black/60 z-50">
           <div className="bg-white rounded-xl p-6 max-w-xs w-full mx-4 animate-slam-in">
             <p className="text-center font-bold text-gray-900 mb-2">
-              {wrongPick ? 'Are you sure? Mum thinks that one is pretty.' : 'Delete selected photos?'}
+              {wrongPick ? photoTheme.confirmPrompt : 'Delete selected photos?'}
             </p>
             {wrongPick && (
               <p className="text-center text-xs text-red-500 mb-3">
