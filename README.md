@@ -164,5 +164,3 @@ These prompts should trigger based on what the player is actively doing inside t
 * If you open the Browser: Dad instantly prompts: "Don't look at my history, it's just golf stuff. I think a virus opened those other tabs."
 * If you open the Photo Gallery: Mum alerts: "Don't delete the photo of the funny cloud! I need that for my WhatsApp status!"
 * If you open the Bluetooth Settings: Grandma asks: "Bluetooth, what does that do?"
-
-Question, Should I also make a patience meter, where if you run out of patience, you abandon the fix, and it's a game over?
