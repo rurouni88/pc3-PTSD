@@ -1,18 +1,112 @@
+import { useState } from 'react';
+import { RngEngine } from '../engine/seeded-rng';
+
 interface BootScreenProps {
-  onReady: () => void;
+  onReady: (seed: string) => void;
   onContinue?: () => void;
 }
 
-export function BootScreen({ onReady, onContinue }: BootScreenProps) {
-  return (
-    <div className="h-dvh flex flex-col items-center justify-center bg-primary select-none">
-      <div className="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center mb-8 animate-pulse">
-        <span className="text-3xl">📱</span>
-      </div>
-      <h1 className="text-2xl font-bold text-primary mb-2">PTSD</h1>
-      <p className="text-sm text-secondary mb-8">Parents Tech Support Dungeon</p>
+const TAGLINES = [
+  'Doing IT for parents with them giving direction is a form of torture.',
+  'Where "just quickly check your phone" becomes a 4-hour ordeal.',
+  'Your relative\'s phone has more tabs open than your browser has patience.',
+  'Battery at 3%. Confidence at 2%. The charger is in the junk drawer. Again.',
+  '"Did you turn it off and on again?" — the only valid troubleshooting step.',
+  'Grandma\'s phone is in Chinese. You can\'t read Chinese. Good luck.',
+  'Mum has 47 photos of the same rose. You are not allowed to delete them.',
+  'Dad downloaded a "RAM Booster." It is making everything slower.',
+  'The only antivirus that matters is the one you uninstall. The fake one.',
+  'Where "I\'ll just show you how to do it" means 3 more minutes of guilt.',
+  'Your phone skills are being tested by someone who thinks Bluetooth is a disease.',
+  'One afternoon. Two minutes. Infinite spam. Good luck.',
+  'The charger is in the car. The car is in the garage. The garage key is in the house.',
+  'Grandma\'s tea spill has achieved sentience. Ghost touches incoming.',
+  '"Don\'t delete that!" — Mum, about the 14th duplicate of the same sunset.',
+  'Where "it was working before you touched it" is the only valid bug report.',
+  'Clean Master Max 2026 will find you. It always finds you.',
+  'The quick settings page has 47 toggles. The flashlight is on page 2. Of 6.',
+  'You are not a technician. You are a hostage negotiator.',
+  'The only "cloud" in this game is the one Mum can\'t find her photos in.',
+];
 
-      <div className="flex flex-col gap-3 w-full max-w-xs px-6">
+function pickTagline(seed: string): string {
+  if (seed.length === 0) return TAGLINES[0];
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+    hash |= 0;
+  }
+  return TAGLINES[Math.abs(hash) % TAGLINES.length];
+}
+
+const SEED_RE = /^[A-Z0-9]{8}$/;
+
+export function BootScreen({ onReady, onContinue }: BootScreenProps) {
+  const [seed, setSeed] = useState<string>(() => RngEngine.generateSeed());
+  const [editing, setEditing] = useState(false);
+  const tagline = pickTagline(seed);
+
+  const handleStart = () => {
+    if (SEED_RE.test(seed)) {
+      RngEngine.seedWith(seed);
+    } else {
+      RngEngine.seedWith(RngEngine.generateSeed());
+    }
+    onReady(seed);
+  };
+
+  return (
+    <div className="h-dvh flex flex-col items-center justify-center bg-primary select-none p-4">
+      <div className="text-center mb-6">
+        <div className="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center mb-4 animate-pulse">
+          <span className="text-3xl">📱</span>
+        </div>
+        <h1 className="text-3xl font-black text-primary tracking-widest mb-1">PTSD</h1>
+        <p className="text-secondary text-sm">Parents Tech Support Dungeon</p>
+        <p className="text-accent-red/80 text-xs mt-3 italic max-w-xs">
+          {tagline}
+        </p>
+      </div>
+
+      {/* Seed row */}
+      <div className="flex items-center gap-2 font-mono text-xs mb-6">
+        <span className="text-muted">SEED</span>
+        {editing ? (
+          <input
+            value={seed}
+            onChange={(e) =>
+              setSeed(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8))
+            }
+            onBlur={() => setEditing(false)}
+            onKeyDown={(e) => e.key === 'Enter' && setEditing(false)}
+            className="w-24 bg-secondary border border-accent-red/50 rounded px-2 py-1 text-primary uppercase outline-none"
+            autoFocus
+          />
+        ) : (
+          <button
+            onClick={() => setEditing(true)}
+            title="Tap to edit seed"
+            className="text-primary underline decoration-dotted"
+          >
+            {seed}
+          </button>
+        )}
+        <button
+          onClick={() => setSeed(RngEngine.generateSeed())}
+          title="Generate new seed"
+          className="px-1.5 py-0.5 rounded bg-tertiary border border-theme"
+        >
+          🎲
+        </button>
+      </div>
+
+      <div className="flex flex-col gap-3 w-full max-w-xs">
+        <button
+          onClick={handleStart}
+          className="w-full py-3 bg-accent-red text-white font-bold rounded-xl text-lg active:scale-95 transition-transform"
+        >
+          Start
+        </button>
         {onContinue && (
           <button
             onClick={onContinue}
@@ -21,15 +115,9 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
             Continue
           </button>
         )}
-        <button
-          onClick={onReady}
-          className="w-full py-3 bg-accent-red text-white font-bold rounded-xl text-lg active:scale-95 transition-transform"
-        >
-          New Game
-        </button>
       </div>
 
-      <p className="absolute bottom-8 text-xs text-muted">
+      <p className="absolute bottom-6 text-[10px] text-muted">
         Copyright 2026 PC3 Enterprises
       </p>
     </div>

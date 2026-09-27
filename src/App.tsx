@@ -22,7 +22,8 @@ export function App() {
   const [difficulty, setDifficulty] = useState<Difficulty | null>(null);
   const [lastResult, setLastResult] = useState<GameResult | null>(null);
 
-  const handleBoot = useCallback(() => {
+  const handleBoot = useCallback((seed: string) => {
+    // Seed is already set by BootScreen before calling this
     setGameState('level-select');
   }, []);
 
@@ -37,13 +38,7 @@ export function App() {
     }
   }, []);
 
-  const handleSelectLevel = useCallback((selected: Difficulty, seed?: string) => {
-    if (seed && seed.length === 8) {
-      RngEngine.seedWith(seed);
-    } else {
-      const newSeed = RngEngine.generateSeed();
-      RngEngine.seedWith(newSeed);
-    }
+  const handleSelectLevel = useCallback((selected: Difficulty) => {
     setDifficulty(selected);
     setGameState('playing');
   }, []);
@@ -65,6 +60,11 @@ export function App() {
     setGameState('level-select');
   }, []);
 
+  const handleExitToBoot = useCallback(() => {
+    setDifficulty(null);
+    setGameState('boot');
+  }, []);
+
   const hasSave = gameState === 'boot' && SaveSystem.hasSave();
 
   return (
@@ -74,7 +74,11 @@ export function App() {
       )}
       {gameState === 'level-select' && <LevelSelect onSelect={handleSelectLevel} />}
       {gameState === 'playing' && difficulty && (
-        <OSInterface levelConfig={levels[difficulty]} onComplete={handleComplete} />
+        <OSInterface
+          levelConfig={levels[difficulty]}
+          onComplete={handleComplete}
+          onExit={handleExitToBoot}
+        />
       )}
       {gameState === 'results' && difficulty && lastResult && (
         <Results

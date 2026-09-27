@@ -1,9 +1,8 @@
-import { useState } from 'react';
 import { Difficulty } from '../types/game';
 import { levels } from '../config/levels';
 
 interface LevelSelectProps {
-  onSelect: (difficulty: Difficulty, seed?: string) => void;
+  onSelect: (difficulty: Difficulty) => void;
 }
 
 const difficultyEmojis: Record<Difficulty, string> = {
@@ -19,15 +18,7 @@ const difficultyColors: Record<Difficulty, string> = {
 };
 
 export function LevelSelect({ onSelect }: LevelSelectProps) {
-  const [seedInput, setSeedInput] = useState('');
-  const [showSeedInput, setShowSeedInput] = useState(false);
-
   const levelEntries = Object.entries(levels) as [Difficulty, (typeof levels)[Difficulty]][];
-
-  const handleSelect = (key: Difficulty) => {
-    const seed = seedInput.trim().toUpperCase();
-    onSelect(key, seed.length === 8 ? seed : undefined);
-  };
 
   return (
     <div className="h-dvh flex flex-col bg-primary select-none">
@@ -43,7 +34,7 @@ export function LevelSelect({ onSelect }: LevelSelectProps) {
           {levelEntries.map(([key, level]) => (
             <button
               key={key}
-              onClick={() => handleSelect(key)}
+              onClick={() => onSelect(key)}
               className={`flex items-center gap-4 p-4 bg-secondary rounded-2xl border-2 ${difficultyColors[key]} active:scale-95 transition-transform`}
             >
               <span className="text-4xl">{difficultyEmojis[key]}</span>
@@ -53,25 +44,6 @@ export function LevelSelect({ onSelect }: LevelSelectProps) {
               </div>
             </button>
           ))}
-        </div>
-
-        <div className="w-full max-w-xs">
-          <button
-            onClick={() => setShowSeedInput(!showSeedInput)}
-            className="text-xs text-muted underline"
-          >
-            {showSeedInput ? 'Hide seed input' : 'Enter a seed (optional)'}
-          </button>
-          {showSeedInput && (
-            <input
-              type="text"
-              value={seedInput}
-              onChange={(e) => setSeedInput(e.target.value.toUpperCase().slice(0, 8))}
-              placeholder="8-char seed (e.g. XQ4K2MNP)"
-              className="mt-2 w-full px-3 py-2 bg-secondary border border-theme rounded-lg text-sm text-primary placeholder:text-muted font-mono"
-              maxLength={8}
-            />
-          )}
         </div>
       </div>
 
