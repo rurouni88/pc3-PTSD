@@ -201,6 +201,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
 
   const resume = useCallback(() => {
     lastTickRef.current = Date.now();
+    tickerPlayedRef.current = false;
     setState((prev) => ({ ...prev, isPaused: false }));
   }, []);
 
