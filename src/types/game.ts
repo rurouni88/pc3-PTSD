@@ -45,7 +45,7 @@ export interface PhotoTheme {
   importantLabel: string;
   importantIcon: string;
   decoyLabels: string[];
-  decoyIcon: string;
+  decoyIcons: string[];
   confirmPrompt: string;
 }
 
@@ -66,6 +66,7 @@ export interface LevelConfig {
   name: string;
   description: string;
   durationSeconds: number; // typically 120
+  initialBattery: number; // starting battery percentage
   initialIssues: GameIssue[];
   parentPrompts: ParentPrompt[];
   interruptionRate: number; // seconds between random interruptions

@@ -34,7 +34,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     gameState: 'playing',
     difficulty: levelConfig.difficulty,
     timeRemaining: levelConfig.durationSeconds,
-    batteryLevel: 100,
+    batteryLevel: levelConfig.initialBattery,
     isPaused: false,
     activeIssues: levelConfig.initialIssues,
     completedIssues: [],

@@ -58,6 +58,26 @@ const photoGradients: Record<string, string[]> = {
     'from-purple-900 to-violet-800', 'from-indigo-900 to-purple-800', 'from-violet-950 to-fuchsia-800',
     'from-purple-950 to-indigo-800', 'from-fuchsia-900 to-purple-800', 'from-indigo-950 to-violet-800',
   ],
+  cloud: [
+    'from-slate-700 to-blue-900', 'from-gray-800 to-slate-900', 'from-blue-900 to-indigo-900',
+    'from-slate-800 to-gray-900', 'from-indigo-900 to-blue-950', 'from-gray-700 to-slate-800',
+  ],
+  bird: [
+    'from-sky-900 to-blue-800', 'from-cyan-900 to-sky-800', 'from-blue-800 to-cyan-900',
+    'from-sky-800 to-blue-900', 'from-cyan-800 to-sky-900', 'from-blue-900 to-sky-950',
+  ],
+  flower: [
+    'from-pink-900 to-rose-800', 'from-rose-900 to-pink-800', 'from-fuchsia-900 to-pink-900',
+    'from-rose-800 to-fuchsia-900', 'from-pink-800 to-rose-900', 'from-fuchsia-800 to-pink-950',
+  ],
+  coffee: [
+    'from-amber-900 to-yellow-900', 'from-yellow-900 to-amber-800', 'from-amber-800 to-yellow-950',
+    'from-yellow-950 to-amber-900', 'from-amber-950 to-yellow-800', 'from-yellow-800 to-amber-950',
+  ],
+  rose: [
+    'from-red-900 to-rose-800', 'from-rose-900 to-red-800', 'from-red-800 to-rose-900',
+    'from-rose-800 to-red-900', 'from-red-950 to-rose-950', 'from-rose-950 to-red-950',
+  ],
 };
 
 function getPhotoGradient(icon: string, id: number): string {
@@ -81,12 +101,12 @@ function buildPhotos(theme: PhotoTheme, keep: number, total: number): Photo[] {
     });
   }
 
-  // Duplicates (to delete)
+  // Duplicates (to delete) — cycle through decoy icons for visual variety
   for (let i = 0; i < duplicates; i++) {
     photos.push({
       id: keep + 1 + i,
       label: i < theme.decoyLabels.length ? theme.decoyLabels[i] : extraLabels[i % extraLabels.length],
-      icon: theme.decoyIcon,
+      icon: theme.decoyIcons[i % theme.decoyIcons.length],
       isDuplicate: true,
       isBlurry: i % 3 === 0,
     });
