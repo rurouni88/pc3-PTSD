@@ -121,7 +121,7 @@ export const ACHIEVEMENTS: Achievement[] = [
   {
     id: 'grandma_survivor',
     title: 'Tea Spill Survivor',
-    desc: 'Fix Grandma\'s phone. Your hands are permanently sticky now.',
+    desc: 'Fix Grandma\'s phone. You are now 30% jasmine tea. She has already told you that you look thin.',
     emoji: '👵',
     check: (s) => s.gameState === 'results' && s.difficulty === 'grandma' && s.batteryLevel > 0,
   },
