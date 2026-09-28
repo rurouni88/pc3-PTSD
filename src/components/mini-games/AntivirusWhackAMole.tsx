@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { Icon } from '../Icon';
 import { playSound } from '../../engine/sound';
 import { t, isRTL } from '../../config/translations';
+import { Hint } from '../Hint';
 import type { MalwareConfig, ForeignLanguage } from '../../types/game';
 
 interface AntivirusWhackAMoleProps {
@@ -130,6 +131,8 @@ export function AntivirusWhackAMole({ malwareConfig, difficulty, foreignLanguage
         </span>
       </div>
 
+      <Hint visible={!scanning}>Long-press the suspicious app to jiggle, then tap −</Hint>
+
       {scanning && (
         <div className="p-4">
           <div className="bg-secondary rounded-xl p-4 mb-4">
@@ -183,11 +186,7 @@ export function AntivirusWhackAMole({ malwareConfig, difficulty, foreignLanguage
           ))}
         </div>
 
-        {!scanning && (
-          <p className="text-center text-xs text-muted mt-6">
-            {t(foreignLanguage, 'antivirus.longpress')}
-          </p>
-        )}
+
       </div>
 
       {showFakeAlert && (

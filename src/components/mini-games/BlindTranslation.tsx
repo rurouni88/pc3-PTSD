@@ -3,6 +3,7 @@ import { Icon } from '../Icon';
 import { RngEngine } from '../../engine/seeded-rng';
 import { playSound } from '../../engine/sound';
 import type { ForeignLanguage } from '../../types/game';
+import { Hint } from '../Hint';
 
 interface BlindTranslationProps {
   difficulty: string;
@@ -264,16 +265,8 @@ export function BlindTranslation({ difficulty, foreignLanguage, onComplete, onCa
         )}
       </div>
 
-      {currentScreen === 'settings' && (
-        <p className="text-center text-[10px] text-muted p-3">
-          {headers.hintSettings}
-        </p>
-      )}
-      {currentScreen === 'language' && (
-        <p className="text-center text-[10px] text-muted p-3">
-          {headers.hintLanguage}
-        </p>
-      )}
+      <Hint visible={currentScreen === 'settings'} className="p-3">{headers.hintSettings}</Hint>
+      <Hint visible={currentScreen === 'language'} className="p-3">{headers.hintLanguage}</Hint>
     </div>
   );
 }

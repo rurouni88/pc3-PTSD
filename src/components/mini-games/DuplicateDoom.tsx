@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { Icon } from '../Icon';
 import { playSound } from '../../engine/sound';
 import { t, isRTL } from '../../config/translations';
+import { Hint } from '../Hint';
 import type { PhotoTheme, ForeignLanguage } from '../../types/game';
 
 interface DuplicateDoomProps {
@@ -111,6 +112,8 @@ export function DuplicateDoom({ photoTheme, difficulty, foreignLanguage, onCompl
           {selected.size} selected
         </span>
       </div>
+
+      <Hint visible={deleted.size === 0}>Tap duplicates to select, then tap Delete</Hint>
 
       <div className="flex-1 min-h-0 overflow-y-auto p-3">
         <div className="grid grid-cols-3 gap-2">

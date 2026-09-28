@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from 'react';
 import { Icon } from '../Icon';
 import { playSound } from '../../engine/sound';
 import { t, isRTL } from '../../config/translations';
+import { Hint } from '../Hint';
 import type { ForeignLanguage } from '../../types/game';
 
 interface InfiniteTabSweepProps {
@@ -166,11 +167,7 @@ export function InfiniteTabSweep({ difficulty, foreignLanguage, onComplete, onCa
         </span>
       </div>
 
-      {closedCount === 0 && (
-        <p className="text-center text-[10px] text-muted px-3 pb-1">
-          ← Swipe a tab to close it →
-        </p>
-      )}
+      <Hint visible={closedCount === 0}>← Swipe a tab to close it →</Hint>
 
       <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-2">
         {openTabs.map((tab) => {
