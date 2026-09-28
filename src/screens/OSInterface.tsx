@@ -163,23 +163,10 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
         <div className="absolute inset-0 border-8 border-gray-600/40 pointer-events-none z-30" />
       )}
 
-      <div className="flex items-center">
-        <div className="flex-1">
-          <StatusBar
-            batteryLevel={state.batteryLevel}
-            timeRemaining={state.timeRemaining}
-          />
-        </div>
-        <button
-          onClick={() => {
-            pause();
-            setShowPauseMenu(true);
-          }}
-          className="px-3 py-1 bg-secondary border-l border-theme text-muted text-xs active:text-primary"
-        >
-          ⏸
-        </button>
-      </div>
+      <StatusBar
+        batteryLevel={state.batteryLevel}
+        timeRemaining={state.timeRemaining}
+      />
 
       <SpamSystem active={!activePrompt && !state.isPaused} onBatteryDrain={applySpamDrain} />
 
@@ -221,7 +208,14 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
 
       <div className="flex items-center justify-between p-3 border-t border-theme">
         <Charger onCharge={useCharger} />
-        <BottomBar onHome={() => {}} onBack={() => {}} />
+        <BottomBar
+          onHome={() => {}}
+          onBack={() => {}}
+          onPause={() => {
+            pause();
+            setShowPauseMenu(true);
+          }}
+        />
       </div>
 
       {activePrompt && state.difficulty && (
