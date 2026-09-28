@@ -83,9 +83,9 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
 
   return (
     <div className="h-full flex flex-col items-center justify-center bg-primary select-none p-4">
-      <div className="text-center mb-6">
+      <div className="text-center mb-4">
         {/* Spinning phone logo — bigger + satirical loading spinner */}
-        <div className="w-28 h-28 mx-auto mb-4 animate-spin-slow">
+        <div className="w-20 h-20 mx-auto mb-3 animate-spin-slow">
           <div className="w-full h-full bg-secondary rounded-3xl flex items-center justify-center border-2 border-accent-red/30 relative overflow-hidden">
             <span className="text-5xl">📱</span>
             <div className="absolute inset-0 pointer-events-none">
@@ -96,15 +96,15 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
             </div>
           </div>
         </div>
-        <h1 className="text-5xl font-black text-primary tracking-widest mb-2">PTSD</h1>
-        <p className="text-secondary text-base">Parents (and above) Tech Support Dungeon</p>
-        <p className="text-accent-red text-sm mt-4 italic max-w-xs animate-pulse">
+        <h1 className="text-4xl font-black text-primary tracking-widest mb-1">PTSD</h1>
+        <p className="text-secondary text-sm">Parents (and above) Tech Support Dungeon</p>
+        <p className="text-accent-red text-xs mt-2 italic max-w-xs animate-pulse">
           {displayedTagline}
         </p>
       </div>
 
       {/* Seed row */}
-      <div className="flex items-center gap-2 font-mono text-sm mb-4">
+      <div className="flex items-center gap-2 font-mono text-sm mb-3">
         <span className="text-muted">SEED</span>
         {editing ? (
           <input
@@ -136,7 +136,7 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
       </div>
 
       {/* Action buttons */}
-      <div className="grid grid-cols-2 gap-2 mb-4 w-full max-w-xs">
+      <div className="grid grid-cols-2 gap-2 mb-3 w-full max-w-xs">
         <button
           onClick={() => setShowAchievements(true)}
           className="py-2.5 rounded bg-tertiary border border-theme text-secondary text-sm hover:border-accent-red/50 hover:text-primary transition-colors"

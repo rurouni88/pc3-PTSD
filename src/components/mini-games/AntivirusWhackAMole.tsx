@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { Icon } from '../Icon';
 import { playSound } from '../../engine/sound';
+import { RngEngine } from '../../engine/seeded-rng';
 import { t, isRTL } from '../../config/translations';
 import { Hint } from '../Hint';
 import type { MalwareConfig, ForeignLanguage, MiniGameQuality } from '../../types/game';
@@ -114,7 +115,7 @@ export function AntivirusWhackAMole({ malwareConfig, difficulty, foreignLanguage
 
     // Shuffle
     for (let i = result.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
+      const j = Math.floor(RngEngine.random() * (i + 1));
       [result[i], result[j]] = [result[j], result[i]];
     }
 

@@ -1,4 +1,5 @@
 import { ParentPrompt, Difficulty } from '../types/game';
+import { CharacterAvatar } from './CharacterAvatar';
 
 interface ParentInterruptProps {
   prompt: ParentPrompt;
@@ -7,10 +8,10 @@ interface ParentInterruptProps {
   onDismiss: () => void;
 }
 
-const avatars: Record<Difficulty, string> = {
-  dad: '👨',
-  mum: '👩',
-  grandma: '👵',
+const avatarCharacters: Record<Difficulty, 'dad' | 'mum' | 'grandma'> = {
+  dad: 'dad',
+  mum: 'mum',
+  grandma: 'grandma',
 };
 
 const expressions: Record<string, string> = {
@@ -48,7 +49,7 @@ export function ParentInterrupt({ prompt, difficulty, onAnswer, onDismiss }: Par
 
           <div className="flex items-start gap-3 mb-3">
             <div className="relative shrink-0">
-              <span className="text-4xl">{avatars[difficulty]}</span>
+              <CharacterAvatar character={avatarCharacters[difficulty]} size={48} />
               <span className="absolute -bottom-1 -right-1 text-xs">{expressions[prompt.type]}</span>
             </div>
             <p className="text-sm font-medium text-gray-800 leading-relaxed">
