@@ -14,7 +14,7 @@ import { SaveSystem } from '../engine/save';
 import { MetaStore, RunRecord } from '../engine/meta';
 import { checkAchievements, Achievement } from '../engine/achievements';
 import { playSound } from '../engine/sound';
-import { checkDrainEvents, getBackgroundDrain } from '../engine/drain-events';
+
 
 interface UseGameEngineProps {
   levelConfig: LevelConfig;
@@ -55,7 +55,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
   const shownPromptIdsRef = useRef<Set<string>>(new Set());
   const completedRef = useRef(false);
   const tickerPlayedRef = useRef(false);
-  const elapsedRef = useRef(0);
+  const lastPassiveDrainRef = useRef(0);
 
   // Run stats — tracked via refs to avoid re-renders
   const runStatsRef = useRef<RunStats>({
@@ -146,29 +146,36 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     const delta = (now - lastTickRef.current) / 1000;
     lastTickRef.current = now;
 
-    // Trigger random interruptions
-    if (now - lastInterruptionRef.current > levelConfig.interruptionRate * 1000) {
-      lastInterruptionRef.current = now;
-      triggerPrompt();
-    }
-
-    // Check passive drain events (spam, ghost touches, updates)
-    const drainEvent = checkDrainEvents(levelConfig.difficulty);
-    if (drainEvent) {
-      runStatsRef.current.spamsReceived++;
-      setState((prev) => ({
-        ...prev,
-        batteryLevel: Math.max(0, prev.batteryLevel - drainEvent.amount),
-      }));
-    }
-
     setState((prev) => {
       if (prev.isPaused || prev.gameState !== 'playing') return prev;
 
       const newTimeRemaining = prev.timeRemaining - delta;
       const drainRate = calculateDrainRate(prev.activeIssues);
-      const bgDrain = getBackgroundDrain(levelConfig.difficulty, elapsedRef.current);
-      const newBattery = Math.max(0, prev.batteryLevel - (drainRate + bgDrain) * delta);
+      const newBattery = Math.max(0, prev.batteryLevel - drainRate * delta);
+
+      // Dynamic interruption cadence: better performance = more frequent
+      const totalIssues = levelConfig.initialIssues.length;
+      const resolvedCount = prev.activeIssues.filter((i) => i.isResolved).length;
+      const resolvedRatio = totalIssues > 0 ? resolvedCount / totalIssues : 0;
+      const effectiveInterval = levelConfig.interruptionRate * (1 - resolvedRatio * 0.5);
+
+      if (now - lastInterruptionRef.current > effectiveInterval * 1000) {
+        lastInterruptionRef.current = now;
+        triggerPrompt();
+      }
+
+      // Passive drain: fixed interval, chance to drain battery
+      const { intervalSeconds, chance, amount } = levelConfig.passiveDrain;
+      if (now - lastPassiveDrainRef.current > intervalSeconds * 1000) {
+        lastPassiveDrainRef.current = now;
+        if (RngEngine.random() < chance) {
+          runStatsRef.current.spamsReceived++;
+          // Apply passive drain on next tick to avoid nested setState
+          setTimeout(() => {
+            setState((s) => ({ ...s, batteryLevel: Math.max(0, s.batteryLevel - amount) }));
+          }, 0);
+        }
+      }
 
       // Play ticker sound when entering final 10 seconds
       if (newTimeRemaining <= 10 && prev.timeRemaining > 10 && !tickerPlayedRef.current) {
@@ -182,8 +189,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
         batteryLevel: newBattery,
       };
 
-      // Track elapsed time for background drain scaling
-      elapsedRef.current += delta;
+
 
       // Autosave every tick (lightweight)
       SaveSystem.save(updated);

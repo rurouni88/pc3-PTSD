@@ -90,6 +90,7 @@ export const levels: Record<string, LevelConfig> = {
       },
     ],
     interruptionRate: 15,
+    passiveDrain: { intervalSeconds: 12, chance: 0.5, amount: 1 },
     photoTheme: {
       importantLabel: 'Scorecard (sharp)',
       importantIcon: 'golf',
@@ -205,6 +206,7 @@ export const levels: Record<string, LevelConfig> = {
       },
     ],
     interruptionRate: 12,
+    passiveDrain: { intervalSeconds: 10, chance: 0.6, amount: 1.5 },
     photoTheme: {
       importantLabel: 'Sunset (sharp)',
       importantIcon: 'sunset',
@@ -322,6 +324,7 @@ export const levels: Record<string, LevelConfig> = {
       },
     ],
     interruptionRate: 8,
+    passiveDrain: { intervalSeconds: 7, chance: 0.7, amount: 2 },
     photoTheme: {
       importantLabel: 'Cat portrait (sharp)',
       importantIcon: 'cat',

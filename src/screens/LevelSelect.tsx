@@ -1,14 +1,15 @@
 import { Difficulty } from '../types/game';
 import { levels } from '../config/levels';
+import { CharacterAvatar } from '../components/CharacterAvatar';
 
 interface LevelSelectProps {
   onSelect: (difficulty: Difficulty) => void;
 }
 
-const difficultyEmojis: Record<Difficulty, string> = {
-  dad: '👨',
-  mum: '👩',
-  grandma: '👵',
+const difficultyCharacters: Record<Difficulty, 'dad' | 'mum' | 'grandma'> = {
+  dad: 'dad',
+  mum: 'mum',
+  grandma: 'grandma',
 };
 
 const difficultyColors: Record<Difficulty, string> = {
@@ -37,13 +38,23 @@ export function LevelSelect({ onSelect }: LevelSelectProps) {
               onClick={() => onSelect(key)}
               className={`flex items-center gap-4 p-4 bg-secondary rounded-2xl border-2 ${difficultyColors[key]} active:scale-95 transition-transform`}
             >
-              <span className="text-4xl">{difficultyEmojis[key]}</span>
+              <CharacterAvatar character={difficultyCharacters[key]} size={56} />
               <div className="flex-1 text-left">
                 <p className="text-lg font-bold text-primary">{level.name}</p>
                 <p className="text-xs text-secondary">{level.description}</p>
               </div>
             </button>
           ))}
+
+          {/* Teaser — locked level */}
+          <div className="flex items-center gap-4 p-4 bg-secondary/50 rounded-2xl border-2 border-theme opacity-60 cursor-not-allowed">
+            <CharacterAvatar character="partner" size={56} />
+            <div className="flex-1 text-left">
+              <p className="text-lg font-bold text-secondary">Significant Other</p>
+              <p className="text-xs text-muted">They don't know anything about phones. Worse.</p>
+            </div>
+            <span className="text-xl">🔒</span>
+          </div>
         </div>
       </div>
 

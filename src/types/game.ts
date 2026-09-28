@@ -69,6 +69,7 @@ export interface LevelConfig {
   initialIssues: GameIssue[];
   parentPrompts: ParentPrompt[];
   interruptionRate: number; // seconds between random interruptions
+  passiveDrain: { intervalSeconds: number; chance: number; amount: number };
   photoTheme: PhotoTheme;
   malwareConfig: MalwareConfig;
   quickSettingsConfig: QuickSettingsConfig;

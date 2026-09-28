@@ -3,6 +3,8 @@ import { Icon } from './Icon';
 import { playSound } from '../engine/sound';
 import { MetaStore, type RunRecord } from '../engine/meta';
 import type { Difficulty } from '../types/game';
+import { CharacterAvatar } from './CharacterAvatar';
+import { CopyButton } from './CopyButton';
 
 type Tab = 'all' | Difficulty;
 
@@ -10,10 +12,10 @@ interface LeaderboardModalProps {
   onClose: () => void;
 }
 
-const difficultyEmoji: Record<Difficulty, string> = {
-  dad: '👨',
-  mum: '👩',
-  grandma: '👵',
+const difficultyCharacter: Record<Difficulty, 'dad' | 'mum' | 'grandma'> = {
+  dad: 'dad',
+  mum: 'mum',
+  grandma: 'grandma',
 };
 
 const difficultyLabel: Record<Difficulty, string> = {
@@ -40,13 +42,18 @@ function Row({ record, rank }: { record: RunRecord; rank: number }) {
       }`}>
         {rank === 0 ? '🥇' : rank === 1 ? '🥈' : rank === 2 ? '🥉' : rank + 1}
       </span>
+      <CharacterAvatar character={difficultyCharacter[record.difficulty]} size={32} />
       <div className="flex-1 min-w-0">
         <p className="text-xs font-medium text-primary truncate">
-          {record.won ? '✅ Won' : '❌ Lost'}
+          {record.won ? '✅ Won' : '❌ Lost'} · {difficultyLabel[record.difficulty]}
         </p>
         <p className="text-[10px] text-muted">
           ⏱ {formatTime(record.timeRemaining)} · 🔋 {Math.round(record.batteryLevel)}%
         </p>
+        <div className="flex items-center gap-1 mt-0.5">
+          <span className="text-[10px] font-mono text-muted">{record.seed}</span>
+          <CopyButton text={record.seed} />
+        </div>
       </div>
       <span className="text-[10px] text-muted">
         {new Date(record.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
@@ -72,9 +79,9 @@ export function LeaderboardModal({ onClose }: LeaderboardModalProps) {
 
   const tabs: { key: Tab; label: string }[] = [
     { key: 'all', label: 'All' },
-    { key: 'dad', label: '👨 Dad' },
-    { key: 'mum', label: '👩 Mum' },
-    { key: 'grandma', label: '👵 Grandma' },
+    { key: 'dad', label: 'Dad' },
+    { key: 'mum', label: 'Mum' },
+    { key: 'grandma', label: 'Grandma' },
   ];
 
   const getRuns = (): RunRecord[] => {
@@ -118,12 +125,13 @@ export function LeaderboardModal({ onClose }: LeaderboardModalProps) {
             <button
               key={tab.key}
               onClick={() => { playSound('click'); setActiveTab(tab.key); }}
-              className={`flex-1 py-2 text-xs font-medium transition-all ${
+              className={`flex-1 py-2 flex items-center justify-center gap-1 text-xs font-medium transition-all ${
                 activeTab === tab.key
                   ? 'bg-primary text-primary border-b-2 border-accent-green'
                   : 'text-muted hover:text-primary'
               }`}
             >
+              {tab.key !== 'all' && <CharacterAvatar character={difficultyCharacter[tab.key as Difficulty]} size={20} />}
               {tab.label}
             </button>
           ))}

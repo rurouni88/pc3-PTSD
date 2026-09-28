@@ -44,6 +44,27 @@ const extraLabels = [
   'Photo 4', 'IMG_0424', 'IMG_0425', 'Screenshot 5',
 ];
 
+// Photo background palettes per theme — gives each thumbnail a unique tint
+const photoGradients: Record<string, string[]> = {
+  golf: [
+    'from-emerald-900 to-green-800', 'from-lime-900 to-emerald-800', 'from-green-950 to-teal-800',
+    'from-emerald-950 to-green-900', 'from-teal-900 to-emerald-800', 'from-green-900 to-lime-800',
+  ],
+  sunset: [
+    'from-orange-900 to-rose-800', 'from-amber-900 to-orange-800', 'from-rose-900 to-pink-800',
+    'from-orange-950 to-red-800', 'from-pink-900 to-rose-800', 'from-red-900 to-amber-800',
+  ],
+  cat: [
+    'from-purple-900 to-violet-800', 'from-indigo-900 to-purple-800', 'from-violet-950 to-fuchsia-800',
+    'from-purple-950 to-indigo-800', 'from-fuchsia-900 to-purple-800', 'from-indigo-950 to-violet-800',
+  ],
+};
+
+function getPhotoGradient(icon: string, id: number): string {
+  const palette = photoGradients[icon] ?? photoGradients.sunset;
+  return palette[id % palette.length];
+}
+
 function buildPhotos(theme: PhotoTheme, keep: number, total: number): Photo[] {
   const duplicates = total - keep;
   const photos: Photo[] = [];
@@ -166,17 +187,17 @@ export function DuplicateDoom({ photoTheme, difficulty, foreignLanguage, onCompl
               <button
                 key={photo.id}
                 onClick={() => toggleSelect(photo.id)}
-                className={`aspect-square flex flex-col items-center justify-center rounded-xl border-2 transition-all relative ${
+                className={`aspect-square flex flex-col items-center justify-center rounded-xl border-2 transition-all relative overflow-hidden ${
                   isSelected
-                    ? 'bg-accent-red/20 border-accent-red scale-95'
-                    : 'bg-secondary border-theme'
-                } ${photo.isBlurry ? 'blur-[1px]' : ''}`}
+                    ? 'border-accent-red ring-2 ring-accent-red/50 scale-95'
+                    : 'border-transparent'
+                } bg-gradient-to-br ${getPhotoGradient(photo.icon, photo.id)} ${photo.isBlurry ? 'blur-[1px]' : ''}`}
               >
-                <Icon name={photo.icon} size={40} className={photo.isBlurry ? 'opacity-50' : ''} />
-                <span className="text-[8px] text-muted mt-1 px-1 truncate w-full text-center">{photo.label}</span>
+                <Icon name={photo.icon} size={32} className={photo.isBlurry ? 'opacity-40' : 'opacity-80'} />
+                <span className="text-[7px] text-white/60 mt-1 px-1 truncate w-full text-center font-medium">{photo.label}</span>
                 {isSelected && (
                   <div className="absolute top-1 right-1 w-5 h-5 bg-accent-red rounded-full flex items-center justify-center">
-                    <Icon name="check" size={12} className="text-primary" />
+                    <Icon name="check" size={12} className="text-white" />
                   </div>
                 )}
               </button>
@@ -198,12 +219,12 @@ export function DuplicateDoom({ photoTheme, difficulty, foreignLanguage, onCompl
 
       {showConfirm && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/60 z-50">
-          <div className="bg-white rounded-xl p-6 max-w-xs w-full mx-4 animate-slam-in">
-            <p className="text-center font-bold text-gray-900 mb-2">
+          <div className="bg-secondary rounded-xl p-6 max-w-xs w-full mx-4 animate-slam-in border border-theme">
+            <p className="text-center font-bold text-primary mb-2">
               {wrongPick ? photoTheme.confirmPrompt : 'Delete selected photos?'}
             </p>
             {wrongPick && (
-              <p className="text-center text-xs text-red-500 mb-3">
+              <p className="text-center text-xs text-accent-red mb-3">
                 That one isn't a duplicate! Deselect it.
               </p>
             )}
@@ -213,7 +234,7 @@ export function DuplicateDoom({ photoTheme, difficulty, foreignLanguage, onCompl
                   setShowConfirm(false);
                   setWrongPick(false);
                 }}
-                className="flex-1 py-2 bg-gray-200 text-gray-800 font-medium rounded-lg"
+                className="flex-1 py-2 bg-tertiary text-primary font-medium rounded-lg"
               >
                 Cancel
               </button>
@@ -224,7 +245,7 @@ export function DuplicateDoom({ photoTheme, difficulty, foreignLanguage, onCompl
                     setSelected(new Set());
                     setShowConfirm(false);
                   }}
-                  className="flex-1 py-2 bg-red-500 text-white font-medium rounded-lg"
+                  className="flex-1 py-2 bg-accent-red text-white font-medium rounded-lg"
                 >
                   Yes
                 </button>

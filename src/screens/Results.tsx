@@ -1,6 +1,7 @@
 import { Difficulty } from '../types/game';
 import { MetaStore } from '../engine/meta';
 import type { Achievement } from '../engine/achievements';
+import { CopyButton } from '../components/CopyButton';
 
 interface ResultsProps {
   result: {
@@ -54,7 +55,10 @@ export function Results({ result, difficulty, onReplay, onMenu }: ResultsProps) 
       {result.seed && (
         <div className="mb-4 text-center">
           <p className="text-xs text-muted">Run seed</p>
-          <p className="text-sm font-mono text-primary">{result.seed}</p>
+          <div className="flex items-center justify-center gap-2">
+            <p className="text-sm font-mono text-primary">{result.seed}</p>
+            <CopyButton text={result.seed} />
+          </div>
         </div>
       )}
 
