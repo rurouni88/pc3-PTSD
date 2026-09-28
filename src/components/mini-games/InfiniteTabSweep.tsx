@@ -177,6 +177,7 @@ export function InfiniteTabSweep({ difficulty, foreignLanguage, onComplete, onCa
             <div
               key={tab.id}
               className="relative"
+              style={{ touchAction: 'pan-y' }}
               onPointerDown={(e) => handlePointerDown(e, tab.id)}
               onPointerMove={handlePointerMove}
               onPointerUp={() => handlePointerUp(tab.id)}

@@ -108,6 +108,23 @@ const chinese: TranslationTable = {
   'quicksettings.page': '第 {n}/{n} 页',
 };
 
+const english: TranslationTable = {
+  'tabs.open': '{n} tabs open',
+  'tabs.closed': '{n} closed',
+  'duplicates.left': '{n} duplicates left',
+  'duplicates.delete': 'Delete',
+  'duplicates.freed': 'Storage freed!',
+  'antivirus.home': 'Home Screen',
+  'antivirus.scanning': 'Scanning...',
+  'antivirus.longpress': 'Long-press to remove',
+  'antivirus.removed': 'removed!',
+  'quicksettings.title': 'Quick Settings',
+  'quicksettings.flashlight': 'Flashlight',
+  'quicksettings.on': 'ON',
+  'quicksettings.off': 'OFF',
+  'quicksettings.page': 'Page {n}/{total}',
+};
+
 const translations: Record<ForeignLanguage, TranslationTable> = {
   greek,
   arabic,
@@ -126,12 +143,11 @@ export function t(
   key: string,
   vars?: Record<string, string | number>,
 ): string {
-  if (!lang) return key;
-  const table = translations[lang];
-  let str = table[key] ?? key;
+  const table = lang ? translations[lang] : english;
+  let str = table[key] ?? english[key] ?? key;
   if (vars) {
     for (const [k, v] of Object.entries(vars)) {
-      str = str.replace(`{${k}}`, String(v));
+      str = str.split(`{${k}}`).join(String(v));
     }
   }
   return str;
