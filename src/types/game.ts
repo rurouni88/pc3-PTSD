@@ -107,6 +107,7 @@ export interface MiniGameQuality {
   wrongToggles?: number;
   importantSelected?: boolean;
   distractionsTriggered?: number;
+  smudgesTriggered?: number;
 }
 
 export interface RunStats {
@@ -126,4 +127,6 @@ export interface RunStats {
   wrongLanguagePicks: number;
   wrongToggles: number;
   importantSelected: boolean;
+  faceIdDistractions: number;
+  fingerprintSmudges: number;
 }

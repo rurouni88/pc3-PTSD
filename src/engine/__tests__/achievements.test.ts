@@ -45,6 +45,8 @@ const emptyStats: RunStats = {
   wrongLanguagePicks: 0,
   wrongToggles: 0,
   importantSelected: false,
+  faceIdDistractions: 0,
+  fingerprintSmudges: 0,
 };
 
 describe('Achievements', () => {
@@ -211,5 +213,33 @@ describe('Achievements', () => {
       expect(a.emoji).toBeTruthy();
       expect(typeof a.check).toBe('function');
     }
+  });
+
+  it('unlocks "steady_hands" for Grandma FaceID with no distractions', () => {
+    const state = { ...wonState, difficulty: 'grandma' as const, batteryLevel: 50 };
+    const stats = { ...emptyStats, difficulty: 'grandma' as const, miniGamesCompleted: ['faceid-setup' as const], faceIdDistractions: 0 };
+    const newly = checkAchievements(state, stats);
+    expect(newly.some((a) => a.id === 'steady_hands')).toBe(true);
+  });
+
+  it('does not unlock "steady_hands" if FaceID had distractions', () => {
+    const state = { ...wonState, difficulty: 'grandma' as const, batteryLevel: 50 };
+    const stats = { ...emptyStats, difficulty: 'grandma' as const, miniGamesCompleted: ['faceid-setup' as const], faceIdDistractions: 1 };
+    const newly = checkAchievements(state, stats);
+    expect(newly.some((a) => a.id === 'steady_hands')).toBe(false);
+  });
+
+  it('unlocks "palm_of_your_hand" for Grandma fingerprint with no smudges', () => {
+    const state = { ...wonState, difficulty: 'grandma' as const, batteryLevel: 50 };
+    const stats = { ...emptyStats, difficulty: 'grandma' as const, miniGamesCompleted: ['fingerprint-scan' as const], fingerprintSmudges: 0 };
+    const newly = checkAchievements(state, stats);
+    expect(newly.some((a) => a.id === 'palm_of_your_hand')).toBe(true);
+  });
+
+  it('does not unlock "palm_of_your_hand" if smudges occurred', () => {
+    const state = { ...wonState, difficulty: 'grandma' as const, batteryLevel: 50 };
+    const stats = { ...emptyStats, difficulty: 'grandma' as const, miniGamesCompleted: ['fingerprint-scan' as const], fingerprintSmudges: 2 };
+    const newly = checkAchievements(state, stats);
+    expect(newly.some((a) => a.id === 'palm_of_your_hand')).toBe(false);
   });
 });

@@ -87,6 +87,8 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     wrongLanguagePicks: 0,
     wrongToggles: 0,
     importantSelected: false,
+    faceIdDistractions: 0,
+    fingerprintSmudges: 0,
   });
 
   const calculateDrainRate = useCallback((issues: GameIssue[]): number => {
@@ -251,6 +253,8 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
       if (quality.wrongLanguagePicks) runStatsRef.current.wrongLanguagePicks += quality.wrongLanguagePicks;
       if (quality.wrongToggles) runStatsRef.current.wrongToggles += quality.wrongToggles;
       if (quality.importantSelected) runStatsRef.current.importantSelected = true;
+      if (quality.distractionsTriggered) runStatsRef.current.faceIdDistractions += quality.distractionsTriggered;
+      if (quality.smudgesTriggered) runStatsRef.current.fingerprintSmudges += quality.smudgesTriggered;
     }
 
     setState((prev) => {
