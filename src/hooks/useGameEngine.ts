@@ -52,6 +52,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
   const lastInterruptionRef = useRef<number>(0);
   const shownPromptIdsRef = useRef<Set<string>>(new Set());
   const completedRef = useRef(false);
+  const tickerPlayedRef = useRef(false);
 
   // Run stats — tracked via refs to avoid re-renders
   const runStatsRef = useRef<RunStats>({
@@ -148,6 +149,12 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
       const newTimeRemaining = prev.timeRemaining - delta;
       const drainRate = calculateDrainRate(prev.activeIssues);
       const newBattery = Math.max(0, prev.batteryLevel - drainRate * delta);
+
+      // Play ticker sound when entering final 10 seconds
+      if (newTimeRemaining <= 10 && prev.timeRemaining > 10 && !tickerPlayedRef.current) {
+        tickerPlayedRef.current = true;
+        playSound('ticker');
+      }
 
       const updated: GameEngineState = {
         ...prev,

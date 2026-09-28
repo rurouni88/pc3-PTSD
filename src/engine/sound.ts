@@ -14,7 +14,8 @@ export type SoundType =
   | 'interrupt'
   | 'charger'
   | 'battery-low'
-  | 'achievement';
+  | 'achievement'
+  | 'ticker';
 
 interface SoundDef {
   oscType?: OscillatorType;
@@ -108,6 +109,15 @@ const SOUND_DEFS: Record<SoundType, SoundDef> = {
     gain: 0.12,
     gainRampEnd: 0.005,
     gainRampDuration: 0.4,
+  },
+  ticker: {
+    oscType: 'square',
+    notes: [
+      { freq: 1200, time: 0 },
+    ],
+    gain: 0.06,
+    gainRampEnd: 0.001,
+    gainRampDuration: 0.08,
   },
 };
 

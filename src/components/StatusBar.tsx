@@ -17,8 +17,16 @@ export function StatusBar({ batteryLevel, timeRemaining }: StatusBarProps) {
 
   return (
     <div className="flex items-center justify-between px-4 py-1 bg-secondary border-b border-theme text-xs select-none">
-      {/* Time (game countdown) */}
-      <span className="text-primary font-semibold w-12">{formatTime(timeRemaining)}</span>
+      {/* Time (game countdown) — red + pulse in final 10s */}
+      <span
+        className={`font-semibold w-12 ${
+          timeRemaining <= 10
+            ? 'text-accent-red animate-pulse'
+            : 'text-primary'
+        }`}
+      >
+        {formatTime(timeRemaining)}
+      </span>
 
       {/* Carrier + signal (decorative, iOS style) */}
       <div className="flex items-center gap-1.5">
