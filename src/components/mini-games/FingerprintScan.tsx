@@ -106,7 +106,7 @@ export function FingerprintScan({ difficulty, foreignLanguage, onComplete, onCan
       completedRef.current = true;
       setCompleted(true);
       playSound('success');
-      setTimeout(() => onComplete({ distractionsTriggered: modifiersTriggeredRef.current }), 1500);
+      setTimeout(() => onComplete({ smudgesTriggered: modifiersTriggeredRef.current }), 1500);
     }
   }, [wiping, onComplete]);
 
