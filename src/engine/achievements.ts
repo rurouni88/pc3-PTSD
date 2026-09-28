@@ -100,7 +100,7 @@ export const ACHIEVEMENTS: Achievement[] = [
   {
     id: 'duplicate_purge',
     title: 'Rose Bush Massacre',
-    desc: 'Delete all duplicates without ever selecting an important photo. Mum will find out. You will be forgiven. Eventually.',
+    desc: 'Delete all duplicates without ever selecting an important photo. They will find out. You will be forgiven. Eventually.',
     emoji: '🌹',
     check: (_s, stats) => stats.miniGamesCompleted.includes('duplicate-doom') && !stats.importantSelected,
   },
