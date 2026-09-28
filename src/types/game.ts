@@ -42,8 +42,7 @@ export interface InterruptEvent {
 // --- Mini-game variant configs ---
 
 export interface PhotoTheme {
-  importantLabel: string;
-  importantIcon: string;
+  importantTypes: { label: string; icon: string }[];
   decoyLabels: string[];
   decoyIcons: string[];
   confirmPrompt: string;

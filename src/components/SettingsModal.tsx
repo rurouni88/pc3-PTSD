@@ -142,7 +142,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
           {/* Credits */}
           <div className="text-center">
             <p className="text-xs text-muted">Copyright 2026 PC3 Enterprises</p>
-            <p className="text-[10px] text-muted mt-1">v0.3.4</p>
+            <p className="text-[10px] text-muted mt-1">v0.3.5</p>
           </div>
         </div>
       </div>

@@ -93,8 +93,7 @@ export const levels: Record<string, LevelConfig> = {
     interruptionRate: 15,
     passiveDrain: { intervalSeconds: 12, chance: 0.5, amount: 1 },
     photoTheme: {
-      importantLabel: 'Scorecard (sharp)',
-      importantIcon: 'golf',
+      importantTypes: [{ label: 'Scorecard (sharp)', icon: 'golf' }],
       decoyLabels: ['Scorecard blurry 1', 'Scorecard blurry 2', 'Scorecard overexposed 1', 'Scorecard blurry 3', 'Scorecard overexposed 2', 'Scorecard blurry 4', 'Scorecard overexposed 3', 'Scorecard blurry 5'],
       decoyIcons: ['golf', 'golf', 'golf', 'golf', 'golf', 'golf', 'golf', 'golf'],
       confirmPrompt: 'Are you sure? Dad thinks that one is his lucky scorecard.',
@@ -210,10 +209,13 @@ export const levels: Record<string, LevelConfig> = {
     interruptionRate: 12,
     passiveDrain: { intervalSeconds: 10, chance: 0.6, amount: 1.5 },
     photoTheme: {
-      importantLabel: 'Foodie shot (sharp)',
-      importantIcon: 'food',
-      decoyLabels: ['Foodie shot blurry 1', 'Foodie shot blurry 2', 'Foodie shot overexposed 1', 'Foodie shot blurry 3', 'Foodie shot overexposed 2', 'Foodie shot blurry 4', 'Foodie shot overexposed 3', 'Foodie shot blurry 5', 'Foodie shot overexposed 4', 'Foodie shot blurry 6', 'Foodie shot overexposed 5', 'Foodie shot blurry 7'],
-      decoyIcons: ['food', 'food', 'food', 'food', 'food', 'food', 'food', 'food', 'food', 'food', 'food', 'food'],
+      importantTypes: [
+        { label: 'Foodie shot (sharp)', icon: 'food' },
+        { label: 'Latte art (sharp)', icon: 'coffee' },
+        { label: 'Cloud (sharp)', icon: 'cloud' },
+      ],
+      decoyLabels: ['Foodie shot blurry 1', 'Latte art overexposed 1', 'Cloud blurry 1', 'Foodie shot overexposed 1', 'Latte art blurry 1', 'Cloud overexposed 1', 'Foodie shot blurry 2', 'Latte art overexposed 2', 'Cloud blurry 2', 'Foodie shot overexposed 2', 'Latte art blurry 2', 'Cloud overexposed 2'],
+      decoyIcons: ['food', 'coffee', 'cloud', 'food', 'coffee', 'cloud', 'food', 'coffee', 'cloud', 'food', 'coffee', 'cloud'],
       confirmPrompt: 'Are you sure? Mum thinks that one is pretty.',
     },
     malwareConfig: {
@@ -329,8 +331,7 @@ export const levels: Record<string, LevelConfig> = {
     interruptionRate: 8,
     passiveDrain: { intervalSeconds: 7, chance: 0.7, amount: 2 },
     photoTheme: {
-      importantLabel: 'Cat portrait (sharp)',
-      importantIcon: 'cat',
+      importantTypes: [{ label: 'Cat portrait (sharp)', icon: 'cat' }],
       decoyLabels: ['Cat blurry 1', 'Cat blurry 2', 'Cat blurry 3', 'Cat overexposed 1', 'Cat overexposed 2', 'Cat blurry 4', 'Cat blurry 5', 'Cat overexposed 3', 'Cat blurry 6', 'Cat overexposed 4', 'Cat blurry 7', 'Cat overexposed 5', 'Cat blurry 8', 'Cat overexposed 6', 'Cat blurry 9'],
       decoyIcons: ['cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat'],
       confirmPrompt: 'Are you sure? Grandma thinks that cat is her grandchild.',
