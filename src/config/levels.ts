@@ -95,7 +95,7 @@ export const levels: Record<string, LevelConfig> = {
     photoTheme: {
       importantLabel: 'Scorecard (sharp)',
       importantIcon: 'golf',
-      decoyLabels: ['Golf mag p.1', 'Golf mag p.2', 'Golf mag p.3', 'Golf mag p.4', 'Golf mag p.5', 'Golf mag p.6', 'Golf mag p.7', 'Golf mag p.8'],
+      decoyLabels: ['Scorecard blurry 1', 'Scorecard blurry 2', 'Scorecard overexposed 1', 'Scorecard blurry 3', 'Scorecard overexposed 2', 'Scorecard blurry 4', 'Scorecard overexposed 3', 'Scorecard blurry 5'],
       decoyIcons: ['golf', 'golf', 'golf', 'golf', 'golf', 'golf', 'golf', 'golf'],
       confirmPrompt: 'Are you sure? Dad thinks that one is his lucky scorecard.',
     },
@@ -210,10 +210,10 @@ export const levels: Record<string, LevelConfig> = {
     interruptionRate: 12,
     passiveDrain: { intervalSeconds: 10, chance: 0.6, amount: 1.5 },
     photoTheme: {
-      importantLabel: 'Sunset (sharp)',
-      importantIcon: 'sunset',
-      decoyLabels: ['Sunset 2', 'Sunset 3', 'Sunset 4', 'Cloud 1', 'Cloud 2', 'Cloud 3', 'Sunset 5', 'Sunset 6', 'Cloud 4', 'Coffee 1', 'Sunset 7', 'Coffee 2'],
-      decoyIcons: ['sunset', 'sunset', 'sunset', 'cloud', 'cloud', 'cloud', 'sunset', 'sunset', 'cloud', 'coffee', 'sunset', 'coffee'],
+      importantLabel: 'Foodie shot (sharp)',
+      importantIcon: 'food',
+      decoyLabels: ['Foodie shot blurry 1', 'Foodie shot blurry 2', 'Foodie shot overexposed 1', 'Foodie shot blurry 3', 'Foodie shot overexposed 2', 'Foodie shot blurry 4', 'Foodie shot overexposed 3', 'Foodie shot blurry 5', 'Foodie shot overexposed 4', 'Foodie shot blurry 6', 'Foodie shot overexposed 5', 'Foodie shot blurry 7'],
+      decoyIcons: ['food', 'food', 'food', 'food', 'food', 'food', 'food', 'food', 'food', 'food', 'food', 'food'],
       confirmPrompt: 'Are you sure? Mum thinks that one is pretty.',
     },
     malwareConfig: {
