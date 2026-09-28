@@ -53,7 +53,7 @@ export function FaceIdSetup({ difficulty, faceIdConfig, foreignLanguage, onCompl
   const frameRef = useRef({ x: 50, y: 80 });
   const progressRef = useRef(0);
   const alignedTimeRef = useRef(0);
-  const lastDistractionRef = useRef(0);
+  const lastDistractionRef = useRef(Date.now());
   const distractionsRef = useRef(0);
   const draggingRef = useRef(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
