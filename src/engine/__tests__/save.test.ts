@@ -22,6 +22,7 @@ const mockState: GameEngineState = {
   ],
   completedIssues: [],
   currentMiniGame: null,
+  foreignLanguage: null,
 };
 
 describe('SaveSystem', () => {

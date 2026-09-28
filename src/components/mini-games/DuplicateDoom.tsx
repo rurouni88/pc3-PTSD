@@ -1,11 +1,14 @@
 import { useState, useCallback } from 'react';
 import { Icon } from '../Icon';
 import { playSound } from '../../engine/sound';
-import type { PhotoTheme } from '../../types/game';
+import { t, isRTL } from '../../config/translations';
+import { Hint } from '../Hint';
+import type { PhotoTheme, ForeignLanguage } from '../../types/game';
 
 interface DuplicateDoomProps {
   photoTheme: PhotoTheme;
   difficulty: string;
+  foreignLanguage: ForeignLanguage | null;
   onComplete: () => void;
   onCancel: () => void;
 }
@@ -40,7 +43,7 @@ function buildPhotos(theme: PhotoTheme): Photo[] {
   return photos;
 }
 
-export function DuplicateDoom({ photoTheme, difficulty, onComplete, onCancel }: DuplicateDoomProps) {
+export function DuplicateDoom({ photoTheme, difficulty, foreignLanguage, onComplete, onCancel }: DuplicateDoomProps) {
   const [photos] = useState(() => buildPhotos(photoTheme));
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [deleted, setDeleted] = useState<Set<number>>(new Set());
@@ -80,9 +83,9 @@ export function DuplicateDoom({ photoTheme, difficulty, onComplete, onCancel }: 
 
   if (duplicatesRemaining === 0) {
     return (
-      <div className="h-full flex flex-col items-center justify-center bg-primary p-6">
+      <div className="h-full flex flex-col items-center justify-center bg-primary p-6" dir={isRTL(foreignLanguage) ? 'rtl' : 'ltr'}>
         <Icon name="photos" size={48} className="text-accent-blue mb-4" />
-        <p className="text-xl font-bold text-primary">Storage freed!</p>
+        <p className="text-xl font-bold text-primary">{t(foreignLanguage, 'duplicates.freed')}</p>
         <p className="text-sm text-secondary mt-2">
           {completionQuotes[difficulty] ?? photoTheme.confirmPrompt}
         </p>
@@ -103,12 +106,14 @@ export function DuplicateDoom({ photoTheme, difficulty, onComplete, onCancel }: 
           ← Back
         </button>
         <span className="text-sm font-bold text-primary">
-          {duplicatesRemaining} duplicates left
+          {t(foreignLanguage, 'duplicates.left', { n: duplicatesRemaining })}
         </span>
         <span className="text-xs text-muted">
           {selected.size} selected
         </span>
       </div>
+
+      <Hint visible={deleted.size === 0}>Tap duplicates to select, then tap Delete</Hint>
 
       <div className="flex-1 min-h-0 overflow-y-auto p-3">
         <div className="grid grid-cols-3 gap-2">
@@ -144,7 +149,7 @@ export function DuplicateDoom({ photoTheme, difficulty, onComplete, onCancel }: 
           className="w-full py-3 bg-accent-red text-primary font-bold rounded-xl disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 transition-transform flex items-center justify-center gap-2"
         >
           <Icon name="trash" size={16} className="text-primary" />
-          Delete {selected.size > 0 ? `(${selected.size})` : ''}
+          {t(foreignLanguage, 'duplicates.delete')} {selected.size > 0 ? `(${selected.size})` : ''}
         </button>
       </div>
 

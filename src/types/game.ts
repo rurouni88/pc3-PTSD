@@ -18,7 +18,7 @@ export type MiniGameType =
   | 'antivirus-whack-a-mole'
   | 'physical-override';
 
-export type ForeignLanguage = 'greek' | 'arabic' | 'korean' | 'japanese' | 'hindi';
+export type ForeignLanguage = 'greek' | 'arabic' | 'korean' | 'japanese' | 'hindi' | 'chinese';
 
 export interface ParentPrompt {
   id: string;
@@ -83,4 +83,17 @@ export interface GameEngineState {
   activeIssues: GameIssue[];
   completedIssues: GameIssue[];
   currentMiniGame: MiniGameType | null;
+  foreignLanguage: ForeignLanguage | null;
+}
+
+export interface RunStats {
+  miniGamesCompleted: MiniGameType[];
+  promptsAnswered: number;
+  liesTold: number;
+  explanationsGiven: number;
+  guiltTripsTaken: number;
+  interruptionsSurvived: number;
+  chargerUsed: boolean;
+  spamsReceived: number;
+  difficulty: Difficulty;
 }

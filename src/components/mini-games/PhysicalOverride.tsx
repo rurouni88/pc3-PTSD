@@ -1,11 +1,14 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { Icon } from '../Icon';
 import { playSound } from '../../engine/sound';
-import type { QuickSettingsConfig } from '../../types/game';
+import { t, isRTL } from '../../config/translations';
+import { Hint } from '../Hint';
+import type { QuickSettingsConfig, ForeignLanguage } from '../../types/game';
 
 interface PhysicalOverrideProps {
   quickSettingsConfig: QuickSettingsConfig;
   difficulty: string;
+  foreignLanguage: ForeignLanguage | null;
   onComplete: () => void;
   onCancel: () => void;
 }
@@ -24,10 +27,15 @@ interface Toggle {
   isTarget: boolean;
 }
 
-export function PhysicalOverride({ quickSettingsConfig, difficulty, onComplete, onCancel }: PhysicalOverrideProps) {
+const SWIPE_THRESHOLD = 80;
+
+export function PhysicalOverride({ quickSettingsConfig, difficulty, foreignLanguage, onComplete, onCancel }: PhysicalOverrideProps) {
   const [panelOpen, setPanelOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [solved, setSolved] = useState(false);
+  const [dragY, setDragY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const pointerStartY = useRef(0);
 
   // Build toggle state from config, marking the flashlight as target
   const [toggles, setToggles] = useState<Record<string, Toggle>>(() => {
@@ -42,6 +50,46 @@ export function PhysicalOverride({ quickSettingsConfig, difficulty, onComplete, 
 
   const pages = quickSettingsConfig.pages;
   const flashlight = toggles['flashlight'];
+
+  // Swipe-down gesture to open panel
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    if (panelOpen) return;
+    pointerStartY.current = e.clientY;
+    setIsDragging(true);
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  }, [panelOpen]);
+
+  const handlePointerMove = useCallback((e: React.PointerEvent) => {
+    if (!isDragging || panelOpen) return;
+    const dy = e.clientY - pointerStartY.current;
+    setDragY(Math.max(0, dy)); // only allow downward
+  }, [isDragging, panelOpen]);
+
+  const handlePointerUp = useCallback(() => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    if (dragY > SWIPE_THRESHOLD) {
+      setPanelOpen(true);
+      playSound('click');
+    }
+    setDragY(0);
+  }, [isDragging, dragY]);
+
+  // Swipe between pages
+  const handlePageSwipeStart = useRef(0);
+  const handlePageTouchStart = useCallback((e: React.TouchEvent) => {
+    handlePageSwipeStart.current = e.touches[0].clientX;
+  }, []);
+
+  const handlePageTouchEnd = useCallback((e: React.TouchEvent) => {
+    const dx = e.changedTouches[0].clientX - handlePageSwipeStart.current;
+    if (Math.abs(dx) > 50) {
+      setCurrentPage((prev) => {
+        if (dx < 0) return Math.min(prev + 1, pages.length - 1);
+        return Math.max(prev - 1, 0);
+      });
+    }
+  }, [pages.length]);
 
   const toggleItem = useCallback((id: string) => {
     setToggles((prev) => {
@@ -59,9 +107,9 @@ export function PhysicalOverride({ quickSettingsConfig, difficulty, onComplete, 
 
   if (solved) {
     return (
-      <div className="h-full flex flex-col items-center justify-center bg-primary p-6">
+      <div className="h-full flex flex-col items-center justify-center bg-primary p-6" dir={isRTL(foreignLanguage) ? 'rtl' : 'ltr'}>
         <Icon name="check" size={48} className="text-accent-green mb-4" />
-        <p className="text-xl font-bold text-primary">Flashlight off!</p>
+        <p className="text-xl font-bold text-primary">{t(foreignLanguage, 'quicksettings.flashlight')} {t(foreignLanguage, 'quicksettings.off')}</p>
         <p className="text-sm text-secondary mt-2">
           {completionQuotes[difficulty] ?? completionQuotes.dad}
         </p>
@@ -85,42 +133,54 @@ export function PhysicalOverride({ quickSettingsConfig, difficulty, onComplete, 
         </div>
       )}
 
-      {/* Swipe down hint */}
+      {/* Swipe down to open */}
       {!panelOpen && (
-        <div className="flex-1 flex flex-col items-center justify-center z-10">
-          <div className="w-full px-6">
-            <p className="text-center text-sm text-secondary mb-4">
+        <div
+          className="flex-1 flex flex-col items-center justify-center z-10 select-none touch-none"
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
+        >
+          {/* Pull-down indicator */}
+          <div
+            className="absolute top-0 left-0 right-0 flex flex-col items-center pt-3 transition-transform"
+            style={{ transform: `translateY(${dragY * 0.5}px)` }}
+          >
+            <div className="w-10 h-1.5 bg-tertiary rounded-full mb-2" />
+            <Hint>Swipe down to open Quick Settings</Hint>
+          </div>
+
+          <div className="w-full px-6 text-center">
+            <p className="text-sm text-secondary mb-4">
               The flashlight is draining the battery!
             </p>
-            <div className="flex flex-col items-center gap-2">
-              <span className="text-3xl animate-bounce">⬇️</span>
-              <p className="text-xs text-muted">Swipe down from the top to open Quick Settings</p>
-            </div>
-          </div>
-          <div className="absolute top-0 left-0 right-0 h-20 flex items-end justify-center pb-2">
-            <div
-              className="w-12 h-1.5 bg-tertiary rounded-full"
-              onClick={() => setPanelOpen(true)}
-            />
-            <p className="text-[10px] text-muted mt-1">or tap here</p>
+            <span className="text-4xl animate-bounce block mb-2">⬇️</span>
+            <Hint>or tap anywhere to open</Hint>
           </div>
         </div>
       )}
 
-      {/* Quick Settings Panel */}
+      {/* Quick Settings Panel — iOS Control Center style */}
       {panelOpen && (
-        <div className="flex-1 flex flex-col z-10 animate-slide-down">
-          <div className="flex items-center justify-between p-3 border-b border-theme">
-            <button onClick={onCancel} className="text-sm text-secondary">
+        <div
+          className="flex-1 flex flex-col z-10 animate-slide-down bg-primary"
+          onTouchStart={handlePageTouchStart}
+          onTouchEnd={handlePageTouchEnd}
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between px-4 pt-4 pb-2">
+            <button onClick={onCancel} className="text-sm text-secondary active:text-primary">
               ← Close
             </button>
-            <span className="text-sm font-bold text-primary">Quick Settings</span>
-            <span className="text-xs text-muted">
-              Page {currentPage + 1}/{pages.length}
+            <span className="text-base font-bold text-primary">{t(foreignLanguage, 'quicksettings.title')}</span>
+            <span className="text-xs text-muted w-16 text-right">
+              {t(foreignLanguage, 'quicksettings.page', { n: currentPage + 1 })}
             </span>
           </div>
 
-          <div className="flex-1 p-4">
+          {/* Toggle grid */}
+          <div className="flex-1 px-4 py-3">
             <div className="grid grid-cols-2 gap-3">
               {pages[currentPage].map((item) => {
                 const state = toggles[item.id];
@@ -129,47 +189,46 @@ export function PhysicalOverride({ quickSettingsConfig, difficulty, onComplete, 
                   <button
                     key={item.id}
                     onClick={() => toggleItem(item.id)}
-                    className={`flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all ${
+                    className={`flex flex-col items-center justify-center gap-3 py-6 px-4 rounded-3xl transition-all active:scale-95 ${
                       state.isOn
-                        ? 'bg-accent-blue/20 border-accent-blue'
-                        : 'bg-secondary border-theme'
+                        ? 'bg-accent-blue/25 border-2 border-accent-blue'
+                        : 'bg-secondary border-2 border-theme'
                     }`}
                   >
-                    <Icon name={state.icon} size={32} className={state.isOn ? 'text-accent-blue' : 'text-primary'} />
-                    <span className="text-xs text-primary">{state.label}</span>
+                    <Icon name={state.icon} size={36} className={state.isOn ? 'text-accent-blue' : 'text-primary'} />
+                    <span className="text-sm font-medium text-primary">{state.label}</span>
                     <span
-                      className={`text-[10px] font-bold ${
+                      className={`text-[10px] font-bold tracking-wide ${
                         state.isOn ? 'text-accent-blue' : 'text-muted'
                       }`}
                     >
-                      {state.isOn ? 'ON' : 'OFF'}
+                      {state.isOn ? t(foreignLanguage, 'quicksettings.on') : t(foreignLanguage, 'quicksettings.off')}
                     </span>
                   </button>
                 );
               })}
             </div>
-
-            {/* Page navigation */}
-            {pages.length > 1 && (
-              <div className="flex justify-center gap-2 mt-6">
-                {pages.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setCurrentPage(i)}
-                    className={`w-2 h-2 rounded-full ${
-                      i === currentPage ? 'bg-primary' : 'bg-tertiary'
-                    }`}
-                  />
-                ))}
-              </div>
-            )}
-
-            {pages.length > 1 && (
-              <p className="text-center text-[10px] text-muted mt-3">
-                ← Swipe or tap dots to find the flashlight →
-              </p>
-            )}
           </div>
+
+          {/* Page dots — bigger, more iOS-like */}
+          {pages.length > 1 && (
+            <div className="flex justify-center gap-2 pb-3">
+              {pages.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentPage(i)}
+                  className={`rounded-full transition-all ${
+                    i === currentPage ? 'w-3 h-3 bg-primary' : 'w-2 h-2 bg-tertiary'
+                  }`}
+                  aria-label={`Page ${i + 1}`}
+                />
+              ))}
+            </div>
+          )}
+
+          {pages.length > 1 && (
+            <Hint className="pb-3">← Swipe or tap dots to find the flashlight →</Hint>
+          )}
         </div>
       )}
     </div>

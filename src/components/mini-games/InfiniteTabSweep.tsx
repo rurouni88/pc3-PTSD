@@ -1,9 +1,13 @@
 import { useState, useRef, useCallback } from 'react';
 import { Icon } from '../Icon';
 import { playSound } from '../../engine/sound';
+import { t, isRTL } from '../../config/translations';
+import { Hint } from '../Hint';
+import type { ForeignLanguage } from '../../types/game';
 
 interface InfiniteTabSweepProps {
   difficulty: string;
+  foreignLanguage: ForeignLanguage | null;
   onComplete: () => void;
   onCancel: () => void;
 }
@@ -74,7 +78,7 @@ const completionQuotes: Record<string, string> = {
 
 const AD_INTERVAL = 4;
 
-export function InfiniteTabSweep({ difficulty, onComplete, onCancel }: InfiniteTabSweepProps) {
+export function InfiniteTabSweep({ difficulty, foreignLanguage, onComplete, onCancel }: InfiniteTabSweepProps) {
   const totalTabs = (tabDataByLevel[difficulty] ?? dadTabs).length;
   const [tabs, setTabs] = useState<TabCard[]>(
     (tabDataByLevel[difficulty] ?? dadTabs).map((t) => ({ ...t, isClosed: false }))
@@ -135,9 +139,9 @@ export function InfiniteTabSweep({ difficulty, onComplete, onCancel }: InfiniteT
 
   if (allClosed) {
     return (
-      <div className="h-full flex flex-col items-center justify-center bg-primary p-6">
+      <div className="h-full flex flex-col items-center justify-center bg-primary p-6" dir={isRTL(foreignLanguage) ? 'rtl' : 'ltr'}>
         <Icon name="check" size={48} className="text-accent-green mb-4" />
-        <p className="text-xl font-bold text-primary">All tabs closed!</p>
+        <p className="text-xl font-bold text-primary">{t(foreignLanguage, 'tabs.closed', { n: totalTabs })}</p>
         <p className="text-sm text-secondary mt-2">{completionQuotes[difficulty] ?? completionQuotes.dad}</p>
         <button
           onClick={() => { playSound('success'); onComplete(); }}
@@ -156,12 +160,14 @@ export function InfiniteTabSweep({ difficulty, onComplete, onCancel }: InfiniteT
           ← Back
         </button>
         <span className="text-sm font-bold text-primary">
-          {openTabs.length} tabs open
+          {t(foreignLanguage, 'tabs.open', { n: openTabs.length })}
         </span>
         <span className="text-xs text-muted">
-          {closedCount}/{totalTabs} closed
+          {t(foreignLanguage, 'tabs.closed', { n: closedCount })}
         </span>
       </div>
+
+      <Hint visible={closedCount === 0}>← Swipe a tab to close it →</Hint>
 
       <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-2">
         {openTabs.map((tab) => {
@@ -190,14 +196,6 @@ export function InfiniteTabSweep({ difficulty, onComplete, onCancel }: InfiniteT
                   <p className="text-sm font-medium text-primary truncate">{tab.title}</p>
                   <p className="text-xs text-muted">{tab.url}</p>
                 </div>
-                <button
-                  onClick={(e) => { e.stopPropagation(); closeTab(tab.id); }}
-                  onPointerDown={(e) => e.stopPropagation()}
-                  className="w-8 h-8 flex items-center justify-center rounded-full bg-tertiary text-muted hover:text-primary hover:bg-accent-red/20 active:scale-90 transition-all shrink-0"
-                  aria-label={`Close tab: ${tab.title}`}
-                >
-                  ×
-                </button>
               </div>
             </div>
           );
