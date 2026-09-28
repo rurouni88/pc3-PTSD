@@ -7,7 +7,7 @@ interface BottomBarProps {
 export function BottomBar({ onHome, onBack, onPause }: BottomBarProps) {
   return (
     <div
-      className="relative flex items-center justify-center h-8 bg-secondary border-t border-theme"
+      className="relative flex items-center justify-between h-8 bg-secondary border-t border-theme px-2"
       onClick={onHome}
     >
       {/* Pause button */}
@@ -16,9 +16,10 @@ export function BottomBar({ onHome, onBack, onPause }: BottomBarProps) {
           e.stopPropagation();
           onPause();
         }}
-        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-primary transition-colors active:scale-90 text-sm"
+        className="flex items-center gap-1 px-2 py-1 bg-tertiary rounded-lg border border-theme active:scale-95 transition-transform"
       >
-        ⏸
+        <span className="text-sm">⏸</span>
+        <span className="text-[10px] text-primary font-medium">Pause</span>
       </button>
       {/* iOS home indicator */}
       <div
