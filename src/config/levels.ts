@@ -213,7 +213,7 @@ export const levels: Record<string, LevelConfig> = {
       importantLabel: 'Sunset (sharp)',
       importantIcon: 'sunset',
       decoyLabels: ['Sunset 2', 'Sunset 3', 'Sunset 4', 'Cloud 1', 'Cloud 2', 'Cloud 3', 'Sunset 5', 'Sunset 6', 'Cloud 4', 'Sunset 7', 'Sunset 8', 'Cloud 5'],
-      decoyIcons: ['sunset', 'sunset', 'sunset', 'cloud', 'cloud', 'cloud', 'sunset', 'sunset', 'cloud', 'sunset', 'sunset', 'cloud'],
+      decoyIcons: ['sunset', 'sunset', 'sunset', 'cloud', 'cloud', 'cloud', 'sunset', 'sunset', 'cloud', 'coffee', 'sunset', 'coffee'],
       confirmPrompt: 'Are you sure? Mum thinks that one is pretty.',
     },
     malwareConfig: {
