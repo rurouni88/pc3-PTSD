@@ -16,7 +16,8 @@ export type MiniGameType =
   | 'blind-translation'
   | 'duplicate-doom'
   | 'antivirus-whack-a-mole'
-  | 'physical-override';
+  | 'physical-override'
+  | 'faceid-setup';
 
 export type ForeignLanguage = 'greek' | 'arabic' | 'korean' | 'japanese' | 'hindi' | 'chinese';
 
@@ -73,6 +74,7 @@ export interface LevelConfig {
   photoTheme: PhotoTheme;
   malwareConfig: MalwareConfig;
   quickSettingsConfig: QuickSettingsConfig;
+  faceIdConfig: FaceIdConfig;
 }
 
 export interface GameEngineState {
@@ -87,12 +89,22 @@ export interface GameEngineState {
   foreignLanguage: ForeignLanguage | null;
 }
 
+export interface FaceIdConfig {
+  driftSpeed: number; // px per tick
+  frameSize: number; // px (threshold)
+  holdTimeMs: number; // ms to hold for completion
+  distractionTimerMs: number; // ms before distraction triggers
+  maxDistractions: number; // how many times distraction can trigger
+  driftPattern: 'gentle' | 'erratic' | 'shaky';
+}
+
 export interface MiniGameQuality {
   adsTriggered?: number;
   decoysTapped?: number;
   wrongLanguagePicks?: number;
   wrongToggles?: number;
   importantSelected?: boolean;
+  distractionsTriggered?: number;
 }
 
 export interface RunStats {

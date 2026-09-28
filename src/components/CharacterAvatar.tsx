@@ -1,7 +1,7 @@
 // Simple SVG avatar faces for game characters.
 // Replaces emoji with consistent, theme-aware illustrations.
 
-type Character = 'dad' | 'mum' | 'grandma' | 'partner';
+export type Character = 'dad' | 'mum' | 'grandma' | 'partner';
 
 interface CharacterAvatarProps {
   character: Character;

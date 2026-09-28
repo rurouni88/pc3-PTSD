@@ -10,6 +10,7 @@ export const levels: Record<string, LevelConfig> = {
     initialIssues: [
       { id: 'dad-ram-booster', type: 'antivirus-whack-a-mole', isResolved: false, drainPenalty: 0.5 },
       { id: 'dad-weather-widget', type: 'infinite-tab-sweep', isResolved: false, drainPenalty: 0.3 },
+      { id: 'dad-faceid', type: 'faceid-setup', isResolved: false, drainPenalty: 0.2 },
     ],
     parentPrompts: [
       {
@@ -92,6 +93,7 @@ export const levels: Record<string, LevelConfig> = {
     ],
     interruptionRate: 15,
     passiveDrain: { intervalSeconds: 12, chance: 0.5, amount: 1 },
+    faceIdConfig: { driftSpeed: 1.5, frameSize: 60, holdTimeMs: 3000, distractionTimerMs: 10000, maxDistractions: 2, driftPattern: 'gentle' },
     photoTheme: {
       importantTypes: [{ label: 'Scorecard (sharp)', icon: 'golf' }],
       decoyLabels: ['Scorecard blurry 1', 'Scorecard blurry 2', 'Scorecard overexposed 1', 'Scorecard blurry 3', 'Scorecard overexposed 2', 'Scorecard blurry 4', 'Scorecard overexposed 3', 'Scorecard blurry 5'],
@@ -126,6 +128,7 @@ export const levels: Record<string, LevelConfig> = {
       { id: 'mum-storage', type: 'duplicate-doom', isResolved: false, drainPenalty: 0.6 },
       { id: 'mum-text-size', type: 'blind-translation', isResolved: false, drainPenalty: 0.4 },
       { id: 'mum-tabs', type: 'infinite-tab-sweep', isResolved: false, drainPenalty: 0.3 },
+      { id: 'mum-faceid', type: 'faceid-setup', isResolved: false, drainPenalty: 0.3 },
     ],
     parentPrompts: [
       {
@@ -208,6 +211,7 @@ export const levels: Record<string, LevelConfig> = {
     ],
     interruptionRate: 12,
     passiveDrain: { intervalSeconds: 10, chance: 0.6, amount: 1.5 },
+    faceIdConfig: { driftSpeed: 2.5, frameSize: 50, holdTimeMs: 4000, distractionTimerMs: 8000, maxDistractions: 3, driftPattern: 'erratic' },
     photoTheme: {
       importantTypes: [
         { label: 'Foodie shot (sharp)', icon: 'food' },
@@ -254,6 +258,7 @@ export const levels: Record<string, LevelConfig> = {
       { id: 'grandma-ghost-touch', type: 'physical-override', isResolved: false, drainPenalty: 0.7 },
       { id: 'grandma-photos', type: 'duplicate-doom', isResolved: false, drainPenalty: 0.5 },
       { id: 'grandma-tabs', type: 'infinite-tab-sweep', isResolved: false, drainPenalty: 0.4 },
+      { id: 'grandma-faceid', type: 'faceid-setup', isResolved: false, drainPenalty: 0.4 },
       { id: 'grandma-malware', type: 'antivirus-whack-a-mole', isResolved: false, drainPenalty: 0.6 },
     ],
     parentPrompts: [
@@ -331,6 +336,7 @@ export const levels: Record<string, LevelConfig> = {
     ],
     interruptionRate: 8,
     passiveDrain: { intervalSeconds: 7, chance: 0.7, amount: 2 },
+    faceIdConfig: { driftSpeed: 3.5, frameSize: 40, holdTimeMs: 5000, distractionTimerMs: 6000, maxDistractions: 4, driftPattern: 'shaky' },
     photoTheme: {
       importantTypes: [
         { label: 'Cat portrait (sharp)', icon: 'cat' },
