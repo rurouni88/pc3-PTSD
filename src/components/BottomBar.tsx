@@ -7,7 +7,7 @@ interface BottomBarProps {
 export function BottomBar({ onHome, onBack, onPause }: BottomBarProps) {
   return (
     <div
-      className="flex items-center justify-center h-8 bg-secondary border-t border-theme"
+      className="relative flex items-center justify-center h-8 bg-secondary border-t border-theme"
       onClick={onHome}
     >
       {/* Pause button */}
@@ -16,7 +16,7 @@ export function BottomBar({ onHome, onBack, onPause }: BottomBarProps) {
           e.stopPropagation();
           onPause();
         }}
-        className="absolute right-3 text-muted hover:text-primary transition-colors active:scale-90 text-xs"
+        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-primary transition-colors active:scale-90 text-sm"
       >
         ⏸
       </button>
