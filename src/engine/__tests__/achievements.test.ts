@@ -49,6 +49,7 @@ const emptyStats: RunStats = {
   interruptionsSurvived: 0,
   chargerUsed: false,
   spamsReceived: 0,
+  chineseEasterEgg: false,
   difficulty: 'dad',
 };
 
@@ -146,6 +147,18 @@ describe('Achievements', () => {
 
   it('returns undefined for unknown id', () => {
     expect(achievementById('nonexistent')).toBeUndefined();
+  });
+
+  it('unlocks "chinese_whisperer" on a win with the Chinese Easter Egg', () => {
+    const stats: RunStats = { ...emptyStats, chineseEasterEgg: true, difficulty: 'grandma' };
+    const newly = checkAchievements(wonState, stats);
+    expect(newly.some((a) => a.id === 'chinese_whisperer')).toBe(true);
+  });
+
+  it('does not unlock "chinese_whisperer" without the Easter Egg', () => {
+    const stats: RunStats = { ...emptyStats, chineseEasterEgg: false, difficulty: 'grandma' };
+    const newly = checkAchievements(wonState, stats);
+    expect(newly.some((a) => a.id === 'chinese_whisperer')).toBe(false);
   });
 
   it('has valid achievement definitions', () => {

@@ -144,6 +144,13 @@ export const ACHIEVEMENTS: Achievement[] = [
     emoji: '👻',
     check: (s, stats) => stats.difficulty === 'grandma' && s.batteryLevel > 0 && s.batteryLevel < 20,
   },
+  {
+    id: 'chinese_whisperer',
+    title: '中文 Whisperer',
+    desc: 'Complete Grandma\'s run with the Chinese Easter Egg active. 奶奶 is proud. The phone is still in Chinese. You did this.',
+    emoji: '🀄',
+    check: (s, stats) => s.gameState === 'results' && stats.chineseEasterEgg && s.batteryLevel > 0,
+  },
 ];
 
 const UNLOCKED_KEY = 'ptsd_achievements';

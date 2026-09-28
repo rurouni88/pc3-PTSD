@@ -95,5 +95,6 @@ export interface RunStats {
   interruptionsSurvived: number;
   chargerUsed: boolean;
   spamsReceived: number;
+  chineseEasterEgg: boolean;
   difficulty: Difficulty;
 }

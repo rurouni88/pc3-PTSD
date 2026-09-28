@@ -64,6 +64,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     interruptionsSurvived: 0,
     chargerUsed: false,
     spamsReceived: 0,
+    chineseEasterEgg: false,
     difficulty: levelConfig.difficulty,
   });
 
@@ -205,6 +206,9 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
         // Handle blind-translation: clear language or set Chinese Easter Egg
         if (resolved.type === 'blind-translation') {
           const newLang: ForeignLanguage | null = selectedLanguage === 'chinese' ? 'chinese' : null;
+          if (selectedLanguage === 'chinese') {
+            runStatsRef.current.chineseEasterEgg = true;
+          }
           return {
             ...prev,
             foreignLanguage: newLang,
