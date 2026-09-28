@@ -54,7 +54,7 @@ export function Charger({ onCharge }: ChargerProps) {
     return (
       <button
         onClick={handleOpenDrawer}
-        className="flex items-center gap-2 w-[160px] px-3 py-2 bg-tertiary rounded-xl border border-theme active:scale-95 transition-transform"
+        className="flex items-center gap-2 px-3 py-2 bg-tertiary rounded-xl border border-theme active:scale-95 transition-transform"
       >
         <span className="text-lg">🔋</span>
         <span className="text-xs text-primary font-medium">Ask for Charger</span>

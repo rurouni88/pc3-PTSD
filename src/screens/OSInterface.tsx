@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { StatusBar } from '../components/StatusBar';
-import { BottomBar } from '../components/BottomBar';
+
 import { ParentInterrupt } from '../components/ParentInterrupt';
 import { Charger } from '../components/Charger';
 import { SpamSystem } from '../components/SpamSystem';
@@ -206,15 +206,14 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
         </div>
       </div>
 
-      <div className="flex items-center p-3 border-t border-theme">
+      <div className="flex items-center justify-between p-3 border-t border-theme">
         <Charger onCharge={useCharger} />
-        <BottomBar onHome={() => {}} onBack={() => {}} />
         <button
           onClick={() => {
             pause();
             setShowPauseMenu(true);
           }}
-          className="flex items-center gap-2 w-[160px] px-3 py-2 bg-tertiary rounded-xl border border-theme active:scale-95 transition-transform"
+          className="flex items-center gap-2 px-3 py-2 bg-tertiary rounded-xl border border-theme active:scale-95 transition-transform"
         >
           <span className="text-lg">⏸</span>
           <span className="text-xs text-primary font-medium">Pause</span>
