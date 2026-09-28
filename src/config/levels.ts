@@ -213,9 +213,10 @@ export const levels: Record<string, LevelConfig> = {
         { label: 'Foodie shot (sharp)', icon: 'food' },
         { label: 'Latte art (sharp)', icon: 'coffee' },
         { label: 'Cloud (sharp)', icon: 'cloud' },
+        { label: 'Sunset (sharp)', icon: 'sunset' },
       ],
-      decoyLabels: ['Foodie shot blurry 1', 'Latte art overexposed 1', 'Cloud blurry 1', 'Foodie shot overexposed 1', 'Latte art blurry 1', 'Cloud overexposed 1', 'Foodie shot blurry 2', 'Latte art overexposed 2', 'Cloud blurry 2', 'Foodie shot overexposed 2', 'Latte art blurry 2', 'Cloud overexposed 2'],
-      decoyIcons: ['food', 'coffee', 'cloud', 'food', 'coffee', 'cloud', 'food', 'coffee', 'cloud', 'food', 'coffee', 'cloud'],
+      decoyLabels: ['Foodie shot blurry 1', 'Latte art overexposed 1', 'Cloud blurry 1', 'Sunset overexposed 1', 'Foodie shot overexposed 1', 'Latte art blurry 1', 'Cloud overexposed 1', 'Sunset blurry 1', 'Foodie shot blurry 2', 'Latte art overexposed 2', 'Cloud blurry 2', 'Sunset overexposed 2', 'Foodie shot overexposed 2', 'Latte art blurry 2', 'Cloud overexposed 2', 'Sunset blurry 2'],
+      decoyIcons: ['food', 'coffee', 'cloud', 'sunset', 'food', 'coffee', 'cloud', 'sunset', 'food', 'coffee', 'cloud', 'sunset', 'food', 'coffee', 'cloud', 'sunset'],
       confirmPrompt: 'Are you sure? Mum thinks that one is pretty.',
     },
     malwareConfig: {
@@ -331,9 +332,15 @@ export const levels: Record<string, LevelConfig> = {
     interruptionRate: 8,
     passiveDrain: { intervalSeconds: 7, chance: 0.7, amount: 2 },
     photoTheme: {
-      importantTypes: [{ label: 'Cat portrait (sharp)', icon: 'cat' }],
-      decoyLabels: ['Cat blurry 1', 'Cat blurry 2', 'Cat blurry 3', 'Cat overexposed 1', 'Cat overexposed 2', 'Cat blurry 4', 'Cat blurry 5', 'Cat overexposed 3', 'Cat blurry 6', 'Cat overexposed 4', 'Cat blurry 7', 'Cat overexposed 5', 'Cat blurry 8', 'Cat overexposed 6', 'Cat blurry 9'],
-      decoyIcons: ['cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat'],
+      importantTypes: [
+        { label: 'Cat portrait (sharp)', icon: 'cat' },
+        { label: 'Tea time (sharp)', icon: 'coffee' },
+        { label: 'Garden rose (sharp)', icon: 'rose' },
+        { label: 'Flower bed (sharp)', icon: 'flower' },
+        { label: 'Songbird (sharp)', icon: 'bird' },
+      ],
+      decoyLabels: ['Cat blurry 1', 'Tea time overexposed 1', 'Rose blurry 1', 'Flower overexposed 1', 'Bird blurry 1', 'Cat overexposed 1', 'Tea time blurry 1', 'Rose overexposed 1', 'Flower blurry 1', 'Bird overexposed 1', 'Cat blurry 2', 'Tea time overexposed 2', 'Rose blurry 2', 'Flower overexposed 2', 'Bird blurry 2', 'Cat overexposed 2', 'Tea time blurry 2', 'Rose overexposed 2', 'Flower blurry 2', 'Bird overexposed 2'],
+      decoyIcons: ['cat', 'coffee', 'rose', 'flower', 'bird', 'cat', 'coffee', 'rose', 'flower', 'bird', 'cat', 'coffee', 'rose', 'flower', 'bird', 'cat', 'coffee', 'rose', 'flower', 'bird'],
       confirmPrompt: 'Are you sure? Grandma thinks that cat is her grandchild.',
     },
     malwareConfig: {
