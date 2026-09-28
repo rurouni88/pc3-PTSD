@@ -193,14 +193,6 @@ export function InfiniteTabSweep({ difficulty, foreignLanguage, onComplete, onCa
                   <p className="text-sm font-medium text-primary truncate">{tab.title}</p>
                   <p className="text-xs text-muted">{tab.url}</p>
                 </div>
-                <button
-                  onClick={(e) => { e.stopPropagation(); closeTab(tab.id); }}
-                  onPointerDown={(e) => e.stopPropagation()}
-                  className="w-8 h-8 flex items-center justify-center rounded-full bg-tertiary text-muted hover:text-primary hover:bg-accent-red/20 active:scale-90 transition-all shrink-0"
-                  aria-label={`Close tab: ${tab.title}`}
-                >
-                  ×
-                </button>
               </div>
             </div>
           );
