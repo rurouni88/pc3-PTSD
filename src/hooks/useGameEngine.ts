@@ -14,6 +14,7 @@ import { SaveSystem } from '../engine/save';
 import { MetaStore, RunRecord } from '../engine/meta';
 import { checkAchievements, Achievement } from '../engine/achievements';
 import { playSound } from '../engine/sound';
+import { checkDrainEvents, getBackgroundDrain } from '../engine/drain-events';
 
 interface UseGameEngineProps {
   levelConfig: LevelConfig;
@@ -54,6 +55,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
   const shownPromptIdsRef = useRef<Set<string>>(new Set());
   const completedRef = useRef(false);
   const tickerPlayedRef = useRef(false);
+  const elapsedRef = useRef(0);
 
   // Run stats — tracked via refs to avoid re-renders
   const runStatsRef = useRef<RunStats>({
@@ -150,12 +152,23 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
       triggerPrompt();
     }
 
+    // Check passive drain events (spam, ghost touches, updates)
+    const drainEvent = checkDrainEvents(levelConfig.difficulty);
+    if (drainEvent) {
+      runStatsRef.current.spamsReceived++;
+      setState((prev) => ({
+        ...prev,
+        batteryLevel: Math.max(0, prev.batteryLevel - drainEvent.amount),
+      }));
+    }
+
     setState((prev) => {
       if (prev.isPaused || prev.gameState !== 'playing') return prev;
 
       const newTimeRemaining = prev.timeRemaining - delta;
       const drainRate = calculateDrainRate(prev.activeIssues);
-      const newBattery = Math.max(0, prev.batteryLevel - drainRate * delta);
+      const bgDrain = getBackgroundDrain(levelConfig.difficulty, elapsedRef.current);
+      const newBattery = Math.max(0, prev.batteryLevel - (drainRate + bgDrain) * delta);
 
       // Play ticker sound when entering final 10 seconds
       if (newTimeRemaining <= 10 && prev.timeRemaining > 10 && !tickerPlayedRef.current) {
@@ -168,6 +181,9 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
         timeRemaining: newTimeRemaining,
         batteryLevel: newBattery,
       };
+
+      // Track elapsed time for background drain scaling
+      elapsedRef.current += delta;
 
       // Autosave every tick (lightweight)
       SaveSystem.save(updated);
