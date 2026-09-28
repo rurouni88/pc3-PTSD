@@ -55,8 +55,8 @@ const photoGradients: Record<string, string[]> = {
     'from-orange-950 to-red-800', 'from-pink-900 to-rose-800', 'from-red-900 to-amber-800',
   ],
   cat: [
-    'from-purple-900 to-violet-800', 'from-indigo-900 to-purple-800', 'from-violet-950 to-fuchsia-800',
-    'from-purple-950 to-indigo-800', 'from-fuchsia-900 to-purple-800', 'from-indigo-950 to-violet-800',
+    'from-amber-900 to-stone-800', 'from-stone-800 to-amber-900', 'from-yellow-900 to-stone-900',
+    'from-stone-900 to-amber-950', 'from-amber-950 to-stone-800', 'from-stone-800 to-yellow-950',
   ],
   cloud: [
     'from-slate-700 to-blue-900', 'from-gray-800 to-slate-900', 'from-blue-900 to-indigo-900',
@@ -89,12 +89,13 @@ function buildPhotos(theme: PhotoTheme, keep: number, total: number): Photo[] {
   const duplicates = total - keep;
   const photos: Photo[] = [];
 
-  // Important photos (to keep)
+  // Important photos (to keep) — all use the important label with a number
+  const baseLabel = theme.importantLabel.replace(/\s*\(sharp\)$/, '');
   photos.push({ id: 1, label: theme.importantLabel, icon: theme.importantIcon, isDuplicate: false, isBlurry: false });
-  for (let i = 1; i < keep; i++) {
+  for (let i = 2; i <= keep; i++) {
     photos.push({
-      id: i + 1,
-      label: `Keep ${i}`,
+      id: i,
+      label: `${baseLabel} ${i}`,
       icon: theme.importantIcon,
       isDuplicate: false,
       isBlurry: false,
