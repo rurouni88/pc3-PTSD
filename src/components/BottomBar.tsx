@@ -16,10 +16,10 @@ export function BottomBar({ onHome, onBack, onPause }: BottomBarProps) {
           e.stopPropagation();
           onPause();
         }}
-        className="flex items-center gap-1 px-2 py-1 bg-tertiary rounded-lg border border-theme active:scale-95 transition-transform"
+        className="flex items-center gap-2 px-3 py-2 bg-tertiary rounded-xl border border-theme active:scale-95 transition-transform"
       >
         <span className="text-sm">⏸</span>
-        <span className="text-[10px] text-primary font-medium">Pause</span>
+        <span className="text-xs text-primary font-medium">Pause</span>
       </button>
       {/* iOS home indicator */}
       <div
