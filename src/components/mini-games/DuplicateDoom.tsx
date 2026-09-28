@@ -55,8 +55,8 @@ const photoGradients: Record<string, string[]> = {
     'from-orange-950 to-red-800', 'from-pink-900 to-rose-800', 'from-red-900 to-amber-800',
   ],
   cat: [
-    'from-amber-900 to-stone-800', 'from-stone-800 to-amber-900', 'from-yellow-900 to-stone-900',
-    'from-stone-900 to-amber-950', 'from-amber-950 to-stone-800', 'from-stone-800 to-yellow-950',
+    'from-amber-200 to-stone-300', 'from-stone-300 to-amber-200', 'from-yellow-200 to-stone-300',
+    'from-stone-300 to-amber-300', 'from-amber-300 to-stone-200', 'from-stone-200 to-yellow-300',
   ],
   cloud: [
     'from-slate-700 to-blue-900', 'from-gray-800 to-slate-900', 'from-blue-900 to-indigo-900',
@@ -89,17 +89,10 @@ function buildPhotos(theme: PhotoTheme, keep: number, total: number): Photo[] {
   const duplicates = total - keep;
   const photos: Photo[] = [];
 
-  // Important photos (to keep) — all use the important label with a number
-  const baseLabel = theme.importantLabel.replace(/\s*\(sharp\)$/, '');
-  photos.push({ id: 1, label: theme.importantLabel, icon: theme.importantIcon, isDuplicate: false, isBlurry: false });
-  for (let i = 2; i <= keep; i++) {
-    photos.push({
-      id: i,
-      label: `${baseLabel} ${i}`,
-      icon: theme.importantIcon,
-      isDuplicate: false,
-      isBlurry: false,
-    });
+  // Important photos (to keep) — cycle through importantTypes
+  for (let i = 0; i < keep; i++) {
+    const type = theme.importantTypes[i % theme.importantTypes.length];
+    photos.push({ id: i + 1, label: type.label, icon: type.icon, isDuplicate: false, isBlurry: false });
   }
 
   // Duplicates (to delete) — cycle through decoy icons for visual variety
