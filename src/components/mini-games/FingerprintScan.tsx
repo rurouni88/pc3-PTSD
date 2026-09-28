@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { Hint } from '../Hint';
 import { RngEngine } from '../../engine/seeded-rng';
 import { playSound } from '../../engine/sound';
+import { t, isRTL } from '../../config/translations';
 import type { Difficulty, ForeignLanguage, MiniGameQuality } from '../../types/game';
 
 interface FingerprintScanProps {
@@ -14,19 +15,19 @@ interface FingerprintScanProps {
 type Modifier = 'none' | 'lotion' | 'toast_crumbs' | 'sweat' | 'flour' | 'mud';
 
 interface ModifierConfig {
-  label: string;
+  translationKey: string;
   emoji: string;
   clickBonus: number; // % added per click (normally 5)
   drainPerTick: number; // % drained per tick while active
 }
 
 const modifiers: Record<Modifier, ModifierConfig> = {
-  none: { label: 'Clean', emoji: '✨', clickBonus: 5, drainPerTick: 0 },
-  lotion: { label: 'Lotion', emoji: '🧴', clickBonus: 1, drainPerTick: 0.5 },
-  toast_crumbs: { label: 'Toast crumbs', emoji: '🍞', clickBonus: 1, drainPerTick: 0.3 },
-  sweat: { label: 'Sweat', emoji: '💦', clickBonus: 2, drainPerTick: 0.4 },
-  flour: { label: 'Flour', emoji: '🌾', clickBonus: 1, drainPerTick: 0.6 },
-  mud: { label: 'Mud', emoji: '🟤', clickBonus: 0, drainPerTick: 1 },
+  none: { translationKey: 'fingerprint.clean', emoji: '✨', clickBonus: 5, drainPerTick: 0 },
+  lotion: { translationKey: 'fingerprint.lotion', emoji: '🧴', clickBonus: 1, drainPerTick: 0.5 },
+  toast_crumbs: { translationKey: 'fingerprint.toast_crumbs', emoji: '🍞', clickBonus: 1, drainPerTick: 0.3 },
+  sweat: { translationKey: 'fingerprint.sweat', emoji: '💦', clickBonus: 2, drainPerTick: 0.4 },
+  flour: { translationKey: 'fingerprint.flour', emoji: '🌾', clickBonus: 1, drainPerTick: 0.6 },
+  mud: { translationKey: 'fingerprint.mud', emoji: '🟤', clickBonus: 0, drainPerTick: 1 },
 };
 
 const BAD_MODIFIERS: Modifier[] = ['lotion', 'toast_crumbs', 'sweat', 'flour', 'mud'];
@@ -143,11 +144,11 @@ export function FingerprintScan({ difficulty, foreignLanguage, onComplete, onCan
       <div className="flex items-center gap-2 h-8">
         {modifier !== 'none' ? (
           <span className="text-sm px-3 py-1 rounded-full bg-red-500/20 text-red-400 font-medium">
-            {activeMod.emoji} {activeMod.label} — {activeMod.clickBonus}%/tap
+            {activeMod.emoji} {t(foreignLanguage, activeMod.translationKey)} — {t(foreignLanguage, 'fingerprint.perTap', { n: activeMod.clickBonus })}
           </span>
         ) : (
           <span className="text-sm px-3 py-1 rounded-full bg-green-500/20 text-green-400 font-medium">
-            ✨ Clean — 5%/tap
+            ✨ {t(foreignLanguage, 'fingerprint.clean')} — {t(foreignLanguage, 'fingerprint.perTap', { n: 5 })}
           </span>
         )}
       </div>
@@ -201,7 +202,7 @@ export function FingerprintScan({ difficulty, foreignLanguage, onComplete, onCan
             : 'bg-red-500/20 text-red-400 active:scale-95'
         }`}
       >
-        {wiping ? 'Wiping...' : '👕 Wipe Screen with Shirt'}
+        {wiping ? `👕 ${t(foreignLanguage, 'fingerprint.wiping')}` : `👕 ${t(foreignLanguage, 'fingerprint.wipe')}`}
       </button>
 
       {/* Cancel */}

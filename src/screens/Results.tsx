@@ -109,7 +109,7 @@ export function Results({ result, difficulty, onReplay, onMenu }: ResultsProps) 
         {meta.totalRuns} run{meta.totalRuns !== 1 ? 's' : ''} total · {meta.wins}W / {meta.losses}L
       </p>
 
-      <p className="text-xs text-muted">
+      <p className="text-center text-xs text-muted">
         Copyright 2026 PC3 Enterprises
       </p>
     </div>

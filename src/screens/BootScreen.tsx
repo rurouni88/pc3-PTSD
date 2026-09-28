@@ -180,7 +180,7 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
         )}
       </div>
 
-      <p className="absolute bottom-6 text-[10px] text-muted">
+      <p className="absolute bottom-6 text-center text-xs text-muted">
         Copyright 2026 PC3 Enterprises
       </p>
 

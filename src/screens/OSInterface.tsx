@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { StatusBar } from '../components/StatusBar';
-import { BottomBar } from '../components/BottomBar';
+
 import { ParentInterrupt } from '../components/ParentInterrupt';
 import { Charger } from '../components/Charger';
 import { SpamSystem } from '../components/SpamSystem';
@@ -163,23 +163,10 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
         <div className="absolute inset-0 border-8 border-gray-600/40 pointer-events-none z-30" />
       )}
 
-      <div className="flex items-center">
-        <div className="flex-1">
-          <StatusBar
-            batteryLevel={state.batteryLevel}
-            timeRemaining={state.timeRemaining}
-          />
-        </div>
-        <button
-          onClick={() => {
-            pause();
-            setShowPauseMenu(true);
-          }}
-          className="px-3 py-1 bg-secondary border-l border-theme text-muted text-xs active:text-primary"
-        >
-          ⏸
-        </button>
-      </div>
+      <StatusBar
+        batteryLevel={state.batteryLevel}
+        timeRemaining={state.timeRemaining}
+      />
 
       <SpamSystem active={!activePrompt && !state.isPaused} onBatteryDrain={applySpamDrain} />
 
@@ -221,7 +208,16 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
 
       <div className="flex items-center justify-between p-3 border-t border-theme">
         <Charger onCharge={useCharger} />
-        <BottomBar onHome={() => {}} onBack={() => {}} />
+        <button
+          onClick={() => {
+            pause();
+            setShowPauseMenu(true);
+          }}
+          className="flex items-center gap-2 w-[160px] px-3 py-2 bg-tertiary rounded-xl border border-theme active:scale-95 transition-transform"
+        >
+          <span className="text-lg">⏸</span>
+          <span className="text-xs text-primary font-medium">Pause</span>
+        </button>
       </div>
 
       {activePrompt && state.difficulty && (
