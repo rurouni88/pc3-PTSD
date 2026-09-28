@@ -52,6 +52,7 @@ export function App() {
   }, []);
 
   const handleComplete = useCallback((result: GameResult) => {
+    SaveSystem.deleteSave();
     setLastResult(result);
     setGameState('results');
   }, []);
@@ -65,7 +66,7 @@ export function App() {
 
   const handleMenu = useCallback(() => {
     setDifficulty(null);
-    setGameState('level-select');
+    setGameState('boot');
   }, []);
 
   const handleExitToBoot = useCallback(() => {

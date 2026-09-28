@@ -63,8 +63,8 @@ describe('Achievements', () => {
     expect(newly.some((a) => a.id === 'fixed_it')).toBe(false);
   });
 
-  it('unlocks "battery_god" with 80%+ battery', () => {
-    const state = { ...wonState, batteryLevel: 85 };
+  it('unlocks "battery_god" with 95%+ battery', () => {
+    const state = { ...wonState, batteryLevel: 96 };
     const newly = checkAchievements(state, emptyStats);
     expect(newly.some((a) => a.id === 'battery_god')).toBe(true);
   });

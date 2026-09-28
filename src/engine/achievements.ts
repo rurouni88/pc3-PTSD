@@ -31,9 +31,9 @@ export const ACHIEVEMENTS: Achievement[] = [
   {
     id: 'battery_god',
     title: 'Battery God',
-    desc: 'Win with 80%+ battery remaining. The phone is healthier than you are.',
+    desc: 'Win with 95%+ battery remaining. The phone is healthier than you are.',
     emoji: '🔋',
-    check: (s) => s.gameState === 'results' && s.batteryLevel >= 80,
+    check: (s) => s.gameState === 'results' && s.batteryLevel >= 95,
   },
   {
     id: 'speedrun',
