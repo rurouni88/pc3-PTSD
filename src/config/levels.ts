@@ -342,7 +342,7 @@ export const levels: Record<string, LevelConfig> = {
     ],
     interruptionRate: 8,
     passiveDrain: { intervalSeconds: 7, chance: 0.7, amount: 2 },
-    faceIdConfig: { driftSpeed: 3.5, frameSize: 40, holdTimeMs: 5000, distractionTimerMs: 6000, maxDistractions: 4, driftPattern: 'shaky' },
+    faceIdConfig: { driftSpeed: 3.0, frameSize: 45, holdTimeMs: 4500, distractionTimerMs: 7000, maxDistractions: 4, driftPattern: 'shaky' },
     photoTheme: {
       importantTypes: [
         { label: 'Cat portrait (sharp)', icon: 'cat' },
