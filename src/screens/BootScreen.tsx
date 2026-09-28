@@ -3,6 +3,7 @@ import { RngEngine } from '../engine/seeded-rng';
 import { SettingsModal } from '../components/SettingsModal';
 import { AchievementsModal } from '../components/AchievementsModal';
 import { HelpModal } from '../components/HelpModal';
+import { LeaderboardModal } from '../components/LeaderboardModal';
 import { loadUnlocked } from '../engine/achievements';
 import { ACHIEVEMENTS } from '../engine/achievements';
 
@@ -58,6 +59,7 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
   const [showSettings, setShowSettings] = useState(false);
   const [showAchievements, setShowAchievements] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
 
   // Cycle through taglines every 4 seconds while loading
   useEffect(() => {
@@ -134,22 +136,28 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
       </div>
 
       {/* Action buttons */}
-      <div className="flex gap-2 mb-4 flex-wrap justify-center">
+      <div className="grid grid-cols-2 gap-2 mb-4 w-full max-w-xs">
         <button
           onClick={() => setShowAchievements(true)}
-          className="px-3 py-1.5 rounded bg-tertiary border border-theme text-secondary text-sm hover:border-accent-red/50 hover:text-primary transition-colors"
+          className="py-2.5 rounded bg-tertiary border border-theme text-secondary text-sm hover:border-accent-red/50 hover:text-primary transition-colors"
         >
-          🏅 Achievements ({unlockedCount}/{ACHIEVEMENTS.length})
+          🏅 Achievements
+        </button>
+        <button
+          onClick={() => setShowLeaderboard(true)}
+          className="py-2.5 rounded bg-tertiary border border-theme text-secondary text-sm hover:border-accent-red/50 hover:text-primary transition-colors"
+        >
+          🏆 Leaderboard
         </button>
         <button
           onClick={() => setShowHelp(true)}
-          className="px-3 py-1.5 rounded bg-tertiary border border-theme text-secondary text-sm hover:border-accent-red/50 hover:text-primary transition-colors"
+          className="py-2.5 rounded bg-tertiary border border-theme text-secondary text-sm hover:border-accent-red/50 hover:text-primary transition-colors"
         >
           📖 How To Play
         </button>
         <button
           onClick={() => setShowSettings(true)}
-          className="px-3 py-1.5 rounded bg-tertiary border border-theme text-secondary text-sm hover:border-accent-red/50 hover:text-primary transition-colors"
+          className="py-2.5 rounded bg-tertiary border border-theme text-secondary text-sm hover:border-accent-red/50 hover:text-primary transition-colors"
         >
           ⚙️ Settings
         </button>
@@ -180,6 +188,7 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
       {showSettings && <SettingsModal onClose={() => setShowSettings(false)} />}
       {showAchievements && <AchievementsModal onClose={() => setShowAchievements(false)} />}
       {showHelp && <HelpModal onClose={() => setShowHelp(false)} />}
+      {showLeaderboard && <LeaderboardModal onClose={() => setShowLeaderboard(false)} />}
     </div>
   );
 }
