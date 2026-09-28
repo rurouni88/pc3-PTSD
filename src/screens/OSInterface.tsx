@@ -206,8 +206,9 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
         </div>
       </div>
 
-      <div className="flex items-center justify-between p-3 border-t border-theme">
+      <div className="flex items-center p-3 border-t border-theme">
         <Charger onCharge={useCharger} />
+        <BottomBar onHome={() => {}} onBack={() => {}} />
         <button
           onClick={() => {
             pause();
@@ -218,7 +219,6 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
           <span className="text-sm">⏸</span>
           <span className="text-xs text-primary font-medium">Pause</span>
         </button>
-        <BottomBar onHome={() => {}} onBack={() => {}} />
       </div>
 
       {activePrompt && state.difficulty && (
