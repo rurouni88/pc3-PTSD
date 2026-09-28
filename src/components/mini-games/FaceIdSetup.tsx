@@ -3,6 +3,7 @@ import { CharacterAvatar } from '../CharacterAvatar';
 import { Hint } from '../Hint';
 import { RngEngine } from '../../engine/seeded-rng';
 import { playSound } from '../../engine/sound';
+import { t } from '../../config/translations';
 import type { FaceIdConfig, Difficulty, ForeignLanguage, MiniGameQuality } from '../../types/game';
 import type { Character } from '../CharacterAvatar';
 
@@ -303,14 +304,14 @@ export function FaceIdSetup({ difficulty, faceIdConfig, foreignLanguage, onCompl
           />
         </div>
         <p className="text-[10px] text-muted mt-1 text-center">
-          {progress < 30 ? 'Aligning...' : progress < 70 ? 'Scanning...' : 'Almost there...'}
+          {t(foreignLanguage, progress < 30 ? 'faceid.aligning' : progress < 70 ? 'faceid.scanning' : 'faceid.almost')}
         </p>
       </div>
 
       {/* Distraction counter */}
       {distractions > 0 && (
         <div className="absolute top-10 right-2 text-[10px] text-muted">
-          {distractions}/{faceIdConfig.maxDistractions} distractions
+          {t(foreignLanguage, 'faceid.distractions', { n: distractions, max: faceIdConfig.maxDistractions })}
         </div>
       )}
 

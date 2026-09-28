@@ -21,6 +21,19 @@ const greek: TranslationTable = {
   'quicksettings.on': 'ΕΝΕΡΓΟ',
   'quicksettings.off': 'ΑΝΕΝΕΡΓΟ',
   'quicksettings.page': 'Σελίδα {n}/{n}',
+  'faceid.aligning': 'Στοίχιση...',
+  'faceid.scanning': 'Σάρωση...',
+  'faceid.almost': 'Σχεδόν...',
+  'faceid.distractions': '{n}/{max} αποσπάσεις',
+  'fingerprint.clean': 'Καθαρό',
+  'fingerprint.perTap': '{n}%/πίεση',
+  'fingerprint.wipe': 'Πετσόμασσε με το πουκάμισο',
+  'fingerprint.wiping': 'Πετσόμασσω...',
+  'fingerprint.lotion': 'Κρέμα',
+  'fingerprint.toast_crumbs': 'Περιττοί ψωμί',
+  'fingerprint.sweat': 'Ιδρώς',
+  'fingerprint.flour': 'Αλεύρι',
+  'fingerprint.mud': 'Λασπόνι',
 };
 
 const arabic: TranslationTable = {
@@ -38,6 +51,19 @@ const arabic: TranslationTable = {
   'quicksettings.on': 'تشغيل',
   'quicksettings.off': 'إيقاف',
   'quicksettings.page': 'صفحة {n}/{n}',
+  'faceid.aligning': 'محاذاة...',
+  'faceid.scanning': 'جارٍ الفحص...',
+  'faceid.almost': 'شبه مكتمل...',
+  'faceid.distractions': '{n}/{max} مقاطعات',
+  'fingerprint.clean': 'نظيف',
+  'fingerprint.perTap': '{n}%/لمسة',
+  'fingerprint.wipe': 'امسح الشاشة بالقميص',
+  'fingerprint.wiping': 'جارٍ المسح...',
+  'fingerprint.lotion': 'مرطب',
+  'fingerprint.toast_crumbs': 'فتات توست',
+  'fingerprint.sweat': 'عرق',
+  'fingerprint.flour': 'دقيق',
+  'fingerprint.mud': 'وحل',
 };
 
 const korean: TranslationTable = {
@@ -55,6 +81,19 @@ const korean: TranslationTable = {
   'quicksettings.on': '켜기',
   'quicksettings.off': '끄기',
   'quicksettings.page': '페이지 {n}/{n}',
+  'faceid.aligning': '정렬 중...',
+  'faceid.scanning': '스캔 중...',
+  'faceid.almost': '거의 다 됐어요...',
+  'faceid.distractions': '집중 분산 {n}/{max}',
+  'fingerprint.clean': '깨끗함',
+  'fingerprint.perTap': '{n}%/탭',
+  'fingerprint.wipe': '셔츠로 화면 닦기',
+  'fingerprint.wiping': '닦는 중...',
+  'fingerprint.lotion': '로션',
+  'fingerprint.toast_crumbs': '토스트 부스러기',
+  'fingerprint.sweat': '땀',
+  'fingerprint.flour': '밀가루',
+  'fingerprint.mud': '진흙',
 };
 
 const japanese: TranslationTable = {
@@ -72,6 +111,19 @@ const japanese: TranslationTable = {
   'quicksettings.on': 'オン',
   'quicksettings.off': 'オフ',
   'quicksettings.page': 'ページ {n}/{n}',
+  'faceid.aligning': '整列中...',
+  'faceid.scanning': 'スキャン中...',
+  'faceid.almost': 'もうすぐ...',
+  'faceid.distractions': '分心 {n}/{max}',
+  'fingerprint.clean': 'きれいです',
+  'fingerprint.perTap': '{n}%/タップ',
+  'fingerprint.wipe': 'シャツで画面を拭く',
+  'fingerprint.wiping': '拭いています...',
+  'fingerprint.lotion': 'ローション',
+  'fingerprint.toast_crumbs': 'トーストのくず',
+  'fingerprint.sweat': '汗',
+  'fingerprint.flour': '小麦粉',
+  'fingerprint.mud': '泥',
 };
 
 const hindi: TranslationTable = {
@@ -89,6 +141,19 @@ const hindi: TranslationTable = {
   'quicksettings.on': 'चालू',
   'quicksettings.off': 'बंद',
   'quicksettings.page': 'पृष्ठ {n}/{n}',
+  'faceid.aligning': 'सामंजस्य...',
+  'faceid.scanning': 'स्कैन हो रहा है...',
+  'faceid.almost': 'लगभग हो गया...',
+  'faceid.distractions': '{n}/{max} ध्यान भटकना',
+  'fingerprint.clean': 'साफ़',
+  'fingerprint.perTap': '{n}%/टैप',
+  'fingerprint.wipe': 'कमीज़ से स्क्रीन पोंछें',
+  'fingerprint.wiping': 'पोंछ रहे हैं...',
+  'fingerprint.lotion': 'लotion',
+  'fingerprint.toast_crumbs': 'टोस्ट के कण',
+  'fingerprint.sweat': 'पसीना',
+  'fingerprint.flour': 'आटा',
+  'fingerprint.mud': 'कचरा',
 };
 
 const chinese: TranslationTable = {
@@ -106,6 +171,19 @@ const chinese: TranslationTable = {
   'quicksettings.on': '开',
   'quicksettings.off': '关',
   'quicksettings.page': '第 {n}/{n} 页',
+  'faceid.aligning': '对准中...',
+  'faceid.scanning': '扫描中...',
+  'faceid.almost': '快好了...',
+  'faceid.distractions': '分心 {n}/{max}',
+  'fingerprint.clean': '干净',
+  'fingerprint.perTap': '每次 {n}%',
+  'fingerprint.wipe': '用衣服擦屏幕',
+  'fingerprint.wiping': '擦拭中...',
+  'fingerprint.lotion': '乳液',
+  'fingerprint.toast_crumbs': '面包屑',
+  'fingerprint.sweat': '汗水',
+  'fingerprint.flour': '面粉',
+  'fingerprint.mud': '泥土',
 };
 
 const english: TranslationTable = {
@@ -123,6 +201,19 @@ const english: TranslationTable = {
   'quicksettings.on': 'ON',
   'quicksettings.off': 'OFF',
   'quicksettings.page': 'Page {n}/{total}',
+  'faceid.aligning': 'Aligning...',
+  'faceid.scanning': 'Scanning...',
+  'faceid.almost': 'Almost there...',
+  'faceid.distractions': '{n}/{max} distractions',
+  'fingerprint.clean': 'Clean',
+  'fingerprint.perTap': '{n}%/tap',
+  'fingerprint.wipe': 'Wipe Screen with Shirt',
+  'fingerprint.wiping': 'Wiping...',
+  'fingerprint.lotion': 'Lotion',
+  'fingerprint.toast_crumbs': 'Toast crumbs',
+  'fingerprint.sweat': 'Sweat',
+  'fingerprint.flour': 'Flour',
+  'fingerprint.mud': 'Mud',
 };
 
 const translations: Record<ForeignLanguage, TranslationTable> = {
