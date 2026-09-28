@@ -114,6 +114,9 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     const success = finalState.batteryLevel > 0 && finalState.timeRemaining > 0 && allResolved;
     const seed = RngEngine.seed;
 
+    // Play victory or defeat jingle
+    playSound(success ? 'success' : 'failure');
+
     // Check achievements
     const finalStateWithResult = { ...finalState, gameState: 'results' as const };
     const newAchievements = checkAchievements(finalStateWithResult, runStatsRef.current);
