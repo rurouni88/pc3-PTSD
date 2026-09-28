@@ -43,33 +43,37 @@ export function HelpModal({ onClose }: HelpModalProps) {
 
           {/* Mini-Games */}
           <div>
-            <h3 className="text-primary font-bold mb-1">🎮 Mini-Games</h3>
+            <h3 className="text-primary font-bold mb-1">🎮 Mini-Games (7)</h3>
+            <p className="text-xs text-muted mb-2">A seeded RNG selects a subset per run. Not all appear every game.</p>
             <ul className="space-y-1 ml-4 list-disc">
               <li>
                 <strong className="text-primary">Infinite Tab Sweep</strong> — Swipe to
-                close browser tabs before they multiply. Dad's golf forums won't close
-                themselves.
+                close browser tabs. Dad's golf forums won't close themselves.
               </li>
               <li>
                 <strong className="text-primary">Physical Override</strong> — Swipe down
-                to open Quick Settings and find the flashlight. Your relative's
-                customisation is a war crime.
+                to open Quick Settings and find the flashlight. It's hidden.
               </li>
               <li>
-                <strong className="text-primary">Duplicate Doom</strong> — Find and
-                delete duplicate photos. Mum has 34 copies of the same sunset. Grandma
-                has 47 of the neighbor's cat. You're not allowed to delete the
-                "pretty" ones.
+                <strong className="text-primary">Duplicate Doom</strong> — Delete blurry
+                duplicates, keep the sharp originals. Each parent has different photo types.
               </li>
               <li>
                 <strong className="text-primary">Antivirus Whack-A-Mole</strong> —
-                Long-press the fake antivirus app to uninstall it. It will jiggle when
-                it's ready. Don't tap the real apps.
+                Long-press fake antivirus apps to uninstall. Don't touch the real ones.
               </li>
               <li>
                 <strong className="text-primary">Blind Translation</strong> — Navigate
-                Mum's or Grandma's phone settings in a language you can't read. Find
-                the globe icon, then find English. Good luck.
+                settings in Greek, Arabic, Korean, Japanese, or Hindi. Find English.
+              </li>
+              <li>
+                <strong className="text-primary">FaceID Setup</strong> — Drag the scan
+                frame over their drifting face. Hold steady. Don't let them look at the
+                ceiling fan.
+              </li>
+              <li>
+                <strong className="text-primary">Fingerprint Scan</strong> — Rapid-tap
+                the sensor to 100%. Wipe smudges (lotion, crumbs, mud) with your shirt.
               </li>
             </ul>
           </div>
