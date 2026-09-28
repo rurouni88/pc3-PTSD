@@ -17,7 +17,8 @@ export type MiniGameType =
   | 'duplicate-doom'
   | 'antivirus-whack-a-mole'
   | 'physical-override'
-  | 'faceid-setup';
+  | 'faceid-setup'
+  | 'fingerprint-scan';
 
 export type ForeignLanguage = 'greek' | 'arabic' | 'korean' | 'japanese' | 'hindi' | 'chinese';
 
@@ -67,7 +68,8 @@ export interface LevelConfig {
   description: string;
   durationSeconds: number; // typically 120
   initialBattery: number; // starting battery percentage
-  initialIssues: GameIssue[];
+  issuePool: GameIssue[];
+  selectedIssueCount: number;
   parentPrompts: ParentPrompt[];
   interruptionRate: number; // seconds between random interruptions
   passiveDrain: { intervalSeconds: number; chance: number; amount: number };

@@ -13,6 +13,7 @@ import { DuplicateDoom } from '../components/mini-games/DuplicateDoom';
 import { AntivirusWhackAMole } from '../components/mini-games/AntivirusWhackAMole';
 import { BlindTranslation } from '../components/mini-games/BlindTranslation';
 import { FaceIdSetup } from '../components/mini-games/FaceIdSetup';
+import { FingerprintScan } from '../components/mini-games/FingerprintScan';
 
 interface OSInterfaceProps {
   levelConfig: LevelConfig;
@@ -33,6 +34,7 @@ const issueLabels: Record<MiniGameType, { label: string; icon: string }> = {
   'antivirus-whack-a-mole': { label: 'Suspicious app', icon: '🛡️' },
   'physical-override': { label: 'Battery draining', icon: '🔦' },
   'faceid-setup': { label: 'FaceID not working', icon: '🔐' },
+  'fingerprint-scan': { label: 'Touch ID smudged', icon: '👆' },
 };
 
 function MiniGameView({
@@ -63,6 +65,8 @@ function MiniGameView({
       return <BlindTranslation difficulty={difficulty} foreignLanguage={foreignLanguage} onComplete={(q, lang) => onComplete(q, lang)} onCancel={onCancel} />;
     case 'faceid-setup':
       return <FaceIdSetup difficulty={difficulty} faceIdConfig={levelConfig.faceIdConfig} foreignLanguage={foreignLanguage} onComplete={(q) => onComplete(q)} onCancel={onCancel} />;
+    case 'fingerprint-scan':
+      return <FingerprintScan difficulty={difficulty} foreignLanguage={foreignLanguage} onComplete={(q) => onComplete(q)} onCancel={onCancel} />;
   }
 }
 

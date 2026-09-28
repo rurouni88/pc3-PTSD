@@ -29,6 +29,19 @@ interface UseGameEngineProps {
 
 const GRANDMA_LANGUAGES: ForeignLanguage[] = ['greek', 'arabic', 'korean', 'japanese', 'hindi'];
 
+/**
+ * Select N issues from the pool using seeded RNG (Fisher-Yates shuffle).
+ * If pool length === N, returns all (shuffled for variety).
+ */
+function selectIssues(pool: GameIssue[], count: number): GameIssue[] {
+  const shuffled = [...pool];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(RngEngine.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled.slice(0, count);
+}
+
 export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
   const [state, setState] = useState<GameEngineState>(() => ({
     gameState: 'playing',
@@ -36,7 +49,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     timeRemaining: levelConfig.durationSeconds,
     batteryLevel: levelConfig.initialBattery,
     isPaused: false,
-    activeIssues: levelConfig.initialIssues,
+    activeIssues: selectIssues(levelConfig.issuePool, levelConfig.selectedIssueCount),
     completedIssues: [],
     currentMiniGame: null,
     foreignLanguage: levelConfig.difficulty === 'grandma'
@@ -157,7 +170,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
       const newBattery = Math.max(0, prev.batteryLevel - drainRate * delta);
 
       // Dynamic interruption cadence: better performance = more frequent
-      const totalIssues = levelConfig.initialIssues.length;
+      const totalIssues = levelConfig.selectedIssueCount;
       const resolvedCount = prev.activeIssues.filter((i) => i.isResolved).length;
       const resolvedRatio = totalIssues > 0 ? resolvedCount / totalIssues : 0;
       const effectiveInterval = levelConfig.interruptionRate * (1 - resolvedRatio * 0.5);
