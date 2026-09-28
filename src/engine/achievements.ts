@@ -114,7 +114,7 @@ export const ACHIEVEMENTS: Achievement[] = [
   {
     id: 'tab_closer',
     title: 'Tab Slayer',
-    desc: 'Close all of Dad\'s browser tabs without triggering a single ad. The golf forums will mourn. The ads will not celebrate.',
+    desc: 'Close all of their browser tabs without triggering a single ad. The forums will mourn. The ads will not celebrate.',
     emoji: '🌐',
     check: (_s, stats) => stats.miniGamesCompleted.includes('infinite-tab-sweep') && stats.adsTriggered === 0,
   },
