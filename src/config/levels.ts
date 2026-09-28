@@ -7,11 +7,13 @@ export const levels: Record<string, LevelConfig> = {
     description: 'Logical but specific errors. RAM Boosters and misplaced widgets.',
     durationSeconds: 60,
     initialBattery: 50,
-    initialIssues: [
+    issuePool: [
       { id: 'dad-ram-booster', type: 'antivirus-whack-a-mole', isResolved: false, drainPenalty: 0.5 },
       { id: 'dad-weather-widget', type: 'infinite-tab-sweep', isResolved: false, drainPenalty: 0.3 },
       { id: 'dad-faceid', type: 'faceid-setup', isResolved: false, drainPenalty: 0.2 },
+      { id: 'dad-fingerprint', type: 'fingerprint-scan', isResolved: false, drainPenalty: 0.2 },
     ],
+    selectedIssueCount: 3,
     parentPrompts: [
       {
         id: 'dad-q1',
@@ -124,12 +126,14 @@ export const levels: Record<string, LevelConfig> = {
     description: 'Maxed-out cloud storage, huge text sizes, hidden subscriptions.',
     durationSeconds: 60,
     initialBattery: 40,
-    initialIssues: [
+    issuePool: [
       { id: 'mum-storage', type: 'duplicate-doom', isResolved: false, drainPenalty: 0.6 },
       { id: 'mum-text-size', type: 'blind-translation', isResolved: false, drainPenalty: 0.4 },
       { id: 'mum-tabs', type: 'infinite-tab-sweep', isResolved: false, drainPenalty: 0.3 },
       { id: 'mum-faceid', type: 'faceid-setup', isResolved: false, drainPenalty: 0.3 },
+      { id: 'mum-fingerprint', type: 'fingerprint-scan', isResolved: false, drainPenalty: 0.3 },
     ],
+    selectedIssueCount: 4,
     parentPrompts: [
       {
         id: 'mum-q1',
@@ -253,14 +257,16 @@ export const levels: Record<string, LevelConfig> = {
     description: 'Phone in Chinese, ghost touches from tea spill, mute switch toggled.',
     durationSeconds: 60,
     initialBattery: 100,
-    initialIssues: [
+    issuePool: [
       { id: 'grandma-language', type: 'blind-translation', isResolved: false, drainPenalty: 0.8 },
       { id: 'grandma-ghost-touch', type: 'physical-override', isResolved: false, drainPenalty: 0.7 },
       { id: 'grandma-photos', type: 'duplicate-doom', isResolved: false, drainPenalty: 0.5 },
       { id: 'grandma-tabs', type: 'infinite-tab-sweep', isResolved: false, drainPenalty: 0.4 },
       { id: 'grandma-faceid', type: 'faceid-setup', isResolved: false, drainPenalty: 0.4 },
       { id: 'grandma-malware', type: 'antivirus-whack-a-mole', isResolved: false, drainPenalty: 0.6 },
+      { id: 'grandma-fingerprint', type: 'fingerprint-scan', isResolved: false, drainPenalty: 0.3 },
     ],
+    selectedIssueCount: 5,
     parentPrompts: [
       {
         id: 'grandma-q1',
