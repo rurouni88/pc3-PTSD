@@ -166,6 +166,12 @@ export function InfiniteTabSweep({ difficulty, foreignLanguage, onComplete, onCa
         </span>
       </div>
 
+      {closedCount === 0 && (
+        <p className="text-center text-[10px] text-muted px-3 pb-1">
+          ← Swipe a tab to close it →
+        </p>
+      )}
+
       <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-2">
         {openTabs.map((tab) => {
           const isDragging = activeDragTab === tab.id;
