@@ -71,10 +71,10 @@ export function LeaderboardModal({ onClose }: LeaderboardModalProps) {
 
   useEffect(() => {
     const meta = MetaStore.load();
-    setAllRuns(meta.topRuns.slice(0, 3));
-    setDadRuns(MetaStore.getTopRuns('dad', 3));
-    setMumRuns(MetaStore.getTopRuns('mum', 3));
-    setGrandmaRuns(MetaStore.getTopRuns('grandma', 3));
+    setAllRuns(meta.topRuns.slice(0, 5));
+    setDadRuns(MetaStore.getTopRuns('dad', 5));
+    setMumRuns(MetaStore.getTopRuns('mum', 5));
+    setGrandmaRuns(MetaStore.getTopRuns('grandma', 5));
   }, []);
 
   const tabs: { key: Tab; label: string }[] = [

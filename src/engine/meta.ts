@@ -97,4 +97,14 @@ export const MetaStore = {
       .topRuns.filter((r) => r.difficulty === difficulty)
       .slice(0, n);
   },
+
+  getTopRunsCount(): number {
+    return this.load().topRuns.length;
+  },
+
+  clearTopRuns(): void {
+    const meta = this.load();
+    meta.topRuns = [];
+    this.save(meta);
+  },
 };
