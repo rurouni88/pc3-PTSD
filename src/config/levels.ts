@@ -212,7 +212,7 @@ export const levels: Record<string, LevelConfig> = {
     photoTheme: {
       importantLabel: 'Sunset (sharp)',
       importantIcon: 'sunset',
-      decoyLabels: ['Sunset 2', 'Sunset 3', 'Sunset 4', 'Cloud 1', 'Cloud 2', 'Cloud 3', 'Sunset 5', 'Sunset 6', 'Cloud 4', 'Sunset 7', 'Sunset 8', 'Cloud 5'],
+      decoyLabels: ['Sunset 2', 'Sunset 3', 'Sunset 4', 'Cloud 1', 'Cloud 2', 'Cloud 3', 'Sunset 5', 'Sunset 6', 'Cloud 4', 'Coffee 1', 'Sunset 7', 'Coffee 2'],
       decoyIcons: ['sunset', 'sunset', 'sunset', 'cloud', 'cloud', 'cloud', 'sunset', 'sunset', 'cloud', 'coffee', 'sunset', 'coffee'],
       confirmPrompt: 'Are you sure? Mum thinks that one is pretty.',
     },
