@@ -1,15 +1,15 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { Icon } from '../Icon';
 import { playSound } from '../../engine/sound';
 import { t, isRTL } from '../../config/translations';
 import { Hint } from '../Hint';
-import type { MalwareConfig, ForeignLanguage } from '../../types/game';
+import type { MalwareConfig, ForeignLanguage, MiniGameQuality } from '../../types/game';
 
 interface AntivirusWhackAMoleProps {
   malwareConfig: MalwareConfig;
   difficulty: string;
   foreignLanguage: ForeignLanguage | null;
-  onComplete: () => void;
+  onComplete: (quality?: MiniGameQuality) => void;
   onCancel: () => void;
 }
 
@@ -25,26 +25,109 @@ interface AppIcon {
   icon: string;
   isTarget: boolean;
   isJiggling: boolean;
+  isRemoved: boolean;
 }
 
 const LONG_PRESS_MS = 800;
 
+// Decoy apps to fill the grid
+const DECOY_APPS: { id: string; label: string; icon: string }[] = [
+  { id: 'whatsapp', label: 'WhatsApp', icon: 'whatsapp' },
+  { id: 'photos', label: 'Photos', icon: 'photos' },
+  { id: 'settings', label: 'Settings', icon: 'settings' },
+  { id: 'safari', label: 'Safari', icon: 'safari' },
+  { id: 'clock', label: 'Clock', icon: 'clock' },
+  { id: 'notes', label: 'Notes', icon: 'notes' },
+  { id: 'maps', label: 'Maps', icon: 'globe-web' },
+  { id: 'mail', label: 'Mail', icon: 'mail' },
+  { id: 'calendar', label: 'Calendar', icon: 'clock' },
+  { id: 'weather', label: 'Weather', icon: 'settings' },
+  { id: 'health', label: 'Health', icon: 'shield' },
+  { id: 'fitness', label: 'Fitness', icon: 'check' },
+];
+
+// Number of malware apps per difficulty
+const MALWARE_COUNTS: Record<string, number> = {
+  dad: 1,
+  mum: 2,
+  grandma: 3,
+};
+
+// Total apps on screen per difficulty
+const TOTAL_APPS: Record<string, number> = {
+  dad: 10,
+  mum: 12,
+  grandma: 14,
+};
+
+// Extra malware names for multi-malware difficulties
+const EXTRA_MALWARE: { name: string; icon: string }[] = [
+  { name: 'Phone Cleaner Pro', icon: 'shield' },
+  { name: 'WiFi Booster X', icon: 'wifi' },
+  { name: 'Battery Saver Plus', icon: 'settings' },
+  { name: 'Ad Blocker Mega', icon: 'shield' },
+  { name: 'RAM Cleaner 2026', icon: 'settings' },
+];
+
 export function AntivirusWhackAMole({ malwareConfig, difficulty, foreignLanguage, onComplete, onCancel }: AntivirusWhackAMoleProps) {
-  const [apps, setApps] = useState<AppIcon[]>(() => [
-    { id: 'whatsapp', label: 'WhatsApp', icon: 'whatsapp', isTarget: false, isJiggling: false },
-    { id: 'malware', label: malwareConfig.name, icon: 'shield', isTarget: true, isJiggling: false },
-    { id: 'photos', label: 'Photos', icon: 'photos', isTarget: false, isJiggling: false },
-    { id: 'settings', label: 'Settings', icon: 'settings', isTarget: false, isJiggling: false },
-    { id: 'safari', label: 'Safari', icon: 'safari', isTarget: false, isJiggling: false },
-    { id: 'clock', label: 'Clock', icon: 'clock', isTarget: false, isJiggling: false },
-    { id: 'decoy', label: malwareConfig.decoyAppLabel, icon: malwareConfig.decoyAppIcon, isTarget: false, isJiggling: false },
-    { id: 'notes', label: 'Notes', icon: 'notes', isTarget: false, isJiggling: false },
-  ]);
+  const malwareCount = MALWARE_COUNTS[difficulty] ?? 1;
+  const totalApps = TOTAL_APPS[difficulty] ?? 10;
+  const decoyTappedRef = useRef(0);
+
+  const [apps, setApps] = useState<AppIcon[]>(() => {
+    const result: AppIcon[] = [];
+
+    // Add malware apps
+    result.push({
+      id: 'malware-1',
+      label: malwareConfig.name,
+      icon: 'shield',
+      isTarget: true,
+      isJiggling: false,
+      isRemoved: false,
+    });
+    for (let i = 1; i < malwareCount; i++) {
+      const extra = EXTRA_MALWARE[i - 1];
+      result.push({
+        id: `malware-${i + 1}`,
+        label: extra.name,
+        icon: extra.icon,
+        isTarget: true,
+        isJiggling: false,
+        isRemoved: false,
+      });
+    }
+
+    // Add decoy apps
+    const decoySlots = totalApps - malwareCount;
+    for (let i = 0; i < decoySlots; i++) {
+      const decoy = DECOY_APPS[i % DECOY_APPS.length];
+      result.push({
+        id: decoy.id,
+        label: decoy.label,
+        icon: decoy.icon,
+        isTarget: false,
+        isJiggling: false,
+        isRemoved: false,
+      });
+    }
+
+    // Shuffle
+    for (let i = result.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [result[i], result[j]] = [result[j], result[i]];
+    }
+
+    return result;
+  });
+
   const [scanning, setScanning] = useState(true);
   const [scanProgress, setScanProgress] = useState(0);
   const [showFakeAlert, setShowFakeAlert] = useState(false);
   const [pressTimer, setPressTimer] = useState<number | null>(null);
   const [solved, setSolved] = useState(false);
+
+  const remainingTargets = apps.filter((a) => a.isTarget && !a.isRemoved).length;
 
   useEffect(() => {
     if (!scanning) return;
@@ -72,7 +155,11 @@ export function AntivirusWhackAMole({ malwareConfig, difficulty, foreignLanguage
   const handlePressStart = useCallback((appId: string) => {
     if (scanning) return;
     const app = apps.find((a) => a.id === appId);
-    if (!app || app.isTarget === false) {
+    if (!app || app.isRemoved) return;
+
+    if (!app.isTarget) {
+      // Tapped a decoy — track it
+      decoyTappedRef.current++;
       if (navigator.vibrate) navigator.vibrate(50);
       return;
     }
@@ -95,22 +182,32 @@ export function AntivirusWhackAMole({ malwareConfig, difficulty, foreignLanguage
     }
     const app = apps.find((a) => a.id === appId);
     if (app?.isJiggling) {
-      setSolved(true);
+      // Remove the app
+      setApps((prev) =>
+        prev.map((a) => (a.id === appId ? { ...a, isRemoved: true, isJiggling: false } : a))
+      );
       playSound('success');
       if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+
+      // Check if all targets removed
+      const remaining = apps.filter((a) => a.isTarget && !a.isRemoved && a.id !== appId).length;
+      if (remaining === 0) {
+        setSolved(true);
+      }
     }
   }, [apps, pressTimer]);
 
   if (solved) {
+    const removedNames = apps.filter((a) => a.isTarget).map((a) => a.label).join(', ');
     return (
       <div className="h-full flex flex-col items-center justify-center bg-primary p-6" dir={isRTL(foreignLanguage) ? 'rtl' : 'ltr'}>
         <Icon name="trash" size={48} className="text-accent-red mb-4" />
-        <p className="text-xl font-bold text-primary">{malwareConfig.name} {t(foreignLanguage, 'antivirus.removed')}</p>
+        <p className="text-xl font-bold text-primary">{removedNames} {t(foreignLanguage, 'antivirus.removed')}</p>
         <p className="text-sm text-secondary mt-2">
           {completionQuotes[difficulty] ?? completionQuotes.dad}
         </p>
         <button
-          onClick={() => { playSound('success'); onComplete(); }}
+          onClick={() => { playSound('success'); onComplete({ decoysTapped: decoyTappedRef.current }); }}
           className="mt-6 px-6 py-3 bg-accent-green text-primary font-bold rounded-xl"
         >
           Done
@@ -127,7 +224,7 @@ export function AntivirusWhackAMole({ malwareConfig, difficulty, foreignLanguage
         </button>
         <span className="text-sm font-bold text-primary">{t(foreignLanguage, 'antivirus.home')}</span>
         <span className="text-xs text-muted">
-          {scanning ? t(foreignLanguage, 'antivirus.scanning') : t(foreignLanguage, 'antivirus.longpress')}
+          {scanning ? t(foreignLanguage, 'antivirus.scanning') : `${remainingTargets} left`}
         </span>
       </div>
 
@@ -153,8 +250,8 @@ export function AntivirusWhackAMole({ malwareConfig, difficulty, foreignLanguage
       )}
 
       <div className="flex-1 p-4">
-        <div className="grid grid-cols-4 gap-4">
-          {apps.map((app) => (
+        <div className="grid grid-cols-4 gap-3">
+          {apps.filter((a) => !a.isRemoved).map((app) => (
             <button
               key={app.id}
               onPointerDown={() => handlePressStart(app.id)}
@@ -165,7 +262,7 @@ export function AntivirusWhackAMole({ malwareConfig, difficulty, foreignLanguage
                   setPressTimer(null);
                 }
               }}
-              className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all ${
+              className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all relative ${
                 app.isJiggling ? 'animate-jiggle' : ''
               } ${scanning ? 'opacity-50' : ''}`}
             >
@@ -185,8 +282,6 @@ export function AntivirusWhackAMole({ malwareConfig, difficulty, foreignLanguage
             </button>
           ))}
         </div>
-
-
       </div>
 
       {showFakeAlert && (

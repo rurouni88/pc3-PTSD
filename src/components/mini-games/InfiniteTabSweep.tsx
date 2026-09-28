@@ -1,14 +1,15 @@
 import { useState, useRef, useCallback } from 'react';
 import { Icon } from '../Icon';
 import { playSound } from '../../engine/sound';
+import { RngEngine } from '../../engine/seeded-rng';
 import { t, isRTL } from '../../config/translations';
 import { Hint } from '../Hint';
-import type { ForeignLanguage } from '../../types/game';
+import type { ForeignLanguage, MiniGameQuality } from '../../types/game';
 
 interface InfiniteTabSweepProps {
   difficulty: string;
   foreignLanguage: ForeignLanguage | null;
-  onComplete: () => void;
+  onComplete: (quality?: MiniGameQuality) => void;
   onCancel: () => void;
 }
 
@@ -32,6 +33,14 @@ const dadTabs: TabCard[] = [
   { id: 10, title: 'Your PC is Infected! (3 Viruses)', url: 'cleanmaster-max.com' },
   { id: 11, title: 'Facebook - Notifications', url: 'facebook.com' },
   { id: 12, title: 'How to Clean Your Screen (Video)', url: 'youtubewatch.com' },
+  { id: 13, title: 'Golf Forum: Grip Pressure Thread', url: 'golfdeals.net' },
+  { id: 14, title: 'Facebook - Watch (Video)', url: 'facebook.com' },
+  { id: 15, title: 'Best Deals: TV, Fridge, Washer', url: 'mega-deals.com' },
+  { id: 16, title: 'How to Root Your Phone (Guide)', url: 'tech-help.com' },
+  { id: 17, title: 'Golf Forum: Course Review - Pine Valley', url: 'golfdeals.net' },
+  { id: 18, title: 'Your WiFi is Being Hacked!', url: 'securewifi-now.com' },
+  { id: 19, title: 'Facebook - Groups', url: 'facebook.com' },
+  { id: 20, title: 'Golf Forum: Should I Buy a 7 Iron?', url: 'golfdeals.net' },
 ];
 
 const mumTabs: TabCard[] = [
@@ -47,6 +56,14 @@ const mumTabs: TabCard[] = [
   { id: 10, title: 'Cloud Storage: You\'re at 99% Capacity', url: 'icloud.com' },
   { id: 11, title: 'WhatsApp - 47 Unread Messages', url: 'whatsapp.com' },
   { id: 12, title: '5 Foods That Cause Cancer (Number 3 is Bread)', url: 'healthscare.com' },
+  { id: 13, title: 'Facebook - Watch (Cooking Video)', url: 'facebook.com' },
+  { id: 14, title: 'Recipe: 12-Hour Beef Brisket', url: 'tastyrecipes.com' },
+  { id: 15, title: 'Shopee: Last Chance Sale (Ends Tonight)', url: 'shopee.com' },
+  { id: 16, title: 'Gardening: Tomato Plant Pruning Guide', url: 'gardening-tips.com' },
+  { id: 17, title: 'WhatsApp - Voice Messages (23)', url: 'whatsapp.com' },
+  { id: 18, title: 'Your Phone Has a Virus! (Click to Scan)', url: 'antivirus-free.com' },
+  { id: 19, title: 'Facebook - Events (12 Invites)', url: 'facebook.com' },
+  { id: 20, title: 'Recipe: Mum\'s Secret Noodle Soup', url: 'tastyrecipes.com' },
 ];
 
 const grandmaTabs: TabCard[] = [
@@ -62,6 +79,14 @@ const grandmaTabs: TabCard[] = [
   { id: 10, title: 'WhatsApp: 12 Unread Messages', url: 'whatsapp.com' },
   { id: 11, title: '如何关闭手电筒 (Turn Off Flashlight)', url: 'tech-help.com' },
   { id: 12, title: 'Video Call: How to See Your Grandkids', url: 'youtubewatch.com' },
+  { id: 13, title: 'Neighbor\'s Cat - Photo 48 of 47', url: 'photos.local' },
+  { id: 14, title: 'How to Turn On the WiFi (Video)', url: 'youtubewatch.com' },
+  { id: 15, title: 'Facebook - 群組 (Groups)', url: 'facebook.com' },
+  { id: 16, title: 'Tea Recipe: Chai Latte at Home', url: 'tastyrecipes.com' },
+  { id: 17, title: 'Gardening: Why Are My Roses Dying?', url: 'gardening-tips.com' },
+  { id: 18, title: 'Your Phone Is Running Slow (Fix Now)', url: 'phonespeed-fix.com' },
+  { id: 19, title: 'WhatsApp: Voice Message from Grandson', url: 'whatsapp.com' },
+  { id: 20, title: 'How to Take a Screenshot (2021 Guide)', url: 'youtubewatch.com' },
 ];
 
 const tabDataByLevel: Record<string, TabCard[]> = {
@@ -78,11 +103,20 @@ const completionQuotes: Record<string, string> = {
 
 const AD_INTERVAL = 4;
 
+const MIN_TABS = 12;
+const MAX_TABS = 20;
+
 export function InfiniteTabSweep({ difficulty, foreignLanguage, onComplete, onCancel }: InfiniteTabSweepProps) {
-  const totalTabs = (tabDataByLevel[difficulty] ?? dadTabs).length;
-  const [tabs, setTabs] = useState<TabCard[]>(
-    (tabDataByLevel[difficulty] ?? dadTabs).map((t) => ({ ...t, isClosed: false }))
-  );
+  // Seeded RNG determines tab count: 12-20
+  const [totalTabs] = useState(() => {
+    const count = MIN_TABS + Math.floor(RngEngine.random() * (MAX_TABS - MIN_TABS + 1));
+    return count;
+  });
+  const [tabs, setTabs] = useState<TabCard[]>(() => {
+    const all = tabDataByLevel[difficulty] ?? dadTabs;
+    return all.slice(0, totalTabs).map((t) => ({ ...t, isClosed: false }));
+  });
+  const adsTriggeredRef = useRef(0);
   const [showAd, setShowAd] = useState(false);
   const [adMessage, setAdMessage] = useState('');
   const [closedCount, setClosedCount] = useState(0);
@@ -106,6 +140,7 @@ export function InfiniteTabSweep({ difficulty, foreignLanguage, onComplete, onCa
         ];
         setAdMessage(messages[Math.floor(next / AD_INTERVAL) % messages.length]);
         setShowAd(true);
+        adsTriggeredRef.current++;
       }
       return next;
     });
@@ -144,7 +179,7 @@ export function InfiniteTabSweep({ difficulty, foreignLanguage, onComplete, onCa
         <p className="text-xl font-bold text-primary">{t(foreignLanguage, 'tabs.closed', { n: totalTabs })}</p>
         <p className="text-sm text-secondary mt-2">{completionQuotes[difficulty] ?? completionQuotes.dad}</p>
         <button
-          onClick={() => { playSound('success'); onComplete(); }}
+          onClick={() => { playSound('success'); onComplete({ adsTriggered: adsTriggeredRef.current }); }}
           className="mt-6 px-6 py-3 bg-accent-green text-primary font-bold rounded-xl"
         >
           Done

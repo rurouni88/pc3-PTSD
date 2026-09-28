@@ -86,6 +86,14 @@ export interface GameEngineState {
   foreignLanguage: ForeignLanguage | null;
 }
 
+export interface MiniGameQuality {
+  adsTriggered?: number;
+  decoysTapped?: number;
+  wrongLanguagePicks?: number;
+  wrongToggles?: number;
+  importantSelected?: boolean;
+}
+
 export interface RunStats {
   miniGamesCompleted: MiniGameType[];
   promptsAnswered: number;
@@ -97,4 +105,10 @@ export interface RunStats {
   spamsReceived: number;
   chineseEasterEgg: boolean;
   difficulty: Difficulty;
+  // Mini-game quality stats
+  adsTriggered: number;
+  decoysTapped: number;
+  wrongLanguagePicks: number;
+  wrongToggles: number;
+  importantSelected: boolean;
 }

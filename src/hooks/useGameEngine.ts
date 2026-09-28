@@ -7,6 +7,7 @@ import {
   MiniGameType,
   ForeignLanguage,
   RunStats,
+  MiniGameQuality,
 } from '../types/game';
 import { RngEngine } from '../engine/seeded-rng';
 import { SaveSystem } from '../engine/save';
@@ -66,6 +67,11 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     spamsReceived: 0,
     chineseEasterEgg: false,
     difficulty: levelConfig.difficulty,
+    adsTriggered: 0,
+    decoysTapped: 0,
+    wrongLanguagePicks: 0,
+    wrongToggles: 0,
+    importantSelected: false,
   });
 
   const calculateDrainRate = useCallback((issues: GameIssue[]): number => {
@@ -198,7 +204,16 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     setState((prev) => ({ ...prev, isPaused: false }));
   }, []);
 
-  const resolveIssue = useCallback((issueId: string, selectedLanguage?: string) => {
+  const resolveIssue = useCallback((issueId: string, selectedLanguage?: string, quality?: MiniGameQuality) => {
+    // Merge quality stats into run stats
+    if (quality) {
+      if (quality.adsTriggered) runStatsRef.current.adsTriggered += quality.adsTriggered;
+      if (quality.decoysTapped) runStatsRef.current.decoysTapped += quality.decoysTapped;
+      if (quality.wrongLanguagePicks) runStatsRef.current.wrongLanguagePicks += quality.wrongLanguagePicks;
+      if (quality.wrongToggles) runStatsRef.current.wrongToggles += quality.wrongToggles;
+      if (quality.importantSelected) runStatsRef.current.importantSelected = true;
+    }
+
     setState((prev) => {
       const resolved = prev.activeIssues.find((i) => i.id === issueId);
       if (resolved) {

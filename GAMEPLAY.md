@@ -41,16 +41,16 @@ The mini-games are the "rooms" or "monsters" of your dungeon. Because this runs 
 
 When a player taps on a broken feature or a messy app icon, a full-screen viewport layer opens up. Clearing the task updates the issues state array to `isResolved: true`, instantly dropping the battery's passive drain penalty.
 
-### 🌐 1. The Infinite Tab Sweep (Clutter Category — Dad/Mum)
+### 🌐 1. The Infinite Tab Sweep (Clutter Category — All Levels)
 
 **Dad's tabs:** Golf forums, RAM boosters, fake antivirus, Facebook.
 **Mum's tabs:** Health scare articles, TEMU/AliExpress shopping, family group chats, cloud storage warnings, recipe tutorials.
 **Grandma's tabs:** "How to Use a Phone (2019)" tutorials, 47 cat photos, "What is Bluetooth? (For Seniors)", Chinese-language tabs, "How to Delete a Photo (Video)".
 
-- **The Problem**: The relative complains that "the internet is slow". You open the browser app to find hundreds of open web pages.
-- **The UI Layout**: A standard grid or vertical stack of overlapping browser card previews (e.g., recipes, golf forums, Facebook links).
+- **The Problem**: The relative complains that "the internet is slow". You open the browser app to find 12–20 open web pages (randomised per run via seeded RNG).
+- **The UI Layout**: A vertical stack of browser card previews.
 - **The Mechanic (Thumb-Swipe)**: The player must rapidly swipe each card horizontally off the screen to close it.
-- **The Satirical Catch**: Every 4 tabs closed, a sticky, slow-loading cookie consent banner or "Spin the Wheel to Win an iPhone!" pop-up spawns over the tabs. The player must accurately tap a microscopic [X] to close the ad before they can resume swiping.
+- **The Satirical Catch**: Every 4 tabs closed, a sticky, slow-loading cookie consent banner or "Spin the Wheel to Win an iPhone!" pop-up spawns over the tabs. The player must tap the [X] to close the ad before they can resume swiping.
 
 ### ⚙️ 2. The Blind Translation (Settings Category — Mum/Grandma)
 
@@ -61,17 +61,17 @@ When a player taps on a broken feature or a messy app icon, a full-screen viewpo
 
 ### 🗑️ 3. Duplicate Doom: The Flower Clearance (Storage Category — Mum/Grandma)
 
-- **The Problem**: The camera app displays a "Storage Full" error. You must open the photo gallery to delete assets, but she won't let you delete anything "important."
-- **The UI Layout**: A photo gallery grid filled with dozens of almost identical, blurry photos of the exact same rose bush, a blurry sunset, or a morning coffee cup.
-- **The Mechanic (Multi-Select Audit)**: The player must tap the "Select" button, then quickly tap the thumbnail previews of the blurry or exact duplicate photos, leaving only the single crisp, clear one untouched. They then tap the Trash icon.
-- **The Satirical Catch**: A prompt pops up saying, "Are you sure? Mum thinks that one is pretty." If you click "Yes", it requires a double-confirmation tap, eating up 3 valuable seconds.
+- **The Problem**: The camera app displays a "Storage Full" error. You must open the photo gallery to delete assets, but they won't let you delete anything "important."
+- **The UI Layout**: A photo gallery grid of 15–20 photos (randomised per run). Only 2–5 are important (varies by difficulty: Dad keeps 5, Mum keeps 3, Grandma keeps 2). The rest are duplicates.
+- **The Mechanic (Multi-Select Audit)**: The player must tap the duplicate photos to select them, then tap Delete. Selecting an important photo triggers a warning.
+- **The Satirical Catch**: A prompt pops up saying, "Are you sure?" If you selected the wrong photo, you have to deselect it and try again.
 
-### 🛡️ 4. The Antivirus Whack-A-Mole (Malware Category — Dad/Grandma)
+### 🛡️ 4. The Antivirus Whack-A-Mole (Malware Category — All Levels)
 
-- **The Problem**: The phone is infected with a fake cybersecurity optimization suite (e.g., "Clean Master Max 2026"). It's actively hijacking the system.
-- **The UI Layout**: A flashy screen with a big fake progress bar scanning the phone. It aggressively spawns red alert windows.
-- **The Mechanic (Long-Press Uninstall)**: Tapping the close buttons inside the app does nothing — it just opens more ads. To beat this mini-game, the player must press the physical "Home" button on the UI container, locate the app icon on the simulated home screen, long-press it until it starts jiggling, and tap the delete badge.
-- **The Satirical Catch**: While you are attempting to drag it to the trash, the app icon actively flees or swaps positions with a real app (like WhatsApp), risking an accidental uninstallation of a core service.
+- **The Problem**: The phone is infected with fake cybersecurity apps. Dad has 1, Mum has 2, Grandma has 3 — all hiding among 10–14 legitimate apps.
+- **The UI Layout**: A simulated home screen grid with a fake scan progress bar. Red alert windows pop up during scanning.
+- **The Mechanic (Long-Press Uninstall)**: Long-press a suspicious app until it jiggles, then tap the − badge to uninstall. Remove ALL malware apps to win.
+- **The Satirical Catch**: The malware apps look suspicious but the decoy apps look normal. Long-pressing a decoy wastes your time. On Grandma's phone, 3 different "Phone Cleaner" variants are hiding in plain sight.
 
 ### 🔦 5. The Physical Override (Hardware Trap — All Levels)
 
@@ -132,7 +132,7 @@ These prompts trigger based on what the player is actively doing inside the phon
 - **Victory**: Resolve all issues AND keep the battery above 0% until the 60-second timer expires.
 - **Defeat**: Battery hits 0% at any point, timer expires with unresolved issues, or timer expires with battery at 0%.
 - **Scoring**: Based on time remaining, battery level, and issues resolved.
-- **Achievements**: 20 satirical achievements unlock across multiple runs (e.g., "Air Fryer Survivor", "Golf Forum Explorer", "Tea Spill Veteran").
+- **Achievements**: 19 satirical achievements unlock across multiple runs. Most require specific player behaviour — e.g., closing all tabs without triggering an ad, removing malware without tapping a decoy, or telling 3+ lies in a single run.
 
 ## 🎲 Seeded Runs
 
