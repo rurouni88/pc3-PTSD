@@ -14,7 +14,7 @@ interface FaceIdSetupProps {
   onCancel: () => void;
 }
 
-type Phase = 'setup' | 'distraction' | 'complete';
+type Phase = 'hint' | 'setup' | 'distraction' | 'complete';
 
 const distractionMessages: Record<Difficulty, string[]> = {
   dad: [
@@ -41,7 +41,7 @@ const completionMessages: Record<Difficulty, string> = {
 };
 
 export function FaceIdSetup({ difficulty, faceIdConfig, foreignLanguage, onComplete, onCancel }: FaceIdSetupProps) {
-  const [phase, setPhase] = useState<Phase>('setup');
+  const [phase, setPhase] = useState<Phase>('hint');
   const [progress, setProgress] = useState(0); // 0-100
   const [distractions, setDistractions] = useState(0);
   const [distractionMsg, setDistractionMsg] = useState('');
@@ -193,6 +193,33 @@ export function FaceIdSetup({ difficulty, faceIdConfig, foreignLanguage, onCompl
   const handlePointerUp = useCallback(() => {
     draggingRef.current = false;
   }, []);
+
+  if (phase === 'hint') {
+    return (
+      <div className="flex flex-col items-center justify-center h-full gap-4 p-6">
+        <div className="text-5xl">🔐</div>
+        <h3 className="text-sm font-bold text-primary">FaceID Setup</h3>
+        <p className="text-xs text-secondary text-center max-w-[200px]">
+          Drag the <span className="text-blue-400 font-medium">scan frame</span> over their face and hold steady to complete the scan.
+        </p>
+        <p className="text-[10px] text-muted text-center">
+          Warning: they will not hold still.
+        </p>
+        <button
+          onClick={() => setPhase('setup')}
+          className="mt-2 px-6 py-2 bg-accent-green text-primary text-xs font-bold rounded-xl active:scale-95 transition-transform"
+        >
+          Start Scan
+        </button>
+        <button
+          onClick={onCancel}
+          className="text-[10px] text-muted active:text-primary"
+        >
+          Cancel
+        </button>
+      </div>
+    );
+  }
 
   if (phase === 'complete') {
     return (
