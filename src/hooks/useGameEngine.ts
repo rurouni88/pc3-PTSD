@@ -5,6 +5,8 @@ import {
   LevelConfig,
   ParentPrompt,
   MiniGameType,
+  ForeignLanguage,
+  RunStats,
 } from '../types/game';
 import { RngEngine } from '../engine/seeded-rng';
 import { SaveSystem } from '../engine/save';
@@ -23,8 +25,10 @@ interface UseGameEngineProps {
   }) => void;
 }
 
+const GRANDMA_LANGUAGES: ForeignLanguage[] = ['greek', 'arabic', 'korean', 'japanese', 'hindi'];
+
 export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
-  const [state, setState] = useState<GameEngineState>({
+  const [state, setState] = useState<GameEngineState>(() => ({
     gameState: 'playing',
     difficulty: levelConfig.difficulty,
     timeRemaining: levelConfig.durationSeconds,
@@ -33,7 +37,10 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     activeIssues: levelConfig.initialIssues,
     completedIssues: [],
     currentMiniGame: null,
-  });
+    foreignLanguage: levelConfig.difficulty === 'grandma'
+      ? GRANDMA_LANGUAGES[Math.floor(RngEngine.random() * GRANDMA_LANGUAGES.length)]
+      : null,
+  }));
 
   const [activePrompt, setActivePrompt] = useState<ParentPrompt | null>(null);
   const [guiltTripActive, setGuiltTripActive] = useState(false);
@@ -45,6 +52,19 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
   const lastInterruptionRef = useRef<number>(0);
   const shownPromptIdsRef = useRef<Set<string>>(new Set());
   const completedRef = useRef(false);
+
+  // Run stats — tracked via refs to avoid re-renders
+  const runStatsRef = useRef<RunStats>({
+    miniGamesCompleted: [],
+    promptsAnswered: 0,
+    liesTold: 0,
+    explanationsGiven: 0,
+    guiltTripsTaken: 0,
+    interruptionsSurvived: 0,
+    chargerUsed: false,
+    spamsReceived: 0,
+    difficulty: levelConfig.difficulty,
+  });
 
   const calculateDrainRate = useCallback((issues: GameIssue[]): number => {
     const baseDrain = 0.05;
@@ -66,10 +86,12 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
 
     setActivePrompt(prompt);
     setInterruptionCount((prev) => prev + 1);
+    runStatsRef.current.interruptionsSurvived++;
     playSound('interrupt');
 
     if (prompt.type === 'guilt-trip') {
       setGuiltTripActive(true);
+      runStatsRef.current.guiltTripsTaken++;
       setTimeout(() => setGuiltTripActive(false), 10000);
     }
   }, [levelConfig.parentPrompts]);
@@ -84,7 +106,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
 
     // Check achievements
     const finalStateWithResult = { ...finalState, gameState: 'results' as const };
-    const newAchievements = checkAchievements(finalStateWithResult);
+    const newAchievements = checkAchievements(finalStateWithResult, runStatsRef.current);
 
     // Record in meta
     const record: RunRecord = {
@@ -168,14 +190,32 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     setState((prev) => ({ ...prev, isPaused: false }));
   }, []);
 
-  const resolveIssue = useCallback((issueId: string) => {
-    setState((prev) => ({
-      ...prev,
-      activeIssues: prev.activeIssues.map((issue) =>
-        issue.id === issueId ? { ...issue, isResolved: true } : issue
-      ),
-      completedIssues: [...prev.completedIssues, ...prev.activeIssues.filter((issue) => issue.id === issueId)],
-    }));
+  const resolveIssue = useCallback((issueId: string, selectedLanguage?: string) => {
+    setState((prev) => {
+      const resolved = prev.activeIssues.find((i) => i.id === issueId);
+      if (resolved) {
+        runStatsRef.current.miniGamesCompleted.push(resolved.type);
+        // Handle blind-translation: clear language or set Chinese Easter Egg
+        if (resolved.type === 'blind-translation') {
+          const newLang: ForeignLanguage | null = selectedLanguage === 'chinese' ? 'chinese' : null;
+          return {
+            ...prev,
+            foreignLanguage: newLang,
+            activeIssues: prev.activeIssues.map((issue) =>
+              issue.id === issueId ? { ...issue, isResolved: true } : issue
+            ),
+            completedIssues: [...prev.completedIssues, resolved],
+          };
+        }
+      }
+      return {
+        ...prev,
+        activeIssues: prev.activeIssues.map((issue) =>
+          issue.id === issueId ? { ...issue, isResolved: true } : issue
+        ),
+        completedIssues: [...prev.completedIssues, ...prev.activeIssues.filter((issue) => issue.id === issueId)],
+      };
+    });
   }, []);
 
   const startMiniGame = useCallback((miniGameType: MiniGameType) => {
@@ -190,6 +230,13 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     if (!activePrompt) return;
     const option = activePrompt.options[optionIndex];
     if (option) {
+      runStatsRef.current.promptsAnswered++;
+      // Heuristic: the first option is usually the "lie/quick fix" (lower timeCost, negative battery)
+      if (option.batteryEffect < 0) {
+        runStatsRef.current.liesTold++;
+      } else {
+        runStatsRef.current.explanationsGiven++;
+      }
       setState((prev) => ({
         ...prev,
         timeRemaining: Math.max(0, prev.timeRemaining - option.timeCost),
@@ -207,6 +254,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
 
   const useCharger = useCallback((batteryGain: number) => {
     setChargerUsed(true);
+    runStatsRef.current.chargerUsed = true;
     playSound('charger');
     setState((prev) => ({
       ...prev,
@@ -215,6 +263,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
   }, []);
 
   const applySpamDrain = useCallback((amount: number) => {
+    runStatsRef.current.spamsReceived++;
     setState((prev) => ({
       ...prev,
       batteryLevel: Math.max(0, prev.batteryLevel - amount),

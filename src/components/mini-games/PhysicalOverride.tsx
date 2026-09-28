@@ -1,11 +1,13 @@
 import { useState, useCallback } from 'react';
 import { Icon } from '../Icon';
 import { playSound } from '../../engine/sound';
-import type { QuickSettingsConfig } from '../../types/game';
+import { t, isRTL } from '../../config/translations';
+import type { QuickSettingsConfig, ForeignLanguage } from '../../types/game';
 
 interface PhysicalOverrideProps {
   quickSettingsConfig: QuickSettingsConfig;
   difficulty: string;
+  foreignLanguage: ForeignLanguage | null;
   onComplete: () => void;
   onCancel: () => void;
 }
@@ -24,7 +26,7 @@ interface Toggle {
   isTarget: boolean;
 }
 
-export function PhysicalOverride({ quickSettingsConfig, difficulty, onComplete, onCancel }: PhysicalOverrideProps) {
+export function PhysicalOverride({ quickSettingsConfig, difficulty, foreignLanguage, onComplete, onCancel }: PhysicalOverrideProps) {
   const [panelOpen, setPanelOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [solved, setSolved] = useState(false);
@@ -59,9 +61,9 @@ export function PhysicalOverride({ quickSettingsConfig, difficulty, onComplete, 
 
   if (solved) {
     return (
-      <div className="h-full flex flex-col items-center justify-center bg-primary p-6">
+      <div className="h-full flex flex-col items-center justify-center bg-primary p-6" dir={isRTL(foreignLanguage) ? 'rtl' : 'ltr'}>
         <Icon name="check" size={48} className="text-accent-green mb-4" />
-        <p className="text-xl font-bold text-primary">Flashlight off!</p>
+        <p className="text-xl font-bold text-primary">{t(foreignLanguage, 'quicksettings.flashlight')} {t(foreignLanguage, 'quicksettings.off')}</p>
         <p className="text-sm text-secondary mt-2">
           {completionQuotes[difficulty] ?? completionQuotes.dad}
         </p>
@@ -114,9 +116,9 @@ export function PhysicalOverride({ quickSettingsConfig, difficulty, onComplete, 
             <button onClick={onCancel} className="text-sm text-secondary">
               ← Close
             </button>
-            <span className="text-sm font-bold text-primary">Quick Settings</span>
+            <span className="text-sm font-bold text-primary">{t(foreignLanguage, 'quicksettings.title')}</span>
             <span className="text-xs text-muted">
-              Page {currentPage + 1}/{pages.length}
+              {t(foreignLanguage, 'quicksettings.page', { n: currentPage + 1 })}
             </span>
           </div>
 
@@ -142,7 +144,7 @@ export function PhysicalOverride({ quickSettingsConfig, difficulty, onComplete, 
                         state.isOn ? 'text-accent-blue' : 'text-muted'
                       }`}
                     >
-                      {state.isOn ? 'ON' : 'OFF'}
+                      {state.isOn ? t(foreignLanguage, 'quicksettings.on') : t(foreignLanguage, 'quicksettings.off')}
                     </span>
                   </button>
                 );

@@ -2,14 +2,14 @@
 // Typed definition with a pure check(state) predicate, evaluated at game over.
 // Unlocked ids persist in localStorage so they accumulate across runs.
 
-import type { GameEngineState } from '../types/game';
+import type { GameEngineState, RunStats } from '../types/game';
 
 export interface Achievement {
   id: string;
   title: string;
   desc: string;
   emoji: string;
-  check: (s: GameEngineState) => boolean;
+  check: (s: GameEngineState, stats: RunStats) => boolean;
 }
 
 export const ACHIEVEMENTS: Achievement[] = [
@@ -79,70 +79,70 @@ export const ACHIEVEMENTS: Achievement[] = [
     title: 'The Air Fryer Lie',
     desc: 'Lie to Mum about the air fryer email. It\'s a small lie. It\'s the first of many.',
     emoji: '🍳',
-    check: (s) => s.gameState === 'results', // unlocked via prompt choice tracking
+    check: (_s, stats) => stats.liesTold >= 1,
   },
   {
     id: 'guilt_trip_victim',
     title: 'Emotional Damage',
     desc: 'Take a guilt trip from Dad. "Back in my day..." You will think about this in your sleep.',
     emoji: '😔',
-    check: (s) => s.gameState === 'results',
+    check: (_s, stats) => stats.guiltTripsTaken >= 1,
   },
   {
     id: 'tab_closer',
     title: 'Tab Slayer',
     desc: 'Close all 12 of Dad\'s browser tabs. The golf forums will mourn.',
     emoji: '🌐',
-    check: (s) => s.gameState === 'results',
+    check: (_s, stats) => stats.miniGamesCompleted.includes('infinite-tab-sweep'),
   },
   {
     id: 'clean_master_removal',
     title: 'Clean Master is Dead',
     desc: 'Uninstall Clean Master Max 2026. It will reinstall itself by Friday.',
     emoji: '🛡️',
-    check: (s) => s.gameState === 'results',
+    check: (_s, stats) => stats.miniGamesCompleted.includes('antivirus-whack-a-mole'),
   },
   {
     id: 'greek_reader',
     title: 'Polyglot by Necessity',
     desc: 'Navigate Grandma\'s Greek settings. You can\'t read it. You found the globe icon. That\'s all that matters.',
     emoji: '🌐',
-    check: (s) => s.gameState === 'results',
+    check: (_s, stats) => stats.miniGamesCompleted.includes('blind-translation'),
   },
   {
     id: 'flashlight_hunter',
     title: 'Page Two',
     desc: 'Find the flashlight on the second quick settings page. Your relative\'s customisation is a war crime.',
     emoji: '🔦',
-    check: (s) => s.gameState === 'results',
+    check: (_s, stats) => stats.miniGamesCompleted.includes('physical-override'),
   },
   {
     id: 'duplicate_purge',
     title: 'Rose Bush Massacre',
     desc: 'Delete 6 duplicate rose photos. Mum will find out. You will be forgiven. Eventually.',
     emoji: '🌹',
-    check: (s) => s.gameState === 'results',
+    check: (_s, stats) => stats.miniGamesCompleted.includes('duplicate-doom'),
   },
   {
     id: 'interruption_martyr',
     title: 'Interruption Martyr',
     desc: 'Survive 3+ parent interruptions in a single run. You are now certified for customer service.',
     emoji: '📢',
-    check: (s) => s.gameState === 'results',
+    check: (_s, stats) => stats.interruptionsSurvived >= 3,
   },
   {
     id: 'charger_user',
     title: 'The Charger Clause',
     desc: 'Ask for the charger. You are now a person who asks for help. This is a big day.',
     emoji: '🔌',
-    check: (s) => s.gameState === 'results',
+    check: (_s, stats) => stats.chargerUsed,
   },
   {
     id: 'ghost_touch',
     title: 'Ghost in the Machine',
-    desc: 'Survive Grandma\'s ghost touches. The tea spill has a will of its own.',
+    desc: 'Win on Grandma with less than 20% battery. The tea spill almost won.',
     emoji: '👻',
-    check: (s) => s.gameState === 'results',
+    check: (s, stats) => stats.difficulty === 'grandma' && s.batteryLevel > 0 && s.batteryLevel < 20,
   },
 ];
 
@@ -167,9 +167,9 @@ export function saveUnlocked(ids: string[]): void {
 }
 
 /** Evaluate all achievements against a finished game. Returns the newly unlocked ones. */
-export function checkAchievements(state: GameEngineState): Achievement[] {
+export function checkAchievements(state: GameEngineState, stats: RunStats): Achievement[] {
   const unlocked = loadUnlocked();
-  const newly = ACHIEVEMENTS.filter((a) => !unlocked.includes(a.id) && a.check(state));
+  const newly = ACHIEVEMENTS.filter((a) => !unlocked.includes(a.id) && a.check(state, stats));
   if (newly.length > 0) {
     saveUnlocked([...unlocked, ...newly.map((a) => a.id)]);
   }

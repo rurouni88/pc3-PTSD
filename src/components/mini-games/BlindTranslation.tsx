@@ -2,10 +2,12 @@ import { useState, useCallback } from 'react';
 import { Icon } from '../Icon';
 import { RngEngine } from '../../engine/seeded-rng';
 import { playSound } from '../../engine/sound';
+import type { ForeignLanguage } from '../../types/game';
 
 interface BlindTranslationProps {
   difficulty: string;
-  onComplete: () => void;
+  foreignLanguage: ForeignLanguage | null;
+  onComplete: (selectedLanguage?: string) => void;
   onCancel: () => void;
 }
 
@@ -16,7 +18,7 @@ interface MenuOption {
   isTarget: boolean;
 }
 
-type ForeignLanguage = 'greek' | 'arabic' | 'korean' | 'japanese' | 'hindi';
+type DisplayLanguage = 'greek' | 'arabic' | 'korean' | 'japanese' | 'hindi';
 
 const settingsMenuGreek: MenuOption[] = [
   { id: 'general', label: 'Γενικά', icon: 'settings', isTarget: false },
@@ -85,7 +87,7 @@ const languageOptions: MenuOption[] = [
   { id: 'arabic', label: 'العربية', icon: 'globe', isTarget: false },
 ];
 
-const headerLabels: Record<ForeignLanguage, { settings: string; language: string; hintSettings: string; hintLanguage: string }> = {
+const headerLabels: Record<DisplayLanguage, { settings: string; language: string; hintSettings: string; hintLanguage: string }> = {
   greek: {
     settings: 'Ρυθμίσεις',
     language: 'Γλώσσα',
@@ -118,7 +120,7 @@ const headerLabels: Record<ForeignLanguage, { settings: string; language: string
   },
 };
 
-const allSettingsMenus: Record<ForeignLanguage, MenuOption[]> = {
+const allSettingsMenus: Record<DisplayLanguage, MenuOption[]> = {
   greek: settingsMenuGreek,
   arabic: settingsMenuArabic,
   korean: settingsMenuKorean,
@@ -134,11 +136,15 @@ const completionQuotes: Record<string, string> = {
 
 const grandmaChineseQuote = '奶奶：「谢谢你，我以为手机坏了。其实中文挺好的。」';
 
-export function BlindTranslation({ difficulty, onComplete, onCancel }: BlindTranslationProps) {
-  const languages: ForeignLanguage[] = ['greek', 'arabic', 'korean', 'japanese', 'hindi'];
-  const [foreignLang] = useState<ForeignLanguage>(() =>
-    languages[Math.floor(RngEngine.random() * languages.length)]
-  );
+export function BlindTranslation({ difficulty, foreignLanguage, onComplete, onCancel }: BlindTranslationProps) {
+  const languages: DisplayLanguage[] = ['greek', 'arabic', 'korean', 'japanese', 'hindi'];
+  // Use shared foreignLanguage if provided (Grandma), otherwise pick randomly (Dad/Mum)
+  const [foreignLang] = useState<DisplayLanguage>(() => {
+    if (foreignLanguage && foreignLanguage !== 'chinese') {
+      return foreignLanguage as DisplayLanguage;
+    }
+    return languages[Math.floor(RngEngine.random() * languages.length)];
+  });
   const settingsMenu = allSettingsMenus[foreignLang];
   const headers = headerLabels[foreignLang];
   const [currentScreen, setCurrentScreen] = useState<'settings' | 'language' | 'done'>('settings');
@@ -175,6 +181,12 @@ export function BlindTranslation({ difficulty, onComplete, onCancel }: BlindTran
     }
   }, [difficulty]);
 
+  const handleDone = useCallback(() => {
+    // Report which language was selected so the engine can handle the Chinese Easter Egg
+    const isChinese = selectedLanguage === '中文';
+    onComplete(isChinese ? 'chinese' : 'english');
+  }, [selectedLanguage, onComplete]);
+
   if (currentScreen === 'done') {
     const isChinese = selectedLanguage === '中文';
     const quote = isChinese ? grandmaChineseQuote : (completionQuotes[difficulty] ?? completionQuotes.grandma);
@@ -186,7 +198,7 @@ export function BlindTranslation({ difficulty, onComplete, onCancel }: BlindTran
           {quote}
         </p>
         <button
-          onClick={() => { playSound('success'); onComplete(); }}
+          onClick={() => { playSound('success'); handleDone(); }}
           className="mt-6 px-6 py-3 bg-accent-green text-primary font-bold rounded-xl"
         >
           Done

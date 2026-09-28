@@ -1,11 +1,13 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Icon } from '../Icon';
 import { playSound } from '../../engine/sound';
-import type { MalwareConfig } from '../../types/game';
+import { t, isRTL } from '../../config/translations';
+import type { MalwareConfig, ForeignLanguage } from '../../types/game';
 
 interface AntivirusWhackAMoleProps {
   malwareConfig: MalwareConfig;
   difficulty: string;
+  foreignLanguage: ForeignLanguage | null;
   onComplete: () => void;
   onCancel: () => void;
 }
@@ -26,7 +28,7 @@ interface AppIcon {
 
 const LONG_PRESS_MS = 800;
 
-export function AntivirusWhackAMole({ malwareConfig, difficulty, onComplete, onCancel }: AntivirusWhackAMoleProps) {
+export function AntivirusWhackAMole({ malwareConfig, difficulty, foreignLanguage, onComplete, onCancel }: AntivirusWhackAMoleProps) {
   const [apps, setApps] = useState<AppIcon[]>(() => [
     { id: 'whatsapp', label: 'WhatsApp', icon: 'whatsapp', isTarget: false, isJiggling: false },
     { id: 'malware', label: malwareConfig.name, icon: 'shield', isTarget: true, isJiggling: false },
@@ -100,9 +102,9 @@ export function AntivirusWhackAMole({ malwareConfig, difficulty, onComplete, onC
 
   if (solved) {
     return (
-      <div className="h-full flex flex-col items-center justify-center bg-primary p-6">
+      <div className="h-full flex flex-col items-center justify-center bg-primary p-6" dir={isRTL(foreignLanguage) ? 'rtl' : 'ltr'}>
         <Icon name="trash" size={48} className="text-accent-red mb-4" />
-        <p className="text-xl font-bold text-primary">{malwareConfig.name} removed!</p>
+        <p className="text-xl font-bold text-primary">{malwareConfig.name} {t(foreignLanguage, 'antivirus.removed')}</p>
         <p className="text-sm text-secondary mt-2">
           {completionQuotes[difficulty] ?? completionQuotes.dad}
         </p>
@@ -122,9 +124,9 @@ export function AntivirusWhackAMole({ malwareConfig, difficulty, onComplete, onC
         <button onClick={onCancel} className="text-sm text-secondary">
           ← Home
         </button>
-        <span className="text-sm font-bold text-primary">Home Screen</span>
+        <span className="text-sm font-bold text-primary">{t(foreignLanguage, 'antivirus.home')}</span>
         <span className="text-xs text-muted">
-          {scanning ? 'Scanning...' : 'Long-press to uninstall'}
+          {scanning ? t(foreignLanguage, 'antivirus.scanning') : t(foreignLanguage, 'antivirus.longpress')}
         </span>
       </div>
 
@@ -183,7 +185,7 @@ export function AntivirusWhackAMole({ malwareConfig, difficulty, onComplete, onC
 
         {!scanning && (
           <p className="text-center text-xs text-muted mt-6">
-            Long-press the suspicious app to jiggle, then tap the − badge
+            {t(foreignLanguage, 'antivirus.longpress')}
           </p>
         )}
       </div>

@@ -1,9 +1,12 @@
 import { useState, useRef, useCallback } from 'react';
 import { Icon } from '../Icon';
 import { playSound } from '../../engine/sound';
+import { t, isRTL } from '../../config/translations';
+import type { ForeignLanguage } from '../../types/game';
 
 interface InfiniteTabSweepProps {
   difficulty: string;
+  foreignLanguage: ForeignLanguage | null;
   onComplete: () => void;
   onCancel: () => void;
 }
@@ -74,7 +77,7 @@ const completionQuotes: Record<string, string> = {
 
 const AD_INTERVAL = 4;
 
-export function InfiniteTabSweep({ difficulty, onComplete, onCancel }: InfiniteTabSweepProps) {
+export function InfiniteTabSweep({ difficulty, foreignLanguage, onComplete, onCancel }: InfiniteTabSweepProps) {
   const totalTabs = (tabDataByLevel[difficulty] ?? dadTabs).length;
   const [tabs, setTabs] = useState<TabCard[]>(
     (tabDataByLevel[difficulty] ?? dadTabs).map((t) => ({ ...t, isClosed: false }))
@@ -135,9 +138,9 @@ export function InfiniteTabSweep({ difficulty, onComplete, onCancel }: InfiniteT
 
   if (allClosed) {
     return (
-      <div className="h-full flex flex-col items-center justify-center bg-primary p-6">
+      <div className="h-full flex flex-col items-center justify-center bg-primary p-6" dir={isRTL(foreignLanguage) ? 'rtl' : 'ltr'}>
         <Icon name="check" size={48} className="text-accent-green mb-4" />
-        <p className="text-xl font-bold text-primary">All tabs closed!</p>
+        <p className="text-xl font-bold text-primary">{t(foreignLanguage, 'tabs.closed', { n: totalTabs })}</p>
         <p className="text-sm text-secondary mt-2">{completionQuotes[difficulty] ?? completionQuotes.dad}</p>
         <button
           onClick={() => { playSound('success'); onComplete(); }}
@@ -156,10 +159,10 @@ export function InfiniteTabSweep({ difficulty, onComplete, onCancel }: InfiniteT
           ← Back
         </button>
         <span className="text-sm font-bold text-primary">
-          {openTabs.length} tabs open
+          {t(foreignLanguage, 'tabs.open', { n: openTabs.length })}
         </span>
         <span className="text-xs text-muted">
-          {closedCount}/{totalTabs} closed
+          {t(foreignLanguage, 'tabs.closed', { n: closedCount })}
         </span>
       </div>
 

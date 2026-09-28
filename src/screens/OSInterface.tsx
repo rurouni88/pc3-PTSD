@@ -5,7 +5,7 @@ import { ParentInterrupt } from '../components/ParentInterrupt';
 import { Charger } from '../components/Charger';
 import { SpamSystem } from '../components/SpamSystem';
 import { useGameEngine } from '../hooks/useGameEngine';
-import { LevelConfig, MiniGameType } from '../types/game';
+import { LevelConfig, MiniGameType, ForeignLanguage } from '../types/game';
 import type { Achievement } from '../engine/achievements';
 import { InfiniteTabSweep } from '../components/mini-games/InfiniteTabSweep';
 import { PhysicalOverride } from '../components/mini-games/PhysicalOverride';
@@ -37,26 +37,28 @@ function MiniGameView({
   type,
   difficulty,
   levelConfig,
+  foreignLanguage,
   onComplete,
   onCancel,
 }: {
   type: MiniGameType;
   difficulty: string;
   levelConfig: LevelConfig;
-  onComplete: () => void;
+  foreignLanguage: ForeignLanguage | null;
+  onComplete: (selectedLanguage?: string) => void;
   onCancel: () => void;
 }) {
   switch (type) {
     case 'infinite-tab-sweep':
-      return <InfiniteTabSweep difficulty={difficulty} onComplete={onComplete} onCancel={onCancel} />;
+      return <InfiniteTabSweep difficulty={difficulty} foreignLanguage={foreignLanguage} onComplete={onComplete} onCancel={onCancel} />;
     case 'physical-override':
-      return <PhysicalOverride quickSettingsConfig={levelConfig.quickSettingsConfig} difficulty={difficulty} onComplete={onComplete} onCancel={onCancel} />;
+      return <PhysicalOverride quickSettingsConfig={levelConfig.quickSettingsConfig} difficulty={difficulty} foreignLanguage={foreignLanguage} onComplete={onComplete} onCancel={onCancel} />;
     case 'duplicate-doom':
-      return <DuplicateDoom photoTheme={levelConfig.photoTheme} difficulty={difficulty} onComplete={onComplete} onCancel={onCancel} />;
+      return <DuplicateDoom photoTheme={levelConfig.photoTheme} difficulty={difficulty} foreignLanguage={foreignLanguage} onComplete={onComplete} onCancel={onCancel} />;
     case 'antivirus-whack-a-mole':
-      return <AntivirusWhackAMole malwareConfig={levelConfig.malwareConfig} difficulty={difficulty} onComplete={onComplete} onCancel={onCancel} />;
+      return <AntivirusWhackAMole malwareConfig={levelConfig.malwareConfig} difficulty={difficulty} foreignLanguage={foreignLanguage} onComplete={onComplete} onCancel={onCancel} />;
     case 'blind-translation':
-      return <BlindTranslation difficulty={difficulty} onComplete={onComplete} onCancel={onCancel} />;
+      return <BlindTranslation difficulty={difficulty} foreignLanguage={foreignLanguage} onComplete={onComplete} onCancel={onCancel} />;
   }
 }
 
@@ -83,9 +85,9 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
     setActiveMiniGame(issueType);
   }, []);
 
-  const handleMiniGameComplete = useCallback(() => {
+  const handleMiniGameComplete = useCallback((selectedLanguage?: string) => {
     if (activeIssueId) {
-      resolveIssue(activeIssueId);
+      resolveIssue(activeIssueId, selectedLanguage);
     }
     setActiveMiniGame(null);
     setActiveIssueId(null);
@@ -106,6 +108,7 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
           type={activeMiniGame}
           difficulty={levelConfig.difficulty}
           levelConfig={levelConfig}
+          foreignLanguage={state.foreignLanguage}
           onComplete={handleMiniGameComplete}
           onCancel={handleMiniGameCancel}
         />
