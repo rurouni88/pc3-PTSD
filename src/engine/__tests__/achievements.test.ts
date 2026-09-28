@@ -1,44 +1,33 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { ACHIEVEMENTS, checkAchievements, loadUnlocked, saveUnlocked, achievementById } from '../achievements';
-import type { GameEngineState, RunStats } from '../../types/game';
+import type { GameEngineState, RunStats, MiniGameType } from '../../types/game';
 
+// Mock localStorage
 const mockStorage: Record<string, string> = {};
-vi.stubGlobal('localStorage', {
-  getItem: (key: string) => mockStorage[key] ?? null,
-  setItem: (key: string, value: string) => { mockStorage[key] = value; },
-  removeItem: (key: string) => { delete mockStorage[key]; },
-  clear: () => { Object.keys(mockStorage).forEach((k) => delete mockStorage[k]); },
+Object.defineProperty(globalThis, 'localStorage', {
+  value: {
+    getItem: (k: string) => mockStorage[k] ?? null,
+    setItem: (k: string, v: string) => { mockStorage[k] = v; },
+    removeItem: (k: string) => { delete mockStorage[k]; },
+    clear: () => { Object.keys(mockStorage).forEach((k) => delete mockStorage[k]); },
+  },
+  writable: true,
 });
 
-const wonState: GameEngineState = {
-  gameState: 'results',
+const baseState: GameEngineState = {
+  gameState: 'playing',
   difficulty: 'dad',
-  timeRemaining: 45,
-  batteryLevel: 72,
-  isPaused: false,
-  activeIssues: [
-    { id: 'test-1', type: 'infinite-tab-sweep', isResolved: true, drainPenalty: 0.5 },
-  ],
-  completedIssues: [
-    { id: 'test-1', type: 'infinite-tab-sweep', isResolved: true, drainPenalty: 0.5 },
-  ],
-  currentMiniGame: null,
-  foreignLanguage: null,
-};
-
-const lostState: GameEngineState = {
-  gameState: 'results',
-  difficulty: 'mum',
   timeRemaining: 30,
-  batteryLevel: 0,
+  batteryLevel: 50,
   isPaused: false,
-  activeIssues: [
-    { id: 'test-1', type: 'duplicate-doom', isResolved: false, drainPenalty: 0.6 },
-  ],
+  activeIssues: [],
   completedIssues: [],
   currentMiniGame: null,
   foreignLanguage: null,
 };
+
+const wonState: GameEngineState = { ...baseState, gameState: 'results', batteryLevel: 45 };
+const lostState: GameEngineState = { ...baseState, gameState: 'results', batteryLevel: 0 };
 
 const emptyStats: RunStats = {
   miniGamesCompleted: [],
@@ -51,6 +40,11 @@ const emptyStats: RunStats = {
   spamsReceived: 0,
   chineseEasterEgg: false,
   difficulty: 'dad',
+  adsTriggered: 0,
+  decoysTapped: 0,
+  wrongLanguagePicks: 0,
+  wrongToggles: 0,
+  importantSelected: false,
 };
 
 describe('Achievements', () => {
@@ -58,85 +52,145 @@ describe('Achievements', () => {
     Object.keys(mockStorage).forEach((k) => delete mockStorage[k]);
   });
 
-  it('unlocks "fixed_it" on a win', () => {
+  it('unlocks "fixed_it" on a win without charger', () => {
     const newly = checkAchievements(wonState, emptyStats);
     expect(newly.some((a) => a.id === 'fixed_it')).toBe(true);
   });
 
-  it('unlocks "battery_death" on a loss', () => {
-    const newly = checkAchievements(lostState, { ...emptyStats, difficulty: 'mum' });
+  it('does not unlock "fixed_it" if charger was used', () => {
+    const stats = { ...emptyStats, chargerUsed: true };
+    const newly = checkAchievements(wonState, stats);
+    expect(newly.some((a) => a.id === 'fixed_it')).toBe(false);
+  });
+
+  it('unlocks "battery_god" with 80%+ battery', () => {
+    const state = { ...wonState, batteryLevel: 85 };
+    const newly = checkAchievements(state, emptyStats);
+    expect(newly.some((a) => a.id === 'battery_god')).toBe(true);
+  });
+
+  it('unlocks "speedrun" with 30+ seconds remaining', () => {
+    const state = { ...wonState, timeRemaining: 35 };
+    const newly = checkAchievements(state, emptyStats);
+    expect(newly.some((a) => a.id === 'speedrun')).toBe(true);
+  });
+
+  it('does not unlock "speedrun" with less than 30 seconds', () => {
+    const state = { ...wonState, timeRemaining: 20 };
+    const newly = checkAchievements(state, emptyStats);
+    expect(newly.some((a) => a.id === 'speedrun')).toBe(false);
+  });
+
+  it('unlocks "battery_death" only on Grandma', () => {
+    const stats = { ...emptyStats, difficulty: 'grandma' as const };
+    const newly = checkAchievements(lostState, stats);
     expect(newly.some((a) => a.id === 'battery_death')).toBe(true);
   });
 
-  it('does not re-unlock already-unlocked achievements', () => {
-    checkAchievements(wonState, emptyStats);
-    const newly = checkAchievements(wonState, emptyStats);
-    expect(newly).toHaveLength(0);
+  it('does not unlock "battery_death" on Dad', () => {
+    const newly = checkAchievements(lostState, emptyStats);
+    expect(newly.some((a) => a.id === 'battery_death')).toBe(false);
   });
 
-  it('persists unlocked ids to localStorage', () => {
+  it('unlocks "dad_defeat" on Dad with battery death', () => {
+    const newly = checkAchievements(lostState, emptyStats);
+    expect(newly.some((a) => a.id === 'dad_defeat')).toBe(true);
+  });
+
+  it('unlocks "air_fryer_lie" with 3+ lies', () => {
+    const stats = { ...emptyStats, liesTold: 3 };
+    const newly = checkAchievements(wonState, stats);
+    expect(newly.some((a) => a.id === 'air_fryer_lie')).toBe(true);
+  });
+
+  it('does not unlock "air_fryer_lie" with only 1 lie', () => {
+    const stats = { ...emptyStats, liesTold: 1 };
+    const newly = checkAchievements(wonState, stats);
+    expect(newly.some((a) => a.id === 'air_fryer_lie')).toBe(false);
+  });
+
+  it('unlocks "tab_closer" only with zero ads triggered', () => {
+    const stats = { ...emptyStats, miniGamesCompleted: ['infinite-tab-sweep'] as MiniGameType[], adsTriggered: 0 };
+    const newly = checkAchievements(wonState, stats);
+    expect(newly.some((a) => a.id === 'tab_closer')).toBe(true);
+  });
+
+  it('does not unlock "tab_closer" if ads were triggered', () => {
+    const stats = { ...emptyStats, miniGamesCompleted: ['infinite-tab-sweep'] as MiniGameType[], adsTriggered: 2 };
+    const newly = checkAchievements(wonState, stats);
+    expect(newly.some((a) => a.id === 'tab_closer')).toBe(false);
+  });
+
+  it('unlocks "clean_master_removal" only with zero decoys tapped', () => {
+    const stats = { ...emptyStats, miniGamesCompleted: ['antivirus-whack-a-mole'] as MiniGameType[], decoysTapped: 0 };
+    const newly = checkAchievements(wonState, stats);
+    expect(newly.some((a) => a.id === 'clean_master_removal')).toBe(true);
+  });
+
+  it('does not unlock "clean_master_removal" if decoys were tapped', () => {
+    const stats = { ...emptyStats, miniGamesCompleted: ['antivirus-whack-a-mole'] as MiniGameType[], decoysTapped: 1 };
+    const newly = checkAchievements(wonState, stats);
+    expect(newly.some((a) => a.id === 'clean_master_removal')).toBe(false);
+  });
+
+  it('unlocks "flashlight_hunter" only with zero wrong toggles', () => {
+    const stats = { ...emptyStats, miniGamesCompleted: ['physical-override'] as MiniGameType[], wrongToggles: 0 };
+    const newly = checkAchievements(wonState, stats);
+    expect(newly.some((a) => a.id === 'flashlight_hunter')).toBe(true);
+  });
+
+  it('does not unlock "flashlight_hunter" if wrong toggles were made', () => {
+    const stats = { ...emptyStats, miniGamesCompleted: ['physical-override'] as MiniGameType[], wrongToggles: 2 };
+    const newly = checkAchievements(wonState, stats);
+    expect(newly.some((a) => a.id === 'flashlight_hunter')).toBe(false);
+  });
+
+  it('unlocks "duplicate_purge" only without selecting important photo', () => {
+    const stats = { ...emptyStats, miniGamesCompleted: ['duplicate-doom'] as MiniGameType[], importantSelected: false };
+    const newly = checkAchievements(wonState, stats);
+    expect(newly.some((a) => a.id === 'duplicate_purge')).toBe(true);
+  });
+
+  it('does not unlock "duplicate_purge" if important photo was selected', () => {
+    const stats = { ...emptyStats, miniGamesCompleted: ['duplicate-doom'] as MiniGameType[], importantSelected: true };
+    const newly = checkAchievements(wonState, stats);
+    expect(newly.some((a) => a.id === 'duplicate_purge')).toBe(false);
+  });
+
+  it('unlocks "interruption_martyr" with 5+ interruptions', () => {
+    const stats = { ...emptyStats, interruptionsSurvived: 5 };
+    const newly = checkAchievements(wonState, stats);
+    expect(newly.some((a) => a.id === 'interruption_martyr')).toBe(true);
+  });
+
+  it('does not unlock "interruption_martyr" with only 3 interruptions', () => {
+    const stats = { ...emptyStats, interruptionsSurvived: 3 };
+    const newly = checkAchievements(wonState, stats);
+    expect(newly.some((a) => a.id === 'interruption_martyr')).toBe(false);
+  });
+
+  it('unlocks "chinese_whisperer" on a win with the Chinese Easter Egg', () => {
+    const stats = { ...emptyStats, chineseEasterEgg: true, difficulty: 'grandma' as const };
+    const newly = checkAchievements(wonState, stats);
+    expect(newly.some((a) => a.id === 'chinese_whisperer')).toBe(true);
+  });
+
+  it('does not unlock "chinese_whisperer" without the Easter Egg', () => {
+    const stats = { ...emptyStats, chineseEasterEgg: false, difficulty: 'grandma' as const };
+    const newly = checkAchievements(wonState, stats);
+    expect(newly.some((a) => a.id === 'chinese_whisperer')).toBe(false);
+  });
+
+  it('persists unlocked achievements', () => {
     checkAchievements(wonState, emptyStats);
     const unlocked = loadUnlocked();
     expect(unlocked.length).toBeGreaterThan(0);
   });
 
-  it('does NOT unlock behavioral achievements without the required action', () => {
+  it('does not re-unlock already unlocked achievements', () => {
+    checkAchievements(wonState, emptyStats);
     const newly = checkAchievements(wonState, emptyStats);
-    // emptyStats has no mini-games completed, no lies, no guilt trips, etc.
-    expect(newly.some((a) => a.id === 'tab_closer')).toBe(false);
-    expect(newly.some((a) => a.id === 'air_fryer_lie')).toBe(false);
-    expect(newly.some((a) => a.id === 'guilt_trip_victim')).toBe(false);
-    expect(newly.some((a) => a.id === 'charger_user')).toBe(false);
-    expect(newly.some((a) => a.id === 'interruption_martyr')).toBe(false);
-  });
-
-  it('unlocks "tab_closer" when infinite-tab-sweep is completed', () => {
-    const stats: RunStats = { ...emptyStats, miniGamesCompleted: ['infinite-tab-sweep'] };
-    const newly = checkAchievements(wonState, stats);
-    expect(newly.some((a) => a.id === 'tab_closer')).toBe(true);
-  });
-
-  it('unlocks "air_fryer_lie" when a lie is told', () => {
-    const stats: RunStats = { ...emptyStats, liesTold: 1 };
-    const newly = checkAchievements(wonState, stats);
-    expect(newly.some((a) => a.id === 'air_fryer_lie')).toBe(true);
-  });
-
-  it('unlocks "guilt_trip_victim" when a guilt trip is taken', () => {
-    const stats: RunStats = { ...emptyStats, guiltTripsTaken: 1 };
-    const newly = checkAchievements(wonState, stats);
-    expect(newly.some((a) => a.id === 'guilt_trip_victim')).toBe(true);
-  });
-
-  it('unlocks "charger_user" when charger is used', () => {
-    const stats: RunStats = { ...emptyStats, chargerUsed: true };
-    const newly = checkAchievements(wonState, stats);
-    expect(newly.some((a) => a.id === 'charger_user')).toBe(true);
-  });
-
-  it('unlocks "interruption_martyr" when 3+ interruptions survived', () => {
-    const stats: RunStats = { ...emptyStats, interruptionsSurvived: 3 };
-    const newly = checkAchievements(wonState, stats);
-    expect(newly.some((a) => a.id === 'interruption_martyr')).toBe(true);
-  });
-
-  it('does NOT unlock "interruption_martyr" with only 2 interruptions', () => {
-    const stats: RunStats = { ...emptyStats, interruptionsSurvived: 2 };
-    const newly = checkAchievements(wonState, stats);
-    expect(newly.some((a) => a.id === 'interruption_martyr')).toBe(false);
-  });
-
-  it('unlocks "ghost_touch" when winning Grandma with low battery', () => {
-    const grandmaState: GameEngineState = { ...wonState, difficulty: 'grandma', batteryLevel: 15 };
-    const stats: RunStats = { ...emptyStats, difficulty: 'grandma' };
-    const newly = checkAchievements(grandmaState, stats);
-    expect(newly.some((a) => a.id === 'ghost_touch')).toBe(true);
-  });
-
-  it('does NOT unlock "ghost_touch" on Dad difficulty', () => {
-    const stats: RunStats = { ...emptyStats, difficulty: 'dad' };
-    const newly = checkAchievements(wonState, stats);
-    expect(newly.some((a) => a.id === 'ghost_touch')).toBe(false);
+    expect(newly.length).toBe(0);
   });
 
   it('finds achievement by id', () => {
@@ -147,18 +201,6 @@ describe('Achievements', () => {
 
   it('returns undefined for unknown id', () => {
     expect(achievementById('nonexistent')).toBeUndefined();
-  });
-
-  it('unlocks "chinese_whisperer" on a win with the Chinese Easter Egg', () => {
-    const stats: RunStats = { ...emptyStats, chineseEasterEgg: true, difficulty: 'grandma' };
-    const newly = checkAchievements(wonState, stats);
-    expect(newly.some((a) => a.id === 'chinese_whisperer')).toBe(true);
-  });
-
-  it('does not unlock "chinese_whisperer" without the Easter Egg', () => {
-    const stats: RunStats = { ...emptyStats, chineseEasterEgg: false, difficulty: 'grandma' };
-    const newly = checkAchievements(wonState, stats);
-    expect(newly.some((a) => a.id === 'chinese_whisperer')).toBe(false);
   });
 
   it('has valid achievement definitions', () => {

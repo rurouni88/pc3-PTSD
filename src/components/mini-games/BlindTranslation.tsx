@@ -2,13 +2,13 @@ import { useState, useCallback } from 'react';
 import { Icon } from '../Icon';
 import { RngEngine } from '../../engine/seeded-rng';
 import { playSound } from '../../engine/sound';
-import type { ForeignLanguage } from '../../types/game';
+import type { ForeignLanguage, MiniGameQuality } from '../../types/game';
 import { Hint } from '../Hint';
 
 interface BlindTranslationProps {
   difficulty: string;
   foreignLanguage: ForeignLanguage | null;
-  onComplete: (selectedLanguage?: string) => void;
+  onComplete: (quality?: MiniGameQuality, selectedLanguage?: string) => void;
   onCancel: () => void;
 }
 
@@ -185,7 +185,7 @@ export function BlindTranslation({ difficulty, foreignLanguage, onComplete, onCa
   const handleDone = useCallback(() => {
     // Report which language was selected so the engine can handle the Chinese Easter Egg
     const isChinese = selectedLanguage === '中文';
-    onComplete(isChinese ? 'chinese' : 'english');
+    onComplete(undefined, isChinese ? 'chinese' : 'english');
   }, [selectedLanguage, onComplete]);
 
   if (currentScreen === 'done') {

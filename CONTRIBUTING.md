@@ -119,12 +119,8 @@ npm test             # run Vitest engine tests
 
 This is a prototype/vertical slice. Planned features:
 
-- [ ] Sound integration into mini-games (engine exists, needs wiring)
-- [ ] More mini-game variants per level
 - [ ] Haptic patterns for different event types
 - [ ] Shareable run summaries (seed + transcript)
-- [ ] More achievements (beyond 20)
-- [ ] Behavioral achievement tracking (event log for "lied to Mum", "ignored Grandma", etc.)
 - [ ] Dynamic interruption timing (scale with player progress, not fixed interval)
 - [ ] Error boundaries + graceful fallback UI (if a mini-game crashes, return to main view)
 - [ ] Mini-game shared hook (useMiniGame) to reduce prop boilerplate if we exceed ~8 games
@@ -142,16 +138,17 @@ These were evaluated against our YAGNI/KISS guardrails and deferred. Revisit if 
 | Pause persistence across mini-games | The `isPaused` flag works because mini-games replace the view entirely. The main loop isn't ticking during a mini-game. |
 
 Current state:
-- 5 mini-games across 3 difficulty levels ✓
+- 5 mini-games across 3 difficulty levels with per-difficulty variety ✓
 - Seeded runs (reproducible + re-enter seed) ✓
-- 20 satirical achievements ✓
+- 19 satirical achievements with behavioral tracking ✓
+- Foreign language sharing (Grandma) + Chinese Easter Egg ✓
 - Meta progression (best times, runs completed) ✓
 - Autosave (every tick, validate on load) ✓
 - Dark/light theme (WCAG AA contrast) ✓
-- Sound engine (8 SFX types, toggle + volume) ✓
+- Sound engine (9 SFX types, toggle + volume) ✓
 - SVG icon set (30 icons, inline sprite) ✓
 - Settings modal (theme, audio, volume) ✓
 - Help modal (game instructions) ✓
 - CI: typecheck + test + build (parallel jobs) ✓
 - GitHub Pages deployment ✓
-- Engine tests (seeded-rng, meta, save, achievements — 34+ tests) ✓
+- Engine tests (seeded-rng, meta, save, achievements — 54 tests) ✓

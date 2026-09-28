@@ -66,7 +66,12 @@ export function ParentInterrupt({ prompt, difficulty, onAnswer, onDismiss }: Par
                   className="w-full py-3 px-4 bg-white border-2 border-gray-200 rounded-xl text-left text-sm font-medium text-gray-700 hover:border-blue-400 hover:bg-blue-50 active:scale-95 transition-all"
                 >
                   <span className="text-xs text-gray-400 block mb-1">
-                    {option.timeCost > 0 ? `Takes ~${option.timeCost}s` : 'Instant'}
+                    {option.timeCost > 0 ? `⏱ ~${option.timeCost}s` : '⏱ Instant'}
+                    {option.batteryEffect !== 0 && (
+                      <span className={option.batteryEffect < 0 ? 'text-red-500' : 'text-green-600'}>
+                        {' '}🔋 {option.batteryEffect > 0 ? '+' : ''}{option.batteryEffect}%
+                      </span>
+                    )}
                   </span>
                   {option.label}
                 </button>

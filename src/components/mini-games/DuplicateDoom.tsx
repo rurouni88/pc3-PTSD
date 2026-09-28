@@ -1,15 +1,16 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { Icon } from '../Icon';
 import { playSound } from '../../engine/sound';
+import { RngEngine } from '../../engine/seeded-rng';
 import { t, isRTL } from '../../config/translations';
 import { Hint } from '../Hint';
-import type { PhotoTheme, ForeignLanguage } from '../../types/game';
+import type { PhotoTheme, ForeignLanguage, MiniGameQuality } from '../../types/game';
 
 interface DuplicateDoomProps {
   photoTheme: PhotoTheme;
   difficulty: string;
   foreignLanguage: ForeignLanguage | null;
-  onComplete: () => void;
+  onComplete: (quality?: MiniGameQuality) => void;
   onCancel: () => void;
 }
 
@@ -17,6 +18,13 @@ const completionQuotes: Record<string, string> = {
   dad: 'Dad: "You didn\'t delete the lucky scorecard, did you?"',
   mum: 'Mum: "You didn\'t delete the pretty ones, did you?"',
   grandma: 'Grandma: "The cat is still there, yes? Good."',
+};
+
+// Difficulty-based photo counts: [keep, total]
+const photoCounts: Record<string, { keep: number; total: number }> = {
+  dad: { keep: 5, total: 15 },
+  mum: { keep: 3, total: 17 },
+  grandma: { keep: 2, total: 20 },
 };
 
 interface Photo {
@@ -27,40 +35,75 @@ interface Photo {
   isBlurry: boolean;
 }
 
-function buildPhotos(theme: PhotoTheme): Photo[] {
-  const photos: Photo[] = [
-    { id: 1, label: theme.importantLabel, icon: theme.importantIcon, isDuplicate: false, isBlurry: false },
-  ];
-  theme.decoyLabels.forEach((label, i) => {
+// Extra labels to fill up to the total count
+const extraLabels = [
+  'IMG_0412', 'IMG_0413', 'Screenshot', 'Camera Roll',
+  'Photo', 'IMG_0415', 'IMG_0416', 'Screenshot 2',
+  'Photo 2', 'IMG_0418', 'IMG_0419', 'Screenshot 3',
+  'Photo 3', 'IMG_0421', 'IMG_0422', 'Screenshot 4',
+  'Photo 4', 'IMG_0424', 'IMG_0425', 'Screenshot 5',
+];
+
+function buildPhotos(theme: PhotoTheme, keep: number, total: number): Photo[] {
+  const duplicates = total - keep;
+  const photos: Photo[] = [];
+
+  // Important photos (to keep)
+  photos.push({ id: 1, label: theme.importantLabel, icon: theme.importantIcon, isDuplicate: false, isBlurry: false });
+  for (let i = 1; i < keep; i++) {
     photos.push({
-      id: i + 2,
-      label,
+      id: i + 1,
+      label: `Keep ${i}`,
+      icon: theme.importantIcon,
+      isDuplicate: false,
+      isBlurry: false,
+    });
+  }
+
+  // Duplicates (to delete)
+  for (let i = 0; i < duplicates; i++) {
+    photos.push({
+      id: keep + 1 + i,
+      label: i < theme.decoyLabels.length ? theme.decoyLabels[i] : extraLabels[i % extraLabels.length],
       icon: theme.decoyIcon,
       isDuplicate: true,
-      isBlurry: i % 2 === 0,
+      isBlurry: i % 3 === 0,
     });
-  });
+  }
+
+  // Shuffle using seeded RNG
+  for (let i = photos.length - 1; i > 0; i--) {
+    const j = Math.floor(RngEngine.random() * (i + 1));
+    [photos[i], photos[j]] = [photos[j], photos[i]];
+  }
+
   return photos;
 }
 
 export function DuplicateDoom({ photoTheme, difficulty, foreignLanguage, onComplete, onCancel }: DuplicateDoomProps) {
-  const [photos] = useState(() => buildPhotos(photoTheme));
+  const counts = photoCounts[difficulty] ?? photoCounts.dad;
+  const [photos] = useState(() => buildPhotos(photoTheme, counts.keep, counts.total));
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [deleted, setDeleted] = useState<Set<number>>(new Set());
   const [showConfirm, setShowConfirm] = useState(false);
   const [wrongPick, setWrongPick] = useState(false);
+  const importantSelectedRef = useRef(false);
 
   const remainingPhotos = photos.filter((p) => !deleted.has(p.id));
   const duplicatesRemaining = remainingPhotos.filter((p) => p.isDuplicate).length;
 
   const toggleSelect = useCallback((id: number) => {
+    const photo = photos.find((p) => p.id === id);
+    if (photo && !photo.isDuplicate) {
+      importantSelectedRef.current = true;
+    }
     setSelected((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
       else next.add(id);
       return next;
     });
-  }, []);
+  }, [photos]);
 
   const handleDelete = useCallback(() => {
     const hasWrongPick = [...selected].some((id) => {
@@ -87,10 +130,10 @@ export function DuplicateDoom({ photoTheme, difficulty, foreignLanguage, onCompl
         <Icon name="photos" size={48} className="text-accent-blue mb-4" />
         <p className="text-xl font-bold text-primary">{t(foreignLanguage, 'duplicates.freed')}</p>
         <p className="text-sm text-secondary mt-2">
-          {completionQuotes[difficulty] ?? photoTheme.confirmPrompt}
+          {completionQuotes[difficulty] ?? completionQuotes.dad}
         </p>
         <button
-          onClick={() => { playSound('success'); onComplete(); }}
+          onClick={() => { playSound('success'); onComplete({ importantSelected: importantSelectedRef.current }); }}
           className="mt-6 px-6 py-3 bg-accent-green text-primary font-bold rounded-xl"
         >
           Done

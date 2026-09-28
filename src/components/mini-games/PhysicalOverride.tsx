@@ -3,13 +3,13 @@ import { Icon } from '../Icon';
 import { playSound } from '../../engine/sound';
 import { t, isRTL } from '../../config/translations';
 import { Hint } from '../Hint';
-import type { QuickSettingsConfig, ForeignLanguage } from '../../types/game';
+import type { QuickSettingsConfig, ForeignLanguage, MiniGameQuality } from '../../types/game';
 
 interface PhysicalOverrideProps {
   quickSettingsConfig: QuickSettingsConfig;
   difficulty: string;
   foreignLanguage: ForeignLanguage | null;
-  onComplete: () => void;
+  onComplete: (quality?: MiniGameQuality) => void;
   onCancel: () => void;
 }
 
@@ -36,6 +36,7 @@ export function PhysicalOverride({ quickSettingsConfig, difficulty, foreignLangu
   const [dragY, setDragY] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const pointerStartY = useRef(0);
+  const wrongTogglesRef = useRef(0);
 
   // Build toggle state from config, marking the flashlight as target
   const [toggles, setToggles] = useState<Record<string, Toggle>>(() => {
@@ -100,6 +101,9 @@ export function PhysicalOverride({ quickSettingsConfig, difficulty, foreignLangu
         playSound('success');
       } else {
         playSound('click');
+        if (!item.isTarget && !item.isOn) {
+          wrongTogglesRef.current++;
+        }
       }
       return { ...prev, [id]: updated };
     });
@@ -114,7 +118,7 @@ export function PhysicalOverride({ quickSettingsConfig, difficulty, foreignLangu
           {completionQuotes[difficulty] ?? completionQuotes.dad}
         </p>
         <button
-          onClick={() => { playSound('success'); onComplete(); }}
+          onClick={() => { playSound('success'); onComplete({ wrongToggles: wrongTogglesRef.current }); }}
           className="mt-6 px-6 py-3 bg-accent-green text-primary font-bold rounded-xl"
         >
           Done
