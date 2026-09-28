@@ -96,7 +96,7 @@ export const levels: Record<string, LevelConfig> = {
       importantLabel: 'Scorecard (sharp)',
       importantIcon: 'golf',
       decoyLabels: ['Golf mag p.1', 'Golf mag p.2', 'Golf mag p.3', 'Golf mag p.4', 'Golf mag p.5', 'Golf mag p.6', 'Golf mag p.7', 'Golf mag p.8'],
-      decoyIcons: ['golf', 'bird', 'cloud', 'flower'],
+      decoyIcons: ['golf', 'golf', 'golf', 'golf', 'golf', 'golf', 'golf', 'golf'],
       confirmPrompt: 'Are you sure? Dad thinks that one is his lucky scorecard.',
     },
     malwareConfig: {
@@ -213,7 +213,7 @@ export const levels: Record<string, LevelConfig> = {
       importantLabel: 'Sunset (sharp)',
       importantIcon: 'sunset',
       decoyLabels: ['Sunset 2', 'Sunset 3', 'Sunset 4', 'Cloud 1', 'Cloud 2', 'Cloud 3', 'Sunset 5', 'Sunset 6', 'Cloud 4', 'Sunset 7', 'Sunset 8', 'Cloud 5'],
-      decoyIcons: ['sunset', 'cloud', 'rose', 'flower', 'bird'],
+      decoyIcons: ['sunset', 'sunset', 'sunset', 'cloud', 'cloud', 'cloud', 'sunset', 'sunset', 'cloud', 'sunset', 'sunset', 'cloud'],
       confirmPrompt: 'Are you sure? Mum thinks that one is pretty.',
     },
     malwareConfig: {
@@ -332,7 +332,7 @@ export const levels: Record<string, LevelConfig> = {
       importantLabel: 'Cat portrait (sharp)',
       importantIcon: 'cat',
       decoyLabels: ['Cat blurry 1', 'Cat blurry 2', 'Cat blurry 3', 'Cat overexposed 1', 'Cat overexposed 2', 'Cat blurry 4', 'Cat blurry 5', 'Cat overexposed 3', 'Cat blurry 6', 'Cat overexposed 4', 'Cat blurry 7', 'Cat overexposed 5', 'Cat blurry 8', 'Cat overexposed 6', 'Cat blurry 9'],
-      decoyIcons: ['cat', 'bird', 'flower', 'coffee', 'cloud'],
+      decoyIcons: ['cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat'],
       confirmPrompt: 'Are you sure? Grandma thinks that cat is her grandchild.',
     },
     malwareConfig: {
