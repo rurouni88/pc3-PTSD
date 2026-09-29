@@ -16,7 +16,7 @@ interface MetaState {
   totalRuns: number;
   wins: number;
   losses: number;
-  bestTimes: Record<Difficulty, number>; // lowest time remaining on a win
+  bestTimes: Record<Difficulty, number>; // highest time remaining on a win
   bestBatteries: Record<Difficulty, number>;
   lastRunDate: string;
   topRuns: RunRecord[];
@@ -71,9 +71,9 @@ export const MetaStore = {
     meta.lastRunDate = record.date;
 
     if (record.won) {
-      // Lower time remaining = better (finished faster)
+      // Higher time remaining = better (finished faster)
       const prevBest = meta.bestTimes[record.difficulty];
-      if (prevBest === 0 || record.timeRemaining < prevBest) {
+      if (prevBest === 0 || record.timeRemaining > prevBest) {
         meta.bestTimes[record.difficulty] = record.timeRemaining;
       }
       if (record.batteryLevel > meta.bestBatteries[record.difficulty]) {
