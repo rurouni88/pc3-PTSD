@@ -58,11 +58,11 @@ describe('MetaStore', () => {
     expect(meta.bestTimes.mum).toBe(0);
   });
 
-  it('keeps the best (lowest) time on repeated wins', () => {
+  it('keeps the best (highest) time remaining on repeated wins', () => {
     MetaStore.recordRunComplete({
       difficulty: 'dad',
       won: true,
-      timeRemaining: 60,
+      timeRemaining: 30,
       batteryLevel: 50,
       seed: 'SEEDA',
       date: '2026-01-01T00:00:00Z',
@@ -70,14 +70,14 @@ describe('MetaStore', () => {
     MetaStore.recordRunComplete({
       difficulty: 'dad',
       won: true,
-      timeRemaining: 30,
+      timeRemaining: 60,
       batteryLevel: 40,
       seed: 'SEEDB',
       date: '2026-01-02T00:00:00Z',
     });
 
     const meta = MetaStore.load();
-    expect(meta.bestTimes.dad).toBe(30);
+    expect(meta.bestTimes.dad).toBe(60);
   });
 
   it('keeps the best (highest) battery on repeated wins', () => {
