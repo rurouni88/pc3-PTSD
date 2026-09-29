@@ -3,6 +3,7 @@ import { CharacterAvatar } from '../CharacterAvatar';
 import { Hint } from '../Hint';
 import { RngEngine } from '../../engine/seeded-rng';
 import { playSound } from '../../engine/sound';
+import { playHaptic } from '../../engine/haptics';
 import { t } from '../../config/translations';
 import type { FaceIdConfig, Difficulty, ForeignLanguage, MiniGameQuality } from '../../types/game';
 import type { Character } from '../CharacterAvatar';
@@ -60,6 +61,7 @@ export function FaceIdSetup({ difficulty, faceIdConfig, foreignLanguage, onCompl
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const rafRef = useRef<number>(0);
   const completedRef = useRef(false);
+  const wasAlignedRef = useRef(false);
 
   // Initialize face position
   useEffect(() => {
@@ -121,6 +123,10 @@ export function FaceIdSetup({ difficulty, faceIdConfig, foreignLanguage, onCompl
 
       if (dist < threshold) {
         // Aligned — accumulate progress
+        if (!wasAlignedRef.current) {
+          wasAlignedRef.current = true;
+          playHaptic('faceid-aligned');
+        }
         alignedTimeRef.current += 50;
         const newProgress = Math.min(100, (alignedTimeRef.current / faceIdConfig.holdTimeMs) * 100);
         progressRef.current = newProgress;
@@ -153,6 +159,8 @@ export function FaceIdSetup({ difficulty, faceIdConfig, foreignLanguage, onCompl
         setDistractionMsg(distractionMessages[d][distractionsRef.current % distractionMessages[d].length]);
         setPhase('distraction');
         playSound('failure');
+        playHaptic('faceid-distraction');
+        wasAlignedRef.current = false;
 
         // Reset after distraction
         setTimeout(() => {

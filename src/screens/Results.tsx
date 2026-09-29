@@ -1,7 +1,9 @@
+import { useEffect } from 'react';
 import { Difficulty } from '../types/game';
 import { MetaStore } from '../engine/meta';
 import type { Achievement } from '../engine/achievements';
 import { CopyButton } from '../components/CopyButton';
+import { playHaptic } from '../engine/haptics';
 
 interface ResultsProps {
   result: {
@@ -23,6 +25,10 @@ const difficultyNames: Record<Difficulty, string> = {
 };
 
 export function Results({ result, difficulty, onReplay, onMenu }: ResultsProps) {
+  useEffect(() => {
+    if (!result.success) playHaptic('defeat');
+  }, [result.success]);
+
   const meta = MetaStore.load();
   const bestTime = meta.bestTimes[difficulty];
   const bestBattery = meta.bestBatteries[difficulty];

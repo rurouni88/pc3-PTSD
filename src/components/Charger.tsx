@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { RngEngine } from '../engine/seeded-rng';
+import { playHaptic } from '../engine/haptics';
 
 interface ChargerProps {
   onCharge: (batteryGain: number) => void;
@@ -29,14 +30,14 @@ export function Charger({ onCharge }: ChargerProps) {
   const handleOpenDrawer = useCallback(() => {
     setPhase('searching');
     shuffleItems();
-    if (navigator.vibrate) navigator.vibrate(100);
+    playHaptic('click');
   }, [shuffleItems]);
 
   const handleItemTap = useCallback((item: (typeof junkDrawerItems)[0]) => {
     if (item.id === 4) {
       setFound(true);
       setPhase('found');
-      if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+      playHaptic('charger-on');
       setTimeout(() => {
         setPhase('charging');
         onCharge(25);
@@ -46,7 +47,7 @@ export function Charger({ onCharge }: ChargerProps) {
         }, 1000);
       }, 800);
     } else {
-      if (navigator.vibrate) navigator.vibrate(50);
+      playHaptic('failure');
     }
   }, [onCharge]);
 

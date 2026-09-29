@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { playHaptic } from '../engine/haptics';
 import { StatusBar } from '../components/StatusBar';
 
 import { ParentInterrupt } from '../components/ParentInterrupt';
@@ -88,7 +89,7 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
   const [showPauseMenu, setShowPauseMenu] = useState(false);
 
   const handleIssueTap = useCallback((issueId: string, issueType: MiniGameType) => {
-    if (navigator.vibrate) navigator.vibrate(50);
+    playHaptic('click');
     setActiveIssueId(issueId);
     setActiveMiniGame(issueType);
   }, []);
@@ -99,7 +100,7 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
     }
     setActiveMiniGame(null);
     setActiveIssueId(null);
-    if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+    playHaptic('complete');
   }, [activeIssueId, resolveIssue]);
 
   const handleMiniGameCancel = useCallback(() => {

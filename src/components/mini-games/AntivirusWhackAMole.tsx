@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { Icon } from '../Icon';
 import { playSound } from '../../engine/sound';
+import { playHaptic } from '../../engine/haptics';
 import { RngEngine } from '../../engine/seeded-rng';
 import { t, isRTL } from '../../config/translations';
 import { Hint } from '../Hint';
@@ -161,7 +162,7 @@ export function AntivirusWhackAMole({ malwareConfig, difficulty, foreignLanguage
     if (!app.isTarget) {
       // Tapped a decoy — track it
       decoyTappedRef.current++;
-      if (navigator.vibrate) navigator.vibrate(50);
+      playHaptic('warning');
       return;
     }
 
@@ -170,7 +171,7 @@ export function AntivirusWhackAMole({ malwareConfig, difficulty, foreignLanguage
         prev.map((a) => (a.id === appId ? { ...a, isJiggling: true } : a))
       );
       playSound('click');
-      if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+      playHaptic('click');
     }, LONG_PRESS_MS);
 
     setPressTimer(timer);
@@ -188,7 +189,7 @@ export function AntivirusWhackAMole({ malwareConfig, difficulty, foreignLanguage
         prev.map((a) => (a.id === appId ? { ...a, isRemoved: true, isJiggling: false } : a))
       );
       playSound('success');
-      if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+      playHaptic('success');
 
       // Check if all targets removed
       const remaining = apps.filter((a) => a.isTarget && !a.isRemoved && a.id !== appId).length;

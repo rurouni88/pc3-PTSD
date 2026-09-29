@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { Icon } from '../Icon';
 import { RngEngine } from '../../engine/seeded-rng';
 import { playSound } from '../../engine/sound';
+import { playHaptic } from '../../engine/haptics';
 import type { ForeignLanguage, MiniGameQuality } from '../../types/game';
 import { Hint } from '../Hint';
 
@@ -157,11 +158,11 @@ export function BlindTranslation({ difficulty, foreignLanguage, onComplete, onCa
     if (option?.isTarget) {
       setCurrentScreen('language');
       playSound('click');
-      if (navigator.vibrate) navigator.vibrate(50);
+      playHaptic('click');
     } else {
       setWrongPick(true);
       playSound('failure');
-      if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+      playHaptic('failure');
       setTimeout(() => setWrongPick(false), 1500);
     }
   }, []);
@@ -173,11 +174,11 @@ export function BlindTranslation({ difficulty, foreignLanguage, onComplete, onCa
       setSelectedLanguage(option?.label ?? 'English');
       setCurrentScreen('done');
       playSound('success');
-      if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+      playHaptic('complete');
     } else {
       setWrongPick(true);
       playSound('failure');
-      if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+      playHaptic('failure');
       setTimeout(() => setWrongPick(false), 1500);
     }
   }, [difficulty]);

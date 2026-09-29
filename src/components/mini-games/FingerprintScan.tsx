@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { Hint } from '../Hint';
 import { RngEngine } from '../../engine/seeded-rng';
 import { playSound } from '../../engine/sound';
+import { playHaptic } from '../../engine/haptics';
 import { t, isRTL } from '../../config/translations';
 import type { Difficulty, ForeignLanguage, MiniGameQuality } from '../../types/game';
 
@@ -72,6 +73,7 @@ export function FingerprintScan({ difficulty, foreignLanguage, onComplete, onCan
         modifiersTriggeredRef.current += 1;
         setModifiersTriggered(modifiersTriggeredRef.current);
         playSound('notification');
+        playHaptic('smudge');
       }
     }, config.modifierIntervalMs);
 
