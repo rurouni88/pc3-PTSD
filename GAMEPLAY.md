@@ -117,7 +117,27 @@ Your parent is sitting right next to you, breathing down your neck. Prompts over
 - **Victory**: Resolve all selected issues AND keep battery > 0%. Triggers immediately.
 - **Defeat**: Battery hits 0%, or timer expires with unresolved issues.
 - **Victory/Defeat Jingle**: A synthesized success or failure jingle plays at game end.
-- **Achievements**: 20 satirical achievements with behavioral tracking (e.g., "close all tabs without triggering an ad", "complete Grandma's run with the Chinese Easter Egg active").
+- **Defeat Haptic**: A long, sad buzz on Android when you lose.
+- **Achievements**: 20 satirical achievements (alphabetical) with behavioral tracking (e.g., "close all tabs without triggering an ad", "complete Grandma's FaceID without a single progress reset").
+
+## 📳 Haptics
+
+On Android, the game uses `navigator.vibrate()` for tactile feedback at 18 different interaction points. iOS Safari does not support the Vibration API, so haptics are a no-op there.
+
+| Event | Feel |
+|---|---|
+| Tap an issue | Crisp tap |
+| Complete a mini-game | Rising double-tap |
+| Parent interruption | Rapid triple-tap |
+| Battery drops below 20% | Descending urgency (once per run) |
+| 10 seconds remaining | Double-pulse (once per run) |
+| Achievement unlocked | Quick quintuple |
+| Run lost | Long, sad buzz |
+| FaceID alignment | One-shot double-tap |
+| Fingerprint smudge | Triple-tap |
+| ... | 8 more |
+
+Toggle in **Settings → Haptics**.
 
 ## 🎲 Seeded Runs
 
@@ -125,7 +145,7 @@ Every run uses a deterministic seeded RNG (Mulberry32). The 8-character seed is 
 
 ## 📊 Leaderboard
 
-The in-game leaderboard shows your top 3 runs per difficulty with time, battery, and seed. All data is stored locally.
+The in-game leaderboard shows your top 5 runs per difficulty with time, battery, and seed. All data is stored locally.
 
 ---
 
