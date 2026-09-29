@@ -8,6 +8,7 @@ import {
   toggleAudio,
   playSound,
 } from '../engine/sound';
+import { toggleHaptics, loadHapticsPref, playHaptic } from '../engine/haptics';
 import { saveUnlocked, loadUnlocked } from '../engine/achievements';
 import { MetaStore } from '../engine/meta';
 
@@ -19,6 +20,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
   const [theme, setTheme] = useState<Theme>(loadTheme());
   const [audioOn, setAudioOn] = useState<boolean>(loadAudioPref);
   const [volume, setVolume] = useState<number>(loadVolume);
+  const [hapticsOn, setHapticsOn] = useState<boolean>(loadHapticsPref);
 
   // Sync if settings change externally
   useEffect(() => {
@@ -26,6 +28,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
       setTheme(loadTheme());
       setAudioOn(loadAudioPref);
       setVolume(loadVolume);
+      setHapticsOn(loadHapticsPref);
     };
     window.addEventListener('storage', handler);
     return () => window.removeEventListener('storage', handler);
@@ -41,6 +44,12 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
     const next = toggleAudio();
     setAudioOn(next);
     if (next) playSound('click');
+  };
+
+  const handleHapticsToggle = () => {
+    const next = toggleHaptics();
+    setHapticsOn(next);
+    if (next) playHaptic('click');
   };
 
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -110,6 +119,28 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
             >
               <div
                 className={`w-5 h-5 bg-white rounded-full shadow-md transition-transform ${audioOn ? 'translate-x-6' : 'translate-x-1'}`}
+              />
+            </button>
+          </div>
+
+          {/* Haptics toggle */}
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-primary">
+                {hapticsOn ? '📳 Haptics On' : '📴 Haptics Off'}
+              </p>
+              <p className="text-xs text-muted">
+                {hapticsOn
+                  ? 'Feel the chaos.'
+                  : 'Silent but deadly.'}
+              </p>
+            </div>
+            <button
+              onClick={handleHapticsToggle}
+              className={`w-12 h-7 rounded-full transition-colors ${hapticsOn ? 'bg-accent-green border-2 border-accent-green/50' : 'bg-secondary border-2 border-accent-blue/40'}`}
+            >
+              <div
+                className={`w-5 h-5 bg-white rounded-full shadow-md transition-transform ${hapticsOn ? 'translate-x-6' : 'translate-x-1'}`}
               />
             </button>
           </div>
