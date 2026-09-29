@@ -17,10 +17,10 @@ pc3-PTSD/
 │   │   ├── HelpModal.tsx          # "How To Play" instructions
 │   │   ├── Hint.tsx               # Reusable mini-game instruction hint
 │   │   ├── Icon.tsx               # SVG sprite icon renderer
-│   │   ├── LeaderboardModal.tsx   # Top 3 runs per difficulty
+│   │   ├── LeaderboardModal.tsx   # Top 5 runs per difficulty
 │   │   ├── Notification.tsx       # Slide-down banner alerts
 │   │   ├── ParentInterrupt.tsx    # Couch Interruption overlay
-│   │   ├── SettingsModal.tsx      # Theme, audio, volume, reset buttons
+│   │   ├── SettingsModal.tsx      # Theme, audio, haptics, volume, reset buttons
 │   │   ├── SpamSystem.tsx         # Random spam notifications
 │   │   ├── StatusBar.tsx          # Fake battery, Wi-Fi, time display
 │   │   ├── iPhoneFrame.tsx        # Desktop iPhone bezel wrapper
@@ -37,6 +37,7 @@ pc3-PTSD/
 │   │   └── translations.ts       # Foreign language strings + t() helper
 │   ├── engine/                   # Pure logic — ZERO React imports
 │   │   ├── achievements.ts       # Achievement definitions + evaluation
+│   │   ├── haptics.ts            # Vibration patterns (18 types, Android only)
 │   │   ├── meta.ts               # Meta progression + leaderboard (localStorage)
 │   │   ├── save.ts               # Save/load system (validate on load)
 │   │   ├── seeded-rng.ts         # Mulberry32 PRNG (deterministic runs)
@@ -91,8 +92,9 @@ npm run dev      # start Vite dev server (http://localhost:5173)
 - **TypeScript 7** — Full `strict` type checking
 - **Tailwind CSS v4** — Utility classes + CSS custom properties
 - **Web Audio API** — 9 synthesized SFX, no audio files
+- **Navigator Vibration API** — 18 haptic patterns (Android, no-op on iOS)
 - **Vitest 5** — Engine tests (pure logic, no DOM)
-- **LocalStorage** — Saves, meta, leaderboard, theme, audio
+- **LocalStorage** — Saves, meta, leaderboard, theme, audio, haptics
 - **Seeded RNG (Mulberry32)** — Deterministic runs
 - **Mobile-First** — Touch targets ≥ 44px, desktop iPhone frame
 
@@ -106,12 +108,11 @@ npm test             # Vitest engine tests
 ```
 
 - Engine modules (`src/engine/`) have **zero React imports**
-- Tests in `src/engine/__tests__/` — 54 tests
+- Tests in `src/engine/__tests__/` — 73 tests
 - CI: `typecheck` + `test` + `build` (parallel jobs, all must pass)
 
 ## 📋 Roadmap
 
-- [ ] Haptic patterns for different event types
 - [ ] Shareable run summaries (seed + transcript)
 - [ ] Error boundaries + graceful fallback UI
 - [ ] Mini-game shared hook (useMiniGame) if we exceed ~10 games
@@ -132,15 +133,16 @@ npm test             # Vitest engine tests
 - 7 mini-games with per-difficulty variety ✓
 - Seeded issue pool selection (Dad 3/4, Mum 4/5, Grandma 5/7) ✓
 - Seeded runs (reproducible + re-enter seed) ✓
-- 20 satirical achievements with behavioral tracking ✓
+- 20 satirical achievements (alphabetical, behavioral tracking) ✓
 - Foreign language sharing (Grandma) + Chinese Easter Egg ✓
-- Meta progression + leaderboard (top 3 per difficulty) ✓
+- Meta progression + leaderboard (top 5 per difficulty) ✓
 - Autosave (every tick, validate on load) ✓
 - Dark/light theme (WCAG AA contrast) ✓
 - Sound engine (9 SFX types, toggle + volume) ✓
+- Haptics engine (18 patterns, toggle, Android only) ✓
 - SVG icon set (30+ icons, runtime sprite injection) ✓
 - CharacterAvatar SVGs (Dad/Mum/Grandma/Partner) ✓
-- Settings modal (theme, audio, volume, reset achievements, reset leaderboard) ✓
+- Settings modal (theme, audio, haptics, volume, reset achievements, reset leaderboard) ✓
 - Help modal (7 mini-game descriptions) ✓
 - Dynamic interruption cadence (scales with performance) ✓
 - Variable starting battery (Dad 50%, Mum 40%, Grandma 100%) ✓
@@ -148,5 +150,5 @@ npm test             # Vitest engine tests
 - Desktop iPhone frame ✓
 - CI: typecheck + test + build ✓
 - GitHub Pages deployment ✓
-- Engine tests (54 tests) ✓
-- **v0.3.6**
+- Engine tests (73 tests) ✓
+- **v0.4.0**
