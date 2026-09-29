@@ -13,6 +13,7 @@ import { RngEngine } from '../engine/seeded-rng';
 import { SaveSystem } from '../engine/save';
 import { MetaStore, RunRecord } from '../engine/meta';
 import { checkAchievements, Achievement } from '../engine/achievements';
+import { playHaptic } from '../engine/haptics';
 import { playSound } from '../engine/sound';
 
 
@@ -313,12 +314,12 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
       }));
     }
     setActivePrompt(null);
-    if (navigator.vibrate) navigator.vibrate(50);
+    playHaptic('click');
   }, [activePrompt]);
 
   const dismissPrompt = useCallback(() => {
     setActivePrompt(null);
-    if (navigator.vibrate) navigator.vibrate(50);
+    playHaptic('click');
   }, []);
 
   const useCharger = useCallback((batteryGain: number) => {

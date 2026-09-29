@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from 'react';
 import { Icon } from '../Icon';
 import { playSound } from '../../engine/sound';
+import { playHaptic } from '../../engine/haptics';
 import { RngEngine } from '../../engine/seeded-rng';
 import { t, isRTL } from '../../config/translations';
 import { Hint } from '../Hint';
@@ -156,7 +157,7 @@ export function DuplicateDoom({ photoTheme, difficulty, foreignLanguage, onCompl
     setDeleted((prev) => new Set([...prev, ...selected]));
     setSelected(new Set());
     playSound('click');
-    if (navigator.vibrate) navigator.vibrate(100);
+    playHaptic('click');
   }, [selected, photos]);
 
   if (duplicatesRemaining === 0) {

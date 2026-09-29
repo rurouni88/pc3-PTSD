@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { RngEngine } from '../engine/seeded-rng';
+import { playHaptic } from '../engine/haptics';
 
 interface SpamNotification {
   id: number;
@@ -55,7 +56,7 @@ export function SpamSystem({ active, onBatteryDrain }: SpamSystemProps) {
     setNotification({ ...random, id: idRef.current });
     onBatteryDrain(0.5);
 
-    if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
+    playHaptic('spam');
 
     timeoutRef.current = window.setTimeout(() => {
       setNotification(null);
