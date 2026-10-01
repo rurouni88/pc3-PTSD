@@ -9,7 +9,7 @@
 const FONT_SCALE_KEY = 'ptsd_font_scale';
 
 export const FONT_MIN = 100;
-export const FONT_MAX = 125;
+export const FONT_MAX = 120;
 export const FONT_DEFAULT = 100;
 
 export function clampFontScale(pct: number): number {

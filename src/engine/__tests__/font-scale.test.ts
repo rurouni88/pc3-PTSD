@@ -117,8 +117,8 @@ describe('FontScale', () => {
 
   describe('applyFontScale', () => {
     it('sets the root font size as a percentage', () => {
-      applyFontScale(125);
-      expect(rootStyle.fontSize).toBe('125%');
+      applyFontScale(120);
+      expect(rootStyle.fontSize).toBe('120%');
     });
 
     it('clamps out-of-range values', () => {
