@@ -9,6 +9,7 @@ import {
   playSound,
 } from '../engine/sound';
 import { toggleHaptics, loadHapticsPref, playHaptic } from '../engine/haptics';
+import { loadFontScale, saveFontScale, FONT_MIN, FONT_MAX } from '../engine/font-scale';
 import { saveUnlocked, loadUnlocked } from '../engine/achievements';
 import { MetaStore } from '../engine/meta';
 
@@ -21,6 +22,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
   const [audioOn, setAudioOn] = useState<boolean>(loadAudioPref);
   const [volume, setVolume] = useState<number>(loadVolume);
   const [hapticsOn, setHapticsOn] = useState<boolean>(loadHapticsPref);
+  const [fontScale, setFontScale] = useState<number>(loadFontScale);
 
   // Sync if settings change externally
   useEffect(() => {
@@ -29,6 +31,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
       setAudioOn(loadAudioPref);
       setVolume(loadVolume);
       setHapticsOn(loadHapticsPref);
+      setFontScale(loadFontScale());
     };
     window.addEventListener('storage', handler);
     return () => window.removeEventListener('storage', handler);
@@ -57,6 +60,12 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
     setVolume(v);
     saveVolume(v);
     if (audioOn) playSound('click');
+  };
+
+  const handleFontScaleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const pct = parseInt(e.target.value, 10);
+    setFontScale(pct);
+    saveFontScale(pct);
   };
 
   return (
@@ -162,6 +171,24 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
             />
           </div>
 
+          {/* Font Size slider */}
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <p className="text-xs font-medium text-muted">🔤 Font Size</p>
+              <p className="text-xs font-mono text-muted">{fontScale}%</p>
+            </div>
+            <input
+              type="range"
+              min={FONT_MIN}
+              max={FONT_MAX}
+              step={5}
+              value={fontScale}
+              onChange={handleFontScaleChange}
+              aria-label="Font size percentage"
+              className="w-full h-2 bg-tertiary rounded-full appearance-none cursor-pointer accent-accent-green"
+            />
+          </div>
+
           {/* Divider */}
           <div className="border-t border-theme" />
 
@@ -180,7 +207,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
           {/* Credits */}
           <div className="text-center">
             <p className="text-center text-xs text-muted">Copyright 2026 PC3 Enterprises</p>
-            <p className="text-[10px] text-muted mt-1">v0.3.6</p>
+            <p className="text-[0.65rem] text-muted mt-1">v0.3.6</p>
           </div>
         </div>
       </div>

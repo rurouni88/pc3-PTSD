@@ -11,7 +11,7 @@ interface HintProps {
 export function Hint({ children, visible = true, className = '' }: HintProps) {
   if (!visible) return null;
   return (
-    <p className={`text-center text-[10px] text-muted px-3 py-1 ${className}`}>
+    <p className={`text-center text-[0.65rem] text-muted px-3 py-1 ${className}`}>
       {children}
     </p>
   );

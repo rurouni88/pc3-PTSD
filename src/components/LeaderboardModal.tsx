@@ -47,15 +47,15 @@ function Row({ record, rank }: { record: RunRecord; rank: number }) {
         <p className="text-xs font-medium text-primary truncate">
           {record.won ? '✅ Won' : '❌ Lost'} · {difficultyLabel[record.difficulty]}
         </p>
-        <p className="text-[10px] text-muted">
+        <p className="text-[0.65rem] text-muted">
           ⏱ {formatTime(record.timeRemaining)} · 🔋 {Math.round(record.batteryLevel)}%
         </p>
         <div className="flex items-center gap-1 mt-0.5">
-          <span className="text-[10px] font-mono text-muted">{record.seed}</span>
+          <span className="text-[0.65rem] font-mono text-muted">{record.seed}</span>
           <CopyButton text={record.seed} />
         </div>
       </div>
-      <span className="text-[10px] text-muted">
+      <span className="text-[0.65rem] text-muted">
         {new Date(record.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
       </span>
     </div>

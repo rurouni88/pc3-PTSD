@@ -9,6 +9,7 @@ import { Difficulty, GameState } from './types/game';
 import { RngEngine } from './engine/seeded-rng';
 import { SaveSystem } from './engine/save';
 import { applyTheme, loadTheme } from './engine/theme';
+import { applyFontScale, loadFontScale } from './engine/font-scale';
 import type { Achievement } from './engine/achievements';
 import { useIsDesktop } from './hooks/useIsDesktop';
 
@@ -25,9 +26,10 @@ export function App() {
   const [difficulty, setDifficulty] = useState<Difficulty | null>(null);
   const [lastResult, setLastResult] = useState<GameResult | null>(null);
 
-  // Apply saved theme on mount
+  // Apply saved theme + font scale on mount
   useEffect(() => {
     applyTheme(loadTheme());
+    applyFontScale(loadFontScale());
   }, []);
 
   const handleBoot = useCallback((seed: string) => {

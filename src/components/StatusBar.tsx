@@ -30,19 +30,19 @@ export function StatusBar({ batteryLevel, timeRemaining }: StatusBarProps) {
 
       {/* Carrier + signal (decorative, iOS style) */}
       <div className="flex items-center gap-1.5">
-        <span className="text-primary text-[10px] font-medium">Telstra</span>
+        <span className="text-primary text-[0.65rem] font-medium">Telstra</span>
         <div className="flex items-end gap-[1px]">
           <div className="w-[3px] h-[4px] rounded-sm animate-signal" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '0s' }} />
           <div className="w-[3px] h-[6px] rounded-sm animate-signal" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '0.1s' }} />
           <div className="w-[3px] h-[8px] rounded-sm animate-signal" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '0.2s' }} />
           <div className="w-[3px] h-[10px] rounded-sm animate-signal" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '0.3s' }} />
         </div>
-        <span className="text-primary text-[10px] font-medium">5G</span>
+        <span className="text-primary text-[0.65rem] font-medium">5G</span>
       </div>
 
       {/* Battery */}
       <div className="flex items-center gap-1">
-        <span className="text-[10px] font-semibold" style={{ color: batteryColor }}>
+        <span className="text-[0.65rem] font-semibold" style={{ color: batteryColor }}>
           {Math.round(batteryLevel)}
         </span>
         <div className="relative">

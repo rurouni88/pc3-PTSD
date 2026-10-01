@@ -19,7 +19,7 @@ export function CopyButton({ text, className = '' }: CopyButtonProps) {
   return (
     <button
       onClick={handleCopy}
-      className={`flex items-center gap-1 px-1.5 py-0.5 rounded bg-tertiary border border-theme text-[10px] text-muted hover:text-primary hover:border-accent-green/50 active:scale-90 transition-all ${className}`}
+      className={`flex items-center gap-1 px-1.5 py-0.5 rounded bg-tertiary border border-theme text-[0.65rem] text-muted hover:text-primary hover:border-accent-green/50 active:scale-90 transition-all ${className}`}
       title="Copy to clipboard"
     >
       {copied ? (
