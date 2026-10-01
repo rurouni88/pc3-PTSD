@@ -71,7 +71,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={onClose}>
       <div
-        className="w-full max-w-xs bg-secondary rounded-2xl border border-theme p-6 animate-slam-in"
+        className="w-full max-w-xs max-h-full overflow-y-auto bg-secondary rounded-2xl border border-theme p-6 animate-slam-in"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
@@ -99,10 +99,10 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
             </div>
             <button
               onClick={handleThemeToggle}
-              className={`w-12 h-7 rounded-full transition-colors ${theme === 'dark' ? 'bg-accent-green border-2 border-accent-green/50' : 'bg-secondary border-2 border-accent-blue/40'}`}
+              className={`w-[48px] h-[28px] rounded-full transition-colors ${theme === 'dark' ? 'bg-accent-green border-2 border-accent-green/50' : 'bg-secondary border-2 border-accent-blue/40'}`}
             >
               <div
-                className={`w-5 h-5 bg-white rounded-full shadow-md transition-transform ${theme === 'dark' ? 'translate-x-6' : 'translate-x-1'}`}
+                className={`w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${theme === 'dark' ? 'translate-x-[24px]' : 'translate-x-[4px]'}`}
               />
             </button>
           </div>
@@ -124,10 +124,10 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
             </div>
             <button
               onClick={handleAudioToggle}
-              className={`w-12 h-7 rounded-full transition-colors ${audioOn ? 'bg-accent-green border-2 border-accent-green/50' : 'bg-secondary border-2 border-accent-blue/40'}`}
+              className={`w-[48px] h-[28px] rounded-full transition-colors ${audioOn ? 'bg-accent-green border-2 border-accent-green/50' : 'bg-secondary border-2 border-accent-blue/40'}`}
             >
               <div
-                className={`w-5 h-5 bg-white rounded-full shadow-md transition-transform ${audioOn ? 'translate-x-6' : 'translate-x-1'}`}
+                className={`w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${audioOn ? 'translate-x-[24px]' : 'translate-x-[4px]'}`}
               />
             </button>
           </div>
@@ -146,10 +146,10 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
             </div>
             <button
               onClick={handleHapticsToggle}
-              className={`w-12 h-7 rounded-full transition-colors ${hapticsOn ? 'bg-accent-green border-2 border-accent-green/50' : 'bg-secondary border-2 border-accent-blue/40'}`}
+              className={`w-[48px] h-[28px] rounded-full transition-colors ${hapticsOn ? 'bg-accent-green border-2 border-accent-green/50' : 'bg-secondary border-2 border-accent-blue/40'}`}
             >
               <div
-                className={`w-5 h-5 bg-white rounded-full shadow-md transition-transform ${hapticsOn ? 'translate-x-6' : 'translate-x-1'}`}
+                className={`w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${hapticsOn ? 'translate-x-[24px]' : 'translate-x-[4px]'}`}
               />
             </button>
           </div>
