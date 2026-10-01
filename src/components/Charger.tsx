@@ -71,7 +71,7 @@ export function Charger({ onCharge }: ChargerProps) {
             {phase === 'searching' ? '🗄️ Junk Drawer' : phase === 'found' ? '🔋 Found it!' : '⚡ Charging...'}
           </h3>
           {phase === 'searching' && (
-            <span className="text-[10px] text-muted">Find the charger!</span>
+            <span className="text-[0.65rem] text-muted">Find the charger!</span>
           )}
         </div>
 
@@ -84,7 +84,7 @@ export function Charger({ onCharge }: ChargerProps) {
                 className="flex flex-col items-center gap-1 p-3 bg-primary rounded-xl border border-theme active:scale-90 transition-transform"
               >
                 <span className="text-2xl">{item.emoji}</span>
-                <span className="text-[10px] text-secondary text-center">{item.label}</span>
+                <span className="text-[0.65rem] text-secondary text-center">{item.label}</span>
               </button>
             ))}
           </div>

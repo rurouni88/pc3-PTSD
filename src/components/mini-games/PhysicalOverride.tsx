@@ -202,7 +202,7 @@ export function PhysicalOverride({ quickSettingsConfig, difficulty, foreignLangu
                     <Icon name={state.icon} size={36} className={state.isOn ? 'text-accent-blue' : 'text-primary'} />
                     <span className="text-sm font-medium text-primary">{state.label}</span>
                     <span
-                      className={`text-[10px] font-bold tracking-wide ${
+                      className={`text-[0.65rem] font-bold tracking-wide ${
                         state.isOn ? 'text-accent-blue' : 'text-muted'
                       }`}
                     >

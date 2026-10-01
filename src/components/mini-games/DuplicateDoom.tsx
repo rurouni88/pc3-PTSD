@@ -209,7 +209,7 @@ export function DuplicateDoom({ photoTheme, difficulty, foreignLanguage, onCompl
                 } bg-gradient-to-br ${getPhotoGradient(photo.icon, photo.id)} ${photo.isBlurry ? 'blur-[1px]' : ''}`}
               >
                 <Icon name={photo.icon} size={32} className={photo.isBlurry ? 'opacity-40' : 'opacity-80'} />
-                <span className="text-[7px] text-white/60 mt-1 px-1 truncate w-full text-center font-medium">{photo.label}</span>
+                <span className="text-[0.45rem] text-white/60 mt-1 px-1 truncate w-full text-center font-medium">{photo.label}</span>
                 {isSelected && (
                   <div className="absolute top-1 right-1 w-5 h-5 bg-accent-red rounded-full flex items-center justify-center">
                     <Icon name="check" size={12} className="text-white" />

@@ -280,7 +280,7 @@ export function AntivirusWhackAMole({ malwareConfig, difficulty, foreignLanguage
                   −
                 </div>
               )}
-              <span className="text-[10px] text-primary text-center">{app.label}</span>
+              <span className="text-[0.65rem] text-primary text-center">{app.label}</span>
             </button>
           ))}
         </div>

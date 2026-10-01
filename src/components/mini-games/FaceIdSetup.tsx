@@ -211,7 +211,7 @@ export function FaceIdSetup({ difficulty, faceIdConfig, foreignLanguage, onCompl
         <p className="text-xs text-secondary text-center max-w-[200px]">
           Drag the <span className="text-blue-400 font-medium">scan frame</span> over their face and hold steady to complete the scan.
         </p>
-        <p className="text-[10px] text-muted text-center">
+        <p className="text-[0.65rem] text-muted text-center">
           Warning: they will not hold still.
         </p>
         <button
@@ -222,7 +222,7 @@ export function FaceIdSetup({ difficulty, faceIdConfig, foreignLanguage, onCompl
         </button>
         <button
           onClick={onCancel}
-          className="text-[10px] text-muted active:text-primary"
+          className="text-[0.65rem] text-muted active:text-primary"
         >
           Cancel
         </button>
@@ -311,14 +311,14 @@ export function FaceIdSetup({ difficulty, faceIdConfig, foreignLanguage, onCompl
             style={{ width: `${progress}%` }}
           />
         </div>
-        <p className="text-[10px] text-muted mt-1 text-center">
+        <p className="text-[0.65rem] text-muted mt-1 text-center">
           {t(foreignLanguage, progress < 30 ? 'faceid.aligning' : progress < 70 ? 'faceid.scanning' : 'faceid.almost')}
         </p>
       </div>
 
       {/* Distraction counter */}
       {distractions > 0 && (
-        <div className="absolute top-10 right-2 text-[10px] text-muted">
+        <div className="absolute top-10 right-2 text-[0.65rem] text-muted">
           {t(foreignLanguage, 'faceid.distractions', { n: distractions, max: faceIdConfig.maxDistractions })}
         </div>
       )}
