@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "npm run validate:levels && tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest run",
+    "validate:levels": "tsx scripts/validate-levels.ts",
     "test:watch": "vitest"
   },
   "dependencies": {
