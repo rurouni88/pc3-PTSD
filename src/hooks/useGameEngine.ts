@@ -1,4 +1,5 @@
-import { useRef, useCallback, useEffect, useState } from 'react';
+import { useRef, useCallback, useState } from 'react';
+import { useGameTimer } from './useGameTimer';
 import {
   GameEngineState,
   GameIssue,
@@ -63,8 +64,6 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
   const [interruptionCount, setInterruptionCount] = useState(0);
   const [chargerUsed, setChargerUsed] = useState(false);
 
-  const timerRef = useRef<number | null>(null);
-  const lastTickRef = useRef<number>(Date.now());
   const lastInterruptionRef = useRef<number>(0);
   const shownPromptIdsRef = useRef<Set<string>>(new Set());
   const completedRef = useRef(false);
@@ -160,10 +159,8 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     });
   }, [onComplete]);
 
-  const tick = useCallback(() => {
+  const tick = useCallback((delta: number) => {
     const now = Date.now();
-    const delta = (now - lastTickRef.current) / 1000;
-    lastTickRef.current = now;
 
     setState((prev) => {
       if (prev.isPaused || prev.gameState !== 'playing') return prev;
@@ -229,22 +226,17 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     });
   }, [calculateDrainRate, levelConfig.interruptionRate, handleGameEnd, triggerPrompt]);
 
-  useEffect(() => {
-    timerRef.current = window.setInterval(tick, 100);
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [tick]);
+  const { resetLastTick } = useGameTimer({ onTick: tick });
 
   const pause = useCallback(() => {
     setState((prev) => ({ ...prev, isPaused: true }));
   }, []);
 
   const resume = useCallback(() => {
-    lastTickRef.current = Date.now();
+    resetLastTick();
     tickerPlayedRef.current = false;
     setState((prev) => ({ ...prev, isPaused: false }));
-  }, []);
+  }, [resetLastTick]);
 
   const resolveIssue = useCallback((issueId: string, selectedLanguage?: string, quality?: MiniGameQuality) => {
     // Merge quality stats into run stats
