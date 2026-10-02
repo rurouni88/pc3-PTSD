@@ -15,6 +15,7 @@ const VALID_MINI_GAME_TYPES: MiniGameType[] = [
   'fingerprint-scan',
   'passkey-setup',
   'system-update',
+  'zoom-out',
 ];
 const VALID_PROMPT_TYPES = ['direct-question', 'backseat-swiper', 'guilt-trip'] as const;
 
@@ -108,6 +109,17 @@ function validateConfig(diff: string, config: LevelConfig): string[] {
   if (config.systemUpdateConfig.promptPenalty < 5 || config.systemUpdateConfig.promptPenalty > 30) {
     errors.push(`${diff}: systemUpdateConfig.promptPenalty must be 5-30`);
   }
+
+  // Zoom config
+  if (config.zoomConfig.startZoom < config.zoomConfig.targetZoom) {
+    errors.push(`${diff}: zoomConfig.startZoom must be > targetZoom`);
+  }
+  if (config.zoomConfig.zoomStep < 10) errors.push(`${diff}: zoomConfig.zoomStep too low`);
+  if (config.zoomConfig.maxZoom < config.zoomConfig.startZoom) {
+    errors.push(`${diff}: zoomConfig.maxZoom must be >= startZoom`);
+  }
+  if (config.zoomConfig.notificationCount < 0) errors.push(`${diff}: zoomConfig.notificationCount must be >= 0`);
+  if (config.zoomConfig.rezoomAmount < 50) errors.push(`${diff}: zoomConfig.rezoomAmount too low`);
 
   return errors;
 }

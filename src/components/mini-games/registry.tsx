@@ -12,6 +12,7 @@ import { FaceIdSetup } from './FaceIdSetup';
 import { FingerprintScan } from './FingerprintScan';
 import { PasskeySetup } from './PasskeySetup';
 import { SystemUpdate } from './SystemUpdate';
+import { ZoomOut } from './ZoomOut';
 
 export interface MiniGameRenderProps {
   type: MiniGameType;
@@ -49,5 +50,8 @@ export const MINI_GAME_REGISTRY: Record<MiniGameType, (props: Omit<MiniGameRende
   ),
   'system-update': ({ levelConfig, difficulty, foreignLanguage, onComplete, onCancel }) => (
     <SystemUpdate difficulty={difficulty} systemUpdateConfig={levelConfig.systemUpdateConfig} foreignLanguage={foreignLanguage} onComplete={onComplete} onCancel={onCancel} />
+  ),
+  'zoom-out': ({ levelConfig, difficulty, foreignLanguage, onComplete, onCancel }) => (
+    <ZoomOut difficulty={difficulty} zoomConfig={levelConfig.zoomConfig} foreignLanguage={foreignLanguage} onComplete={onComplete} onCancel={onCancel} />
   ),
 };

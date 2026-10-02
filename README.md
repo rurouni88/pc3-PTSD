@@ -21,7 +21,7 @@ Will you survive the afternoon, or will your patience (and the battery) hit zero
 
 ## 🎮 At a Glance
 
-- **7 mini-games** with per-difficulty variety
+- **10 mini-games** with per-difficulty variety
 - **3 difficulty levels** (Dad / Mum / Grandma) with seeded issue selection
 - **20 satirical achievements** with behavioral tracking
 - **Seeded runs** — deterministic, replayable, shareable

@@ -20,7 +20,8 @@ export type MiniGameType =
   | 'faceid-setup'
   | 'fingerprint-scan'
   | 'passkey-setup'
-  | 'system-update';
+  | 'system-update'
+  | 'zoom-out';
 
 export type ForeignLanguage = 'greek' | 'arabic' | 'korean' | 'japanese' | 'hindi' | 'chinese';
 
@@ -81,6 +82,7 @@ export interface LevelConfig {
   faceIdConfig: FaceIdConfig;
   passkeyConfig: PasskeyConfig;
   systemUpdateConfig: SystemUpdateConfig;
+  zoomConfig: ZoomConfig;
 }
 
 export interface GameEngineState {
@@ -102,6 +104,16 @@ export interface FaceIdConfig {
   distractionTimerMs: number; // ms before distraction triggers
   maxDistractions: number; // how many times distraction can trigger
   driftPattern: 'gentle' | 'erratic' | 'shaky';
+}
+
+export interface ZoomConfig {
+  startZoom: number;
+  targetZoom: number;
+  zoomStep: number;
+  maxZoom: number;
+  notificationCount: number;
+  notificationIntervalMs: number;
+  rezoomAmount: number;
 }
 
 export interface SystemUpdateConfig {
@@ -149,6 +161,7 @@ export interface MiniGameQuality {
   updateDecoysTapped?: number;
   updateWrongPrompts?: number;
   updateStallsSurvived?: number;
+  zoomNotifications?: number;
 }
 
 export interface RunStats {

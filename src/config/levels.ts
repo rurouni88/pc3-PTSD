@@ -14,6 +14,7 @@ export const levels: Record<string, LevelConfig> = {
       { id: 'dad-fingerprint', type: 'fingerprint-scan', isResolved: false, drainPenalty: 0.2 },
       { id: 'dad-passkey', type: 'passkey-setup', isResolved: false, drainPenalty: 0.3 },
       { id: 'dad-update', type: 'system-update', isResolved: false, drainPenalty: 0.4 },
+      { id: 'dad-zoom', type: 'zoom-out', isResolved: false, drainPenalty: 0.2 },
     ],
     selectedIssueCount: 3,
     parentPrompts: [
@@ -115,6 +116,15 @@ export const levels: Record<string, LevelConfig> = {
       promptPenalty: 10,
       decoyIntervalMs: 3000,
     },
+    zoomConfig: {
+      startZoom: 400,
+      targetZoom: 100,
+      zoomStep: 50,
+      maxZoom: 500,
+      notificationCount: 2,
+      notificationIntervalMs: 4000,
+      rezoomAmount: 100,
+    },
     photoTheme: {
       importantTypes: [{ label: 'Scorecard (sharp)', icon: 'golf' }],
       decoyLabels: ['Scorecard blurry 1', 'Scorecard blurry 2', 'Scorecard overexposed 1', 'Scorecard blurry 3', 'Scorecard overexposed 2', 'Scorecard blurry 4', 'Scorecard overexposed 3', 'Scorecard blurry 5'],
@@ -153,6 +163,7 @@ export const levels: Record<string, LevelConfig> = {
       { id: 'mum-fingerprint', type: 'fingerprint-scan', isResolved: false, drainPenalty: 0.3 },
       { id: 'mum-passkey', type: 'passkey-setup', isResolved: false, drainPenalty: 0.4 },
       { id: 'mum-update', type: 'system-update', isResolved: false, drainPenalty: 0.5 },
+      { id: 'mum-zoom', type: 'zoom-out', isResolved: false, drainPenalty: 0.3 },
     ],
     selectedIssueCount: 4,
     parentPrompts: [
@@ -254,6 +265,15 @@ export const levels: Record<string, LevelConfig> = {
       promptPenalty: 10,
       decoyIntervalMs: 2500,
     },
+    zoomConfig: {
+      startZoom: 500,
+      targetZoom: 100,
+      zoomStep: 50,
+      maxZoom: 500,
+      notificationCount: 3,
+      notificationIntervalMs: 3000,
+      rezoomAmount: 100,
+    },
     photoTheme: {
       importantTypes: [
         { label: 'Foodie shot (sharp)', icon: 'food' },
@@ -305,6 +325,7 @@ export const levels: Record<string, LevelConfig> = {
       { id: 'grandma-fingerprint', type: 'fingerprint-scan', isResolved: false, drainPenalty: 0.3 },
       { id: 'grandma-passkey', type: 'passkey-setup', isResolved: false, drainPenalty: 0.5 },
       { id: 'grandma-update', type: 'system-update', isResolved: false, drainPenalty: 0.6 },
+      { id: 'grandma-zoom', type: 'zoom-out', isResolved: false, drainPenalty: 0.4 },
     ],
     selectedIssueCount: 5,
     parentPrompts: [
@@ -399,6 +420,15 @@ export const levels: Record<string, LevelConfig> = {
       decoyPenalty: 20,
       promptPenalty: 15,
       decoyIntervalMs: 2000,
+    },
+    zoomConfig: {
+      startZoom: 500,
+      targetZoom: 100,
+      zoomStep: 50,
+      maxZoom: 500,
+      notificationCount: 5,
+      notificationIntervalMs: 2500,
+      rezoomAmount: 150,
     },
     photoTheme: {
       importantTypes: [

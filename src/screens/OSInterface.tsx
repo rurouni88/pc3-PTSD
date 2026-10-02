@@ -32,6 +32,7 @@ const issueLabels: Record<MiniGameType, { label: string; icon: string }> = {
   'fingerprint-scan': { label: 'Touch ID smudged', icon: '👆' },
   'passkey-setup': { label: 'Set up passkey', icon: '🔑' },
   'system-update': { label: 'Update installing', icon: '📲' },
+  'zoom-out': { label: 'Zoomed in too much', icon: '🔍' },
 };
 
 function MiniGameView(props: MiniGameRenderProps) {
