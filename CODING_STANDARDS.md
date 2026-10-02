@@ -62,11 +62,23 @@ Follow what exists. If the codebase uses a pattern you would design differently,
 - No defensive handling for scenarios that cannot happen — trust internal code and framework guarantees
 - Error messages must say what failed and, where possible, why — not just that something went wrong
 
+### Defensive programming at boundaries
+
+When you *do* validate (at boundaries per the rules above), handle failures explicitly:
+
+- **Fail loudly, not silently.** Log the problem and reject the data. Don't patch it with a default and move on — the caller needs to know something was wrong.
+- **Check external returns.** API responses, `localStorage.getItem()`, `JSON.parse()`, `array[index]` — verify the value is what you expect before using it.
+- **Handle `null`/`undefined` at the edge.** A function that receives `string | null` should check once at the top, not propagate the null through five lines of logic.
+- **Report all problems, not just the first.** A `validate()` function should collect every error and return them together, so the caller fixes everything in one pass.
+
+**This does NOT mean:** wrapping every internal function call in try/catch, checking `if (x)` before every property access, or guarding against "what if the framework breaks." Trust internal code. Defend the edges.
+
 ---
 
 ## 6. Comments
 
 - Comment only where the logic is not self-evident — the *why*, not the *what*
+- **If a comment could be wrong without the code being wrong, it's a bad comment.** `// lower is better` above `if (a < b)` is a bug waiting to happen — the code says what it does, the comment should say *why* that comparison is correct. Prefer: `// we track timeRemaining (time left), so higher = finished faster = better`
 - Never narrate what the code does: `// increment counter` above `count++` is noise
 - Never leave dead commented-out code behind — delete it; git history preserves it
 - TODO comments are permitted only with a ticket reference or a specific condition for resolution
