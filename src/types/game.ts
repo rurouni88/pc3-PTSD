@@ -18,7 +18,8 @@ export type MiniGameType =
   | 'antivirus-whack-a-mole'
   | 'physical-override'
   | 'faceid-setup'
-  | 'fingerprint-scan';
+  | 'fingerprint-scan'
+  | 'passkey-setup';
 
 export type ForeignLanguage = 'greek' | 'arabic' | 'korean' | 'japanese' | 'hindi' | 'chinese';
 
@@ -77,6 +78,7 @@ export interface LevelConfig {
   malwareConfig: MalwareConfig;
   quickSettingsConfig: QuickSettingsConfig;
   faceIdConfig: FaceIdConfig;
+  passkeyConfig: PasskeyConfig;
 }
 
 export interface GameEngineState {
@@ -100,6 +102,27 @@ export interface FaceIdConfig {
   driftPattern: 'gentle' | 'erratic' | 'shaky';
 }
 
+export interface PasskeyConfig {
+  emailBase: string;
+  garbleCount: number;
+  step1: {
+    driftSpeed: number;
+    holdTimeMs: number;
+    cancelTapChance: number;
+  };
+  step3: {
+    resendChance: number;
+    resendDelayMs: number;
+  };
+  step4: {
+    scribbleSpeedMs: number;
+  };
+  step5: {
+    struggleDurationMs: number;
+    punchline: string;
+  };
+}
+
 export interface MiniGameQuality {
   adsTriggered?: number;
   decoysTapped?: number;
@@ -108,6 +131,9 @@ export interface MiniGameQuality {
   importantSelected?: boolean;
   distractionsTriggered?: number;
   smudgesTriggered?: number;
+  passkeyResends?: number;
+  passkeyScribbleHit?: boolean;
+  passkeyCancelTaps?: number;
 }
 
 export interface RunStats {

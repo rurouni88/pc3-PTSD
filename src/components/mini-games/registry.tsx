@@ -10,6 +10,7 @@ import { AntivirusWhackAMole } from './AntivirusWhackAMole';
 import { BlindTranslation } from './BlindTranslation';
 import { FaceIdSetup } from './FaceIdSetup';
 import { FingerprintScan } from './FingerprintScan';
+import { PasskeySetup } from './PasskeySetup';
 
 export interface MiniGameRenderProps {
   type: MiniGameType;
@@ -41,5 +42,8 @@ export const MINI_GAME_REGISTRY: Record<MiniGameType, (props: Omit<MiniGameRende
   ),
   'fingerprint-scan': ({ difficulty, foreignLanguage, onComplete, onCancel }) => (
     <FingerprintScan difficulty={difficulty} foreignLanguage={foreignLanguage} onComplete={onComplete} onCancel={onCancel} />
+  ),
+  'passkey-setup': ({ levelConfig, difficulty, foreignLanguage, onComplete, onCancel }) => (
+    <PasskeySetup difficulty={difficulty} passkeyConfig={levelConfig.passkeyConfig} foreignLanguage={foreignLanguage} onComplete={onComplete} onCancel={onCancel} />
   ),
 };

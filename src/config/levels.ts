@@ -12,6 +12,7 @@ export const levels: Record<string, LevelConfig> = {
       { id: 'dad-weather-widget', type: 'infinite-tab-sweep', isResolved: false, drainPenalty: 0.3 },
       { id: 'dad-faceid', type: 'faceid-setup', isResolved: false, drainPenalty: 0.2 },
       { id: 'dad-fingerprint', type: 'fingerprint-scan', isResolved: false, drainPenalty: 0.2 },
+      { id: 'dad-passkey', type: 'passkey-setup', isResolved: false, drainPenalty: 0.3 },
     ],
     selectedIssueCount: 3,
     parentPrompts: [
@@ -96,6 +97,14 @@ export const levels: Record<string, LevelConfig> = {
     interruptionRate: 15,
     passiveDrain: { intervalSeconds: 12, chance: 0.5, amount: 1 },
     faceIdConfig: { driftSpeed: 1.5, frameSize: 60, holdTimeMs: 3000, distractionTimerMs: 10000, maxDistractions: 2, driftPattern: 'gentle' },
+    passkeyConfig: {
+      emailBase: 'dad',
+      garbleCount: 1,
+      step1: { driftSpeed: 1.5, holdTimeMs: 2000, cancelTapChance: 0 },
+      step3: { resendChance: 0, resendDelayMs: 2000 },
+      step4: { scribbleSpeedMs: 3000 },
+      step5: { struggleDurationMs: 2000, punchline: 'Passkey active. Password: also active. "I\'ll sort it out later."' },
+    },
     photoTheme: {
       importantTypes: [{ label: 'Scorecard (sharp)', icon: 'golf' }],
       decoyLabels: ['Scorecard blurry 1', 'Scorecard blurry 2', 'Scorecard overexposed 1', 'Scorecard blurry 3', 'Scorecard overexposed 2', 'Scorecard blurry 4', 'Scorecard overexposed 3', 'Scorecard blurry 5'],
@@ -132,6 +141,7 @@ export const levels: Record<string, LevelConfig> = {
       { id: 'mum-tabs', type: 'infinite-tab-sweep', isResolved: false, drainPenalty: 0.3 },
       { id: 'mum-faceid', type: 'faceid-setup', isResolved: false, drainPenalty: 0.3 },
       { id: 'mum-fingerprint', type: 'fingerprint-scan', isResolved: false, drainPenalty: 0.3 },
+      { id: 'mum-passkey', type: 'passkey-setup', isResolved: false, drainPenalty: 0.4 },
     ],
     selectedIssueCount: 4,
     parentPrompts: [
@@ -216,6 +226,14 @@ export const levels: Record<string, LevelConfig> = {
     interruptionRate: 12,
     passiveDrain: { intervalSeconds: 10, chance: 0.6, amount: 1.5 },
     faceIdConfig: { driftSpeed: 2.5, frameSize: 50, holdTimeMs: 4000, distractionTimerMs: 8000, maxDistractions: 3, driftPattern: 'erratic' },
+    passkeyConfig: {
+      emailBase: 'mum',
+      garbleCount: 2,
+      step1: { driftSpeed: 2.5, holdTimeMs: 3000, cancelTapChance: 0.1 },
+      step3: { resendChance: 0.3, resendDelayMs: 2000 },
+      step4: { scribbleSpeedMs: 2000 },
+      step5: { struggleDurationMs: 2000, punchline: 'Passkey active. Password: also active. "I\'m keeping both, just in case."' },
+    },
     photoTheme: {
       importantTypes: [
         { label: 'Foodie shot (sharp)', icon: 'food' },
@@ -265,6 +283,7 @@ export const levels: Record<string, LevelConfig> = {
       { id: 'grandma-faceid', type: 'faceid-setup', isResolved: false, drainPenalty: 0.4 },
       { id: 'grandma-malware', type: 'antivirus-whack-a-mole', isResolved: false, drainPenalty: 0.6 },
       { id: 'grandma-fingerprint', type: 'fingerprint-scan', isResolved: false, drainPenalty: 0.3 },
+      { id: 'grandma-passkey', type: 'passkey-setup', isResolved: false, drainPenalty: 0.5 },
     ],
     selectedIssueCount: 5,
     parentPrompts: [
@@ -343,6 +362,14 @@ export const levels: Record<string, LevelConfig> = {
     interruptionRate: 8,
     passiveDrain: { intervalSeconds: 7, chance: 0.7, amount: 2 },
     faceIdConfig: { driftSpeed: 3.0, frameSize: 45, holdTimeMs: 4500, distractionTimerMs: 7000, maxDistractions: 4, driftPattern: 'shaky' },
+    passkeyConfig: {
+      emailBase: 'grandma',
+      garbleCount: 2,
+      step1: { driftSpeed: 3.5, holdTimeMs: 4000, cancelTapChance: 0.25 },
+      step3: { resendChance: 0.5, resendDelayMs: 2000 },
+      step4: { scribbleSpeedMs: 1500 },
+      step5: { struggleDurationMs: 2000, punchline: 'Passkey active. Password: also active. "What\'s a passkey again?"' },
+    },
     photoTheme: {
       importantTypes: [
         { label: 'Cat portrait (sharp)', icon: 'cat' },

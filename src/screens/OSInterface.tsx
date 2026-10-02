@@ -30,6 +30,7 @@ const issueLabels: Record<MiniGameType, { label: string; icon: string }> = {
   'physical-override': { label: 'Battery draining', icon: '🔦' },
   'faceid-setup': { label: 'FaceID not working', icon: '🔐' },
   'fingerprint-scan': { label: 'Touch ID smudged', icon: '👆' },
+  'passkey-setup': { label: 'Set up passkey', icon: '🔑' },
 };
 
 function MiniGameView(props: MiniGameRenderProps) {

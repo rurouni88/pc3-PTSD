@@ -13,6 +13,7 @@ const VALID_MINI_GAME_TYPES: MiniGameType[] = [
   'physical-override',
   'faceid-setup',
   'fingerprint-scan',
+  'passkey-setup',
 ];
 const VALID_PROMPT_TYPES = ['direct-question', 'backseat-swiper', 'guilt-trip'] as const;
 
@@ -81,6 +82,21 @@ function validateConfig(diff: string, config: LevelConfig): string[] {
   // Malware config
   if (!config.malwareConfig.name) errors.push(`${diff}: malwareConfig.name is empty`);
   if (!config.malwareConfig.decoyAppLabel) errors.push(`${diff}: malwareConfig.decoyAppLabel is empty`);
+
+  // Passkey config
+  if (!config.passkeyConfig.emailBase) errors.push(`${diff}: passkeyConfig.emailBase is empty`);
+  if (config.passkeyConfig.garbleCount < 1 || config.passkeyConfig.garbleCount > 3) {
+    errors.push(`${diff}: passkeyConfig.garbleCount must be 1-3`);
+  }
+  if (config.passkeyConfig.step1.holdTimeMs < 500) errors.push(`${diff}: passkeyConfig.step1.holdTimeMs too low`);
+  if (config.passkeyConfig.step1.cancelTapChance < 0 || config.passkeyConfig.step1.cancelTapChance > 1) {
+    errors.push(`${diff}: passkeyConfig.step1.cancelTapChance must be 0-1`);
+  }
+  if (config.passkeyConfig.step3.resendChance < 0 || config.passkeyConfig.step3.resendChance > 1) {
+    errors.push(`${diff}: passkeyConfig.step3.resendChance must be 0-1`);
+  }
+  if (config.passkeyConfig.step4.scribbleSpeedMs < 500) errors.push(`${diff}: passkeyConfig.step4.scribbleSpeedMs too low`);
+  if (!config.passkeyConfig.step5.punchline) errors.push(`${diff}: passkeyConfig.step5.punchline is empty`);
 
   return errors;
 }
