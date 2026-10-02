@@ -31,6 +31,7 @@ const issueLabels: Record<MiniGameType, { label: string; icon: string }> = {
   'faceid-setup': { label: 'FaceID not working', icon: '🔐' },
   'fingerprint-scan': { label: 'Touch ID smudged', icon: '👆' },
   'passkey-setup': { label: 'Set up passkey', icon: '🔑' },
+  'system-update': { label: 'Update installing', icon: '📲' },
 };
 
 function MiniGameView(props: MiniGameRenderProps) {

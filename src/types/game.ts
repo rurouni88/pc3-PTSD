@@ -19,7 +19,8 @@ export type MiniGameType =
   | 'physical-override'
   | 'faceid-setup'
   | 'fingerprint-scan'
-  | 'passkey-setup';
+  | 'passkey-setup'
+  | 'system-update';
 
 export type ForeignLanguage = 'greek' | 'arabic' | 'korean' | 'japanese' | 'hindi' | 'chinese';
 
@@ -79,6 +80,7 @@ export interface LevelConfig {
   quickSettingsConfig: QuickSettingsConfig;
   faceIdConfig: FaceIdConfig;
   passkeyConfig: PasskeyConfig;
+  systemUpdateConfig: SystemUpdateConfig;
 }
 
 export interface GameEngineState {
@@ -100,6 +102,16 @@ export interface FaceIdConfig {
   distractionTimerMs: number; // ms before distraction triggers
   maxDistractions: number; // how many times distraction can trigger
   driftPattern: 'gentle' | 'erratic' | 'shaky';
+}
+
+export interface SystemUpdateConfig {
+  cleanDurationMs: number;
+  decoyCount: number;
+  promptCount: number;
+  stallCount: number;
+  decoyPenalty: number;
+  promptPenalty: number;
+  decoyIntervalMs: number;
 }
 
 export interface PasskeyConfig {
@@ -134,6 +146,9 @@ export interface MiniGameQuality {
   passkeyResends?: number;
   passkeyScribbleHit?: boolean;
   passkeyCancelTaps?: number;
+  updateDecoysTapped?: number;
+  updateWrongPrompts?: number;
+  updateStallsSurvived?: number;
 }
 
 export interface RunStats {

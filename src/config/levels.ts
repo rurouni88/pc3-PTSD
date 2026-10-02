@@ -13,6 +13,7 @@ export const levels: Record<string, LevelConfig> = {
       { id: 'dad-faceid', type: 'faceid-setup', isResolved: false, drainPenalty: 0.2 },
       { id: 'dad-fingerprint', type: 'fingerprint-scan', isResolved: false, drainPenalty: 0.2 },
       { id: 'dad-passkey', type: 'passkey-setup', isResolved: false, drainPenalty: 0.3 },
+      { id: 'dad-update', type: 'system-update', isResolved: false, drainPenalty: 0.4 },
     ],
     selectedIssueCount: 3,
     parentPrompts: [
@@ -105,6 +106,15 @@ export const levels: Record<string, LevelConfig> = {
       step4: { scribbleSpeedMs: 3000 },
       step5: { struggleDurationMs: 2000, punchline: 'Passkey active. Password: also active. "I\'ll sort it out later."' },
     },
+    systemUpdateConfig: {
+      cleanDurationMs: 15000,
+      decoyCount: 4,
+      promptCount: 2,
+      stallCount: 1,
+      decoyPenalty: 15,
+      promptPenalty: 10,
+      decoyIntervalMs: 3000,
+    },
     photoTheme: {
       importantTypes: [{ label: 'Scorecard (sharp)', icon: 'golf' }],
       decoyLabels: ['Scorecard blurry 1', 'Scorecard blurry 2', 'Scorecard overexposed 1', 'Scorecard blurry 3', 'Scorecard overexposed 2', 'Scorecard blurry 4', 'Scorecard overexposed 3', 'Scorecard blurry 5'],
@@ -142,6 +152,7 @@ export const levels: Record<string, LevelConfig> = {
       { id: 'mum-faceid', type: 'faceid-setup', isResolved: false, drainPenalty: 0.3 },
       { id: 'mum-fingerprint', type: 'fingerprint-scan', isResolved: false, drainPenalty: 0.3 },
       { id: 'mum-passkey', type: 'passkey-setup', isResolved: false, drainPenalty: 0.4 },
+      { id: 'mum-update', type: 'system-update', isResolved: false, drainPenalty: 0.5 },
     ],
     selectedIssueCount: 4,
     parentPrompts: [
@@ -234,6 +245,15 @@ export const levels: Record<string, LevelConfig> = {
       step4: { scribbleSpeedMs: 2000 },
       step5: { struggleDurationMs: 2000, punchline: 'Passkey active. Password: also active. "I\'m keeping both, just in case."' },
     },
+    systemUpdateConfig: {
+      cleanDurationMs: 18000,
+      decoyCount: 6,
+      promptCount: 3,
+      stallCount: 2,
+      decoyPenalty: 20,
+      promptPenalty: 10,
+      decoyIntervalMs: 2500,
+    },
     photoTheme: {
       importantTypes: [
         { label: 'Foodie shot (sharp)', icon: 'food' },
@@ -284,6 +304,7 @@ export const levels: Record<string, LevelConfig> = {
       { id: 'grandma-malware', type: 'antivirus-whack-a-mole', isResolved: false, drainPenalty: 0.6 },
       { id: 'grandma-fingerprint', type: 'fingerprint-scan', isResolved: false, drainPenalty: 0.3 },
       { id: 'grandma-passkey', type: 'passkey-setup', isResolved: false, drainPenalty: 0.5 },
+      { id: 'grandma-update', type: 'system-update', isResolved: false, drainPenalty: 0.6 },
     ],
     selectedIssueCount: 5,
     parentPrompts: [
@@ -369,6 +390,15 @@ export const levels: Record<string, LevelConfig> = {
       step3: { resendChance: 0.5, resendDelayMs: 2000 },
       step4: { scribbleSpeedMs: 1500 },
       step5: { struggleDurationMs: 2000, punchline: 'Passkey active. Password: also active. "What\'s a passkey again?"' },
+    },
+    systemUpdateConfig: {
+      cleanDurationMs: 20000,
+      decoyCount: 8,
+      promptCount: 4,
+      stallCount: 3,
+      decoyPenalty: 20,
+      promptPenalty: 15,
+      decoyIntervalMs: 2000,
     },
     photoTheme: {
       importantTypes: [

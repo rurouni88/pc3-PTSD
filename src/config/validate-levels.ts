@@ -14,6 +14,7 @@ const VALID_MINI_GAME_TYPES: MiniGameType[] = [
   'faceid-setup',
   'fingerprint-scan',
   'passkey-setup',
+  'system-update',
 ];
 const VALID_PROMPT_TYPES = ['direct-question', 'backseat-swiper', 'guilt-trip'] as const;
 
@@ -97,6 +98,16 @@ function validateConfig(diff: string, config: LevelConfig): string[] {
   }
   if (config.passkeyConfig.step4.scribbleSpeedMs < 500) errors.push(`${diff}: passkeyConfig.step4.scribbleSpeedMs too low`);
   if (!config.passkeyConfig.step5.punchline) errors.push(`${diff}: passkeyConfig.step5.punchline is empty`);
+
+  // System update config
+  if (config.systemUpdateConfig.cleanDurationMs < 5000) errors.push(`${diff}: systemUpdateConfig.cleanDurationMs too low`);
+  if (config.systemUpdateConfig.decoyCount < 1) errors.push(`${diff}: systemUpdateConfig.decoyCount must be >= 1`);
+  if (config.systemUpdateConfig.decoyPenalty < 5 || config.systemUpdateConfig.decoyPenalty > 50) {
+    errors.push(`${diff}: systemUpdateConfig.decoyPenalty must be 5-50`);
+  }
+  if (config.systemUpdateConfig.promptPenalty < 5 || config.systemUpdateConfig.promptPenalty > 30) {
+    errors.push(`${diff}: systemUpdateConfig.promptPenalty must be 5-30`);
+  }
 
   return errors;
 }

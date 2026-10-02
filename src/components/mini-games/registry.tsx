@@ -11,6 +11,7 @@ import { BlindTranslation } from './BlindTranslation';
 import { FaceIdSetup } from './FaceIdSetup';
 import { FingerprintScan } from './FingerprintScan';
 import { PasskeySetup } from './PasskeySetup';
+import { SystemUpdate } from './SystemUpdate';
 
 export interface MiniGameRenderProps {
   type: MiniGameType;
@@ -45,5 +46,8 @@ export const MINI_GAME_REGISTRY: Record<MiniGameType, (props: Omit<MiniGameRende
   ),
   'passkey-setup': ({ levelConfig, difficulty, foreignLanguage, onComplete, onCancel }) => (
     <PasskeySetup difficulty={difficulty} passkeyConfig={levelConfig.passkeyConfig} foreignLanguage={foreignLanguage} onComplete={onComplete} onCancel={onCancel} />
+  ),
+  'system-update': ({ levelConfig, difficulty, foreignLanguage, onComplete, onCancel }) => (
+    <SystemUpdate difficulty={difficulty} systemUpdateConfig={levelConfig.systemUpdateConfig} foreignLanguage={foreignLanguage} onComplete={onComplete} onCancel={onCancel} />
   ),
 };
