@@ -8,13 +8,7 @@ import { SpamSystem } from '../components/SpamSystem';
 import { useGameEngine } from '../hooks/useGameEngine';
 import { LevelConfig, MiniGameType, ForeignLanguage, MiniGameQuality } from '../types/game';
 import type { Achievement } from '../engine/achievements';
-import { InfiniteTabSweep } from '../components/mini-games/InfiniteTabSweep';
-import { PhysicalOverride } from '../components/mini-games/PhysicalOverride';
-import { DuplicateDoom } from '../components/mini-games/DuplicateDoom';
-import { AntivirusWhackAMole } from '../components/mini-games/AntivirusWhackAMole';
-import { BlindTranslation } from '../components/mini-games/BlindTranslation';
-import { FaceIdSetup } from '../components/mini-games/FaceIdSetup';
-import { FingerprintScan } from '../components/mini-games/FingerprintScan';
+import { MINI_GAME_REGISTRY, type MiniGameRenderProps } from '../components/mini-games/registry';
 
 interface OSInterfaceProps {
   levelConfig: LevelConfig;
@@ -38,37 +32,12 @@ const issueLabels: Record<MiniGameType, { label: string; icon: string }> = {
   'fingerprint-scan': { label: 'Touch ID smudged', icon: '👆' },
 };
 
-function MiniGameView({
-  type,
-  difficulty,
-  levelConfig,
-  foreignLanguage,
-  onComplete,
-  onCancel,
-}: {
-  type: MiniGameType;
-  difficulty: string;
-  levelConfig: LevelConfig;
-  foreignLanguage: ForeignLanguage | null;
-  onComplete: (quality?: MiniGameQuality, selectedLanguage?: string) => void;
-  onCancel: () => void;
-}) {
-  switch (type) {
-    case 'infinite-tab-sweep':
-      return <InfiniteTabSweep difficulty={difficulty} foreignLanguage={foreignLanguage} onComplete={(q) => onComplete(q)} onCancel={onCancel} />;
-    case 'physical-override':
-      return <PhysicalOverride quickSettingsConfig={levelConfig.quickSettingsConfig} difficulty={difficulty} foreignLanguage={foreignLanguage} onComplete={(q) => onComplete(q)} onCancel={onCancel} />;
-    case 'duplicate-doom':
-      return <DuplicateDoom photoTheme={levelConfig.photoTheme} difficulty={difficulty} foreignLanguage={foreignLanguage} onComplete={(q) => onComplete(q)} onCancel={onCancel} />;
-    case 'antivirus-whack-a-mole':
-      return <AntivirusWhackAMole malwareConfig={levelConfig.malwareConfig} difficulty={difficulty} foreignLanguage={foreignLanguage} onComplete={(q) => onComplete(q)} onCancel={onCancel} />;
-    case 'blind-translation':
-      return <BlindTranslation difficulty={difficulty} foreignLanguage={foreignLanguage} onComplete={(q, lang) => onComplete(q, lang)} onCancel={onCancel} />;
-    case 'faceid-setup':
-      return <FaceIdSetup difficulty={difficulty} faceIdConfig={levelConfig.faceIdConfig} foreignLanguage={foreignLanguage} onComplete={(q) => onComplete(q)} onCancel={onCancel} />;
-    case 'fingerprint-scan':
-      return <FingerprintScan difficulty={difficulty} foreignLanguage={foreignLanguage} onComplete={(q) => onComplete(q)} onCancel={onCancel} />;
+function MiniGameView(props: MiniGameRenderProps) {
+  const render = MINI_GAME_REGISTRY[props.type];
+  if (!render) {
+    return <div className="p-4 text-center text-accent-red text-sm">Unknown mini-game: {props.type}</div>;
   }
+  return render({ ...props });
 }
 
 export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProps) {
