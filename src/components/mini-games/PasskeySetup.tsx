@@ -101,10 +101,14 @@ export function PasskeySetup({ difficulty, passkeyConfig, foreignLanguage, onCom
 
   // Step 1: Face ID
   const [facePos, setFacePos] = useState({ x: 50, y: 50 });
+  const [framePos, setFramePos] = useState({ x: 50, y: 80 });
   const [s1Progress, setS1Progress] = useState(0);
   const faceRef = useRef({ x: 50, y: 50 });
+  const frameRef = useRef({ x: 50, y: 80 });
   const s1AlignedRef = useRef(0);
   const s1DoneRef = useRef(false);
+  const draggingRef = useRef(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Step 2: Email
   const [emailOptions] = useState<EmailOption[]>(() =>
@@ -139,7 +143,6 @@ export function PasskeySetup({ difficulty, passkeyConfig, foreignLanguage, onCom
 
   const completedRef = useRef(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const rafRef = useRef<number>(0);
 
   const d = difficulty as Difficulty;
 
@@ -159,11 +162,11 @@ export function PasskeySetup({ difficulty, passkeyConfig, foreignLanguage, onCom
       faceRef.current.y = Math.max(15, Math.min(85, faceRef.current.y + dy));
       setFacePos({ ...faceRef.current });
 
-      // Check alignment (face must be in center zone)
-      const dist = Math.sqrt(
-        Math.pow(faceRef.current.x - 50, 2) + Math.pow(faceRef.current.y - 50, 2)
-      );
-      if (dist < 15) {
+      // Check alignment (face must be in scan frame)
+      const adx = faceRef.current.x - frameRef.current.x;
+      const ady = faceRef.current.y - frameRef.current.y;
+      const dist = Math.sqrt(adx * adx + ady * ady);
+      if (dist < 18) {
         s1AlignedRef.current += 50;
         const pct = Math.min(100, (s1AlignedRef.current / passkeyConfig.step1.holdTimeMs) * 100);
         setS1Progress(pct);
@@ -252,6 +255,27 @@ export function PasskeySetup({ difficulty, passkeyConfig, foreignLanguage, onCom
       }, 600);
     }
   }, [completedSteps, onComplete]);
+
+  // --- Step 1: Pointer handlers for dragging the scan frame ---
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    if (step !== 1) return;
+    draggingRef.current = true;
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  }, [step]);
+
+  const handlePointerMove = useCallback((e: React.PointerEvent) => {
+    if (!draggingRef.current || step !== 1) return;
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    frameRef.current = { x: Math.max(10, Math.min(90, x)), y: Math.max(10, Math.min(90, y)) };
+    setFramePos({ ...frameRef.current });
+  }, [step]);
+
+  const handlePointerUp = useCallback(() => {
+    draggingRef.current = false;
+  }, []);
 
   // --- Step 2 handlers ---
   const handleEmailSelect = useCallback((opt: EmailOption) => {
@@ -357,7 +381,14 @@ export function PasskeySetup({ difficulty, passkeyConfig, foreignLanguage, onCom
   }
 
   return (
-    <div className="flex flex-col h-full p-4 select-none">
+    <div
+      ref={containerRef}
+      className="flex flex-col h-full p-4 select-none touch-none"
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerUp}
+    >
       {/* Step indicator */}
       <div className="flex items-center gap-2 mb-4">
         {[1, 2, 3, 4, 5].map((s) => (
@@ -383,7 +414,7 @@ export function PasskeySetup({ difficulty, passkeyConfig, foreignLanguage, onCom
 
       {/* Step content */}
       <div className="flex-1 flex flex-col">
-        {step === 1 && <Step1FaceId facePos={facePos} progress={s1Progress} character={d as Character} />}
+        {step === 1 && <Step1FaceId facePos={facePos} framePos={framePos} progress={s1Progress} character={d as Character} />}
         {step === 2 && <Step2Email options={emailOptions} flavour={s2Flavour} onSelect={handleEmailSelect} />}
         {step === 3 && (
           <Step3Verify
@@ -416,22 +447,30 @@ export function PasskeySetup({ difficulty, passkeyConfig, foreignLanguage, onCom
 
 // --- Step sub-components ---
 
-function Step1FaceId({ facePos, progress, character }: { facePos: { x: number; y: number }; progress: number; character: Character }) {
+function Step1FaceId({ facePos, framePos, progress, character }: { facePos: { x: number; y: number }; framePos: { x: number; y: number }; progress: number; character: Character }) {
   return (
     <div className="flex flex-col items-center flex-1">
-      <Hint>Look at the phone. Keep looking at the phone.</Hint>
+      <Hint>Drag the scan frame over their face. Hold steady.</Hint>
       <div className="relative w-full flex-1 max-h-[180px]">
+        {/* Drifting face */}
         <div
           className="absolute transition-none"
           style={{ left: `${facePos.x}%`, top: `${facePos.y}%`, transform: 'translate(-50%, -50%)' }}
         >
           <CharacterAvatar character={character} size={64} />
         </div>
-        {/* Scan zone */}
-        <div className="absolute left-1/2 top-1/2 w-24 h-24 -translate-x-1/2 -translate-y-1/2 border-2 border-dashed rounded-full flex items-center justify-center"
-          style={{ borderColor: progress > 0 ? '#22c55e' : '#60a5fa' }}
+        {/* Draggable scan frame */}
+        <div
+          className="absolute w-24 h-24 border-2 rounded-full flex items-center justify-center cursor-grab active:cursor-grabbing"
+          style={{
+            left: `${framePos.x}%`,
+            top: `${framePos.y}%`,
+            transform: 'translate(-50%, -50%)',
+            borderColor: progress > 0 ? '#22c55e' : '#60a5fa',
+            backgroundColor: progress > 0 ? 'rgba(34, 197, 94, 0.1)' : 'rgba(96, 165, 250, 0.05)',
+          }}
         >
-          <span className="text-[0.6rem] text-muted">scan here</span>
+          <span className="text-[0.6rem] text-muted">scan</span>
         </div>
       </div>
       <div className="w-full max-w-[200px] h-2 bg-secondary rounded-full overflow-hidden mt-2">
