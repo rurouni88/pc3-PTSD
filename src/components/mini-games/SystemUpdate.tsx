@@ -3,12 +3,12 @@ import { Hint } from '../Hint';
 import { RngEngine } from '../../engine/seeded-rng';
 import { playSound } from '../../engine/sound';
 import { playHaptic } from '../../engine/haptics';
-import type { SystemUpdateConfig, Difficulty, ForeignLanguage, MiniGameQuality } from '../../types/game';
+import type { SystemUpdateConfig, Difficulty, MiniGameQuality } from '../../types/game';
 
 interface SystemUpdateProps {
   difficulty: string;
   systemUpdateConfig: SystemUpdateConfig;
-  foreignLanguage: ForeignLanguage | null;
+
   onComplete: (quality?: MiniGameQuality) => void;
   onCancel: () => void;
 }
@@ -72,7 +72,7 @@ const COMPLETION_MESSAGES: Record<Difficulty, string> = {
   grandma: 'Update complete. Grandma asks if the update "fixed the cat photo".',
 };
 
-export function SystemUpdate({ difficulty, systemUpdateConfig, foreignLanguage, onComplete, onCancel }: SystemUpdateProps) {
+export function SystemUpdate({ difficulty, systemUpdateConfig, onComplete, onCancel }: SystemUpdateProps) {
   const [phase, setPhase] = useState<Phase>('hint');
   const [progress, setProgress] = useState(0);
   const [decoys, setDecoys] = useState<DecoyButton[]>([]);

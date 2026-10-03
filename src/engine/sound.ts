@@ -174,7 +174,7 @@ export function toggleAudio(): boolean {
 
 function initAudio(): void {
   if (audioCtx) return;
-  const Ctx = (window.AudioContext as any) || (window as any).webkitAudioContext;
+  const Ctx = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
   if (!Ctx) return;
   audioCtx = new Ctx();
 }

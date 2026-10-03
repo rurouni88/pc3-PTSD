@@ -45,13 +45,13 @@ export const MINI_GAME_REGISTRY: Record<MiniGameType, (props: Omit<MiniGameRende
   'fingerprint-scan': ({ difficulty, foreignLanguage, onComplete, onCancel }) => (
     <FingerprintScan difficulty={difficulty} foreignLanguage={foreignLanguage} onComplete={onComplete} onCancel={onCancel} />
   ),
-  'passkey-setup': ({ levelConfig, difficulty, foreignLanguage, onComplete, onCancel }) => (
-    <PasskeySetup difficulty={difficulty} passkeyConfig={levelConfig.passkeyConfig} foreignLanguage={foreignLanguage} onComplete={onComplete} onCancel={onCancel} />
+  'passkey-setup': ({ levelConfig, difficulty, onComplete, onCancel }) => (
+    <PasskeySetup difficulty={difficulty} passkeyConfig={levelConfig.passkeyConfig} onComplete={onComplete} onCancel={onCancel} />
   ),
-  'system-update': ({ levelConfig, difficulty, foreignLanguage, onComplete, onCancel }) => (
-    <SystemUpdate difficulty={difficulty} systemUpdateConfig={levelConfig.systemUpdateConfig} foreignLanguage={foreignLanguage} onComplete={onComplete} onCancel={onCancel} />
+  'system-update': ({ levelConfig, difficulty, onComplete, onCancel }) => (
+    <SystemUpdate difficulty={difficulty} systemUpdateConfig={levelConfig.systemUpdateConfig} onComplete={onComplete} onCancel={onCancel} />
   ),
-  'zoom-out': ({ levelConfig, difficulty, foreignLanguage, onComplete, onCancel }) => (
-    <ZoomOut difficulty={difficulty} zoomConfig={levelConfig.zoomConfig} foreignLanguage={foreignLanguage} onComplete={onComplete} onCancel={onCancel} />
+  'zoom-out': ({ levelConfig, difficulty, onComplete, onCancel }) => (
+    <ZoomOut difficulty={difficulty} zoomConfig={levelConfig.zoomConfig} onComplete={onComplete} onCancel={onCancel} />
   ),
 };

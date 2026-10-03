@@ -89,6 +89,9 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     importantSelected: false,
     faceIdDistractions: 0,
     fingerprintSmudges: 0,
+    passkeyResends: 0,
+    updateDecoysTapped: 0,
+    zoomNotifications: 0,
   });
 
   const calculateDrainRate = useCallback((issues: GameIssue[]): number => {
@@ -248,6 +251,9 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
       if (quality.importantSelected) runStatsRef.current.importantSelected = true;
       if (quality.distractionsTriggered) runStatsRef.current.faceIdDistractions += quality.distractionsTriggered;
       if (quality.smudgesTriggered) runStatsRef.current.fingerprintSmudges += quality.smudgesTriggered;
+      if (quality.passkeyResends) runStatsRef.current.passkeyResends += quality.passkeyResends;
+      if (quality.updateDecoysTapped) runStatsRef.current.updateDecoysTapped += quality.updateDecoysTapped;
+      if (quality.zoomNotifications) runStatsRef.current.zoomNotifications += quality.zoomNotifications;
     }
 
     setState((prev) => {
