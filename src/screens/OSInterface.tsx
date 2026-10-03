@@ -10,6 +10,7 @@ import { LevelConfig, MiniGameType, ForeignLanguage, MiniGameQuality } from '../
 import type { Achievement } from '../engine/achievements';
 import { MINI_GAME_REGISTRY, type MiniGameRenderProps } from '../components/mini-games/registry';
 import { HelpModal } from '../components/HelpModal';
+import { SettingsModal } from '../components/SettingsModal';
 
 interface OSInterfaceProps {
   levelConfig: LevelConfig;
@@ -61,6 +62,7 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
   const [activeIssueId, setActiveIssueId] = useState<string | null>(null);
   const [showPauseMenu, setShowPauseMenu] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   const handleIssueTap = useCallback((issueId: string, issueType: MiniGameType) => {
     playHaptic('click');
@@ -128,6 +130,12 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
             How To Play
           </button>
           <button
+            onClick={() => setShowSettings(true)}
+            className="w-full py-3 bg-tertiary text-primary font-bold rounded-xl active:scale-95 transition-transform"
+          >
+            Settings
+          </button>
+          <button
             onClick={onExit}
             className="w-full py-3 bg-tertiary text-primary font-bold rounded-xl active:scale-95 transition-transform"
           >
@@ -135,6 +143,7 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
           </button>
         </div>
         {showHelp && <HelpModal onClose={() => setShowHelp(false)} />}
+        {showSettings && <SettingsModal onClose={() => setShowSettings(false)} />}
       </div>
     );
   }

@@ -31,12 +31,18 @@ pc3-PTSD/
 │   │       ├── FaceIdSetup.tsx          # Drag frame over drifting face
 │   │       ├── FingerprintScan.tsx      # Tap-to-scan with smudge events
 │   │       ├── InfiniteTabSweep.tsx     # Swipe-to-close tabs
-│   │       └── PhysicalOverride.tsx     # Quick Settings toggle hunt
+│   │       ├── PasskeySetup.tsx         # 5-step passkey wizard
+│   │       ├── PhysicalOverride.tsx     # Quick Settings toggle hunt
+│   │       ├── SystemUpdate.tsx         # Restraint: don't tap decoys
+│   │       ├── ZoomOut.tsx              # Counter-action: zoom out vs notifications
+│   │       └── registry.tsx             # MiniGameType → render function map
 │   ├── config/
 │   │   ├── levels.ts             # All level data: pools, prompts, configs
-│   │   └── translations.ts       # Foreign language strings + t() helper
+│   │   ├── translations.ts       # Foreign language strings + t() helper
+│   │   └── validate-levels.ts    # Build-time config validation logic
 │   ├── engine/                   # Pure logic — ZERO React imports
 │   │   ├── achievements.ts       # Achievement definitions + evaluation
+│   │   ├── font-scale.ts         # Dynamic font scaling (accessibility)
 │   │   ├── haptics.ts            # Vibration patterns (18 types, Android only)
 │   │   ├── meta.ts               # Meta progression + leaderboard (localStorage)
 │   │   ├── save.ts               # Save/load system (validate on load)
@@ -44,7 +50,8 @@ pc3-PTSD/
 │   │   ├── sound.ts              # Web Audio API SFX (9 types)
 │   │   └── theme.ts              # Dark/light theme store
 │   ├── hooks/
-│   │   ├── useGameEngine.ts      # Core game loop (timer, battery, events, selection)
+│   │   ├── useGameEngine.ts      # Core game loop (battery, events, selection)
+│   │   ├── useGameTimer.ts       # Extracted timer hook (rAF loop, pause/resume)
 │   │   └── useIsDesktop.ts       # Responsive matchMedia hook
 │   ├── screens/
 │   │   ├── BootScreen.tsx        # Title screen + tagline cycling
@@ -61,8 +68,10 @@ pc3-PTSD/
 ├── .github/workflows/
 │   ├── pr-checks.yml             # CI: typecheck + test + build (parallel)
 │   └── deploy-pages.yml          # Deploy: build + upload dist/ to GitHub Pages
+├── scripts/
+│   └── validate-levels.ts        # CLI: npm run validate:levels
 ├── index.html                    # Vite entry (sprite injected at runtime)
-├── package.json                  # Scripts: dev, build, test, typecheck
+├── package.json                  # Scripts: dev, build, test, typecheck, validate:levels
 ├── tsconfig.json                 # TypeScript config (strict)
 ├── vite.config.ts                # Vite + Tailwind v4 plugin
 ├── GAMEPLAY.md                   # Rules, mechanics, mini-games, prompts
@@ -101,10 +110,11 @@ npm run dev      # start Vite dev server (http://localhost:5173)
 ## 🧪 Building & Verifying
 
 ```bash
-npm run dev          # dev server
-npm run build        # typecheck + build
-npm run typecheck    # type-check only
-npm test             # Vitest engine tests
+npm run dev             # dev server
+npm run build           # validate:levels + typecheck + build
+npm run typecheck       # type-check only
+npm test                # Vitest engine tests
+npm run validate:levels # build-time config validation
 ```
 
 - Engine modules (`src/engine/`) have **zero React imports**
@@ -115,8 +125,7 @@ npm test             # Vitest engine tests
 
 - [ ] Shareable run summaries (seed + transcript)
 - [ ] Error boundaries + graceful fallback UI
-- [ ] Mini-game shared hook (useMiniGame) if we exceed ~10 games
-- [ ] More mini-games to expand the pool
+- [ ] More mini-games (The Password, The Storage Treadmill, The Screenshot)
 - [ ] "Significant Other" difficulty (teaser in LevelSelect)
 
 ### Considered and Deferred
@@ -127,6 +136,7 @@ npm test             # Vitest engine tests
 | Mini-game base class | 2 props of boilerplate. Over-engineering. |
 | Telemetry / analytics | Local browser game. No server. |
 | Pause persistence | `isPaused` flag works because mini-games replace the view. |
+| Mini-game shared hook | 10 games, zero shared logic. Props + 2 imports isn't a hook. Revisit at 15+ games with shared mechanics. |
 
 ## ✅ Current State
 
@@ -143,7 +153,7 @@ npm test             # Vitest engine tests
 - SVG icon set (30+ icons, runtime sprite injection) ✓
 - CharacterAvatar SVGs (Dad/Mum/Grandma/Partner) ✓
 - Settings modal (theme, audio, haptics, volume, reset achievements, reset leaderboard) ✓
-- Help modal (7 mini-game descriptions) ✓
+- Help modal (tabbed: Play / Mini-Games / Survive, 10 mini-games) ✓
 - Dynamic interruption cadence (scales with performance) ✓
 - Variable starting battery (Dad 50%, Mum 40%, Grandma 60%) ✓
 - Victory/defeat jingle ✓
