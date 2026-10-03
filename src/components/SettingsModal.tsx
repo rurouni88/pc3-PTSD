@@ -204,6 +204,15 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
           {/* Divider */}
           <div className="border-t border-theme" />
 
+          {/* Install Hint */}
+          <div className="text-center">
+            <p className="text-xs text-muted">📲 Install as app</p>
+            <p className="text-[0.65rem] text-muted mt-1">iOS: Share → Add to Home Screen</p>
+            <p className="text-[0.65rem] text-muted">Android: Menu (⋮) → Add to Home Screen</p>
+          </div>
+
+          <div className="border-t border-theme" />
+
           {/* Credits */}
           <div className="text-center">
             <p className="text-center text-xs text-muted">Copyright 2026 PC3 Enterprises</p>

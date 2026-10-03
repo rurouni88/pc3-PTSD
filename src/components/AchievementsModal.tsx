@@ -1,5 +1,6 @@
 import { loadUnlocked } from '../engine/achievements';
 import { ACHIEVEMENTS } from '../engine/achievements';
+import { CopyButton } from './CopyButton';
 
 interface AchievementsModalProps {
   onClose: () => void;
@@ -36,6 +37,15 @@ function renderAchievementCard(
   );
 }
 
+function buildAchievementsSummary(unlocked: Set<string>): string {
+  const earned = ACHIEVEMENTS.filter((a) => unlocked.has(a.id));
+  const lines = earned.map((a) => `${a.emoji} ${a.title}`);
+  return [
+    `🏅 PTSD Achievements: ${unlocked.size}/${ACHIEVEMENTS.length}`, 
+    ...lines,
+  ].join('\n');
+}
+
 export function AchievementsModal({ onClose }: AchievementsModalProps) {
   const unlocked = new Set(loadUnlocked());
 
@@ -65,9 +75,16 @@ export function AchievementsModal({ onClose }: AchievementsModalProps) {
 
         {/* Footer */}
         <div className="p-4 border-t border-theme text-center">
-          <p className="text-xs text-muted">
+          <p className="text-xs text-muted mb-2">
             {unlocked.size}/{ACHIEVEMENTS.length} unlocked
           </p>
+          {unlocked.size > 0 && (
+            <CopyButton
+              text={buildAchievementsSummary(unlocked)}
+              label="Copy Achievements"
+              className="px-3 py-1.5 text-xs"
+            />
+          )}
         </div>
       </div>
     </div>
