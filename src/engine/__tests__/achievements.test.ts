@@ -47,6 +47,9 @@ const emptyStats: RunStats = {
   importantSelected: false,
   faceIdDistractions: 0,
   fingerprintSmudges: 0,
+  passkeyResends: 0,
+  updateDecoysTapped: 0,
+  zoomNotifications: 0,
 };
 
 describe('Achievements', () => {

@@ -4,13 +4,13 @@ import { Hint } from '../Hint';
 import { RngEngine } from '../../engine/seeded-rng';
 import { playSound } from '../../engine/sound';
 import { playHaptic } from '../../engine/haptics';
-import type { PasskeyConfig, Difficulty, ForeignLanguage, MiniGameQuality } from '../../types/game';
+import type { PasskeyConfig, Difficulty, MiniGameQuality } from '../../types/game';
 import type { Character } from '../CharacterAvatar';
 
 interface PasskeySetupProps {
   difficulty: string;
   passkeyConfig: PasskeyConfig;
-  foreignLanguage: ForeignLanguage | null;
+
   onComplete: (quality?: MiniGameQuality) => void;
   onCancel: () => void;
 }
@@ -89,7 +89,7 @@ function generateInbox(code: string): InboxEmail[] {
 
 // --- Main component ---
 
-export function PasskeySetup({ difficulty, passkeyConfig, foreignLanguage, onComplete, onCancel }: PasskeySetupProps) {
+export function PasskeySetup({ difficulty, passkeyConfig, onComplete, onCancel }: PasskeySetupProps) {
   const [phase, setPhase] = useState<Phase>('hint');
   const [step, setStep] = useState<Step>(1);
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());

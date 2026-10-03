@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Difficulty } from '../types/game';
 import { MetaStore } from '../engine/meta';
+import { RngEngine } from '../engine/seeded-rng';
 import type { Achievement } from '../engine/achievements';
 import { CopyButton } from '../components/CopyButton';
 import { playHaptic } from '../engine/haptics';
@@ -43,7 +44,7 @@ function buildRunSummary(
   difficulty: Difficulty
 ): string {
   const lines = result.success ? WIN_LINES : LOSE_LINES;
-  const line = lines[Math.floor(Math.random() * lines.length)];
+  const line = lines[Math.floor(RngEngine.random() * lines.length)];
   const time = Math.round(result.timeRemaining);
   const battery = Math.round(result.batteryLevel);
 

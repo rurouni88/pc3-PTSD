@@ -153,6 +153,27 @@ export const ACHIEVEMENTS: Achievement[] = [
     emoji: '🀄',
     check: (s, stats) => s.gameState === 'results' && stats.chineseEasterEgg && s.batteryLevel > 0,
   },
+  {
+    id: 'passkey_purist',
+    title: 'Passkey Purist',
+    desc: 'Complete the passkey setup without a single code resend. The circular dependency was theoretical. You\'re welcome.',
+    emoji: '🔑',
+    check: (_s, stats) => stats.miniGamesCompleted.includes('passkey-setup') && (stats.passkeyResends ?? 0) === 0,
+  },
+  {
+    id: 'update_survivor',
+    title: 'Update Survivor',
+    desc: 'Finish the system update without tapping a single decoy button. You did nothing. Correctly. For 20 seconds.',
+    emoji: '📲',
+    check: (_s, stats) => stats.miniGamesCompleted.includes('system-update') && (stats.updateDecoysTapped ?? 0) === 0,
+  },
+  {
+    id: 'zoom_warrior',
+    title: 'Zoom Warrior',
+    desc: 'Zoom out without getting re-zoomed by a single notification. Linda did not text. The cat cam was silent. A miracle.',
+    emoji: '🔍',
+    check: (_s, stats) => stats.miniGamesCompleted.includes('zoom-out') && (stats.zoomNotifications ?? 0) === 0,
+  },
 ];
 
 const UNLOCKED_KEY = 'ptsd_achievements';

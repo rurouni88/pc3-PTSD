@@ -9,6 +9,7 @@ import {
   playSound,
 } from '../engine/sound';
 import { toggleHaptics, loadHapticsPref, playHaptic } from '../engine/haptics';
+import { loadBgmPref, saveBgmPref, toggleBgm } from '../engine/bgm';
 import { loadFontScale, saveFontScale, FONT_MIN, FONT_MAX } from '../engine/font-scale';
 import { saveUnlocked, loadUnlocked } from '../engine/achievements';
 import { MetaStore } from '../engine/meta';
@@ -22,6 +23,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
   const [audioOn, setAudioOn] = useState<boolean>(loadAudioPref);
   const [volume, setVolume] = useState<number>(loadVolume);
   const [hapticsOn, setHapticsOn] = useState<boolean>(loadHapticsPref);
+  const [bgmOn, setBgmOn] = useState<boolean>(loadBgmPref);
   const [fontScale, setFontScale] = useState<number>(loadFontScale);
 
   // Sync if settings change externally
@@ -31,6 +33,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
       setAudioOn(loadAudioPref);
       setVolume(loadVolume);
       setHapticsOn(loadHapticsPref);
+      setBgmOn(loadBgmPref());
       setFontScale(loadFontScale());
     };
     window.addEventListener('storage', handler);
@@ -53,6 +56,12 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
     const next = toggleHaptics();
     setHapticsOn(next);
     if (next) playHaptic('click');
+  };
+
+  const handleBgmToggle = () => {
+    const next = toggleBgm();
+    setBgmOn(next);
+    playSound('click');
   };
 
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,8 +95,8 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
 
         <div className="flex flex-col gap-4">
           {/* Theme toggle */}
-          <div className="flex items-center justify-between">
-            <div>
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-primary">
                 {theme === 'dark' ? '🌙 Dark Mode' : '☀️ Light Mode'}
               </p>
@@ -99,10 +108,10 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
             </div>
             <button
               onClick={handleThemeToggle}
-              className={`w-[48px] h-[28px] rounded-full transition-colors ${theme === 'dark' ? 'bg-accent-green border-2 border-accent-green/50' : 'bg-secondary border-2 border-accent-blue/40'}`}
+              className="shrink-0 w-[48px] h-[28px] rounded-full transition-colors border-2 bg-secondary border-accent-blue/40 relative"
             >
               <div
-                className={`w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${theme === 'dark' ? 'translate-x-[24px]' : 'translate-x-[4px]'}`}
+                className={`absolute top-[2px] w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${theme === 'dark' ? 'translate-x-[24px]' : 'translate-x-[2px]'}`}
               />
             </button>
           </div>
@@ -111,8 +120,8 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
           <div className="border-t border-theme" />
 
           {/* Audio toggle */}
-          <div className="flex items-center justify-between">
-            <div>
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-primary">
                 {audioOn ? '🔊 Sound On' : '🔇 Sound Off'}
               </p>
@@ -124,17 +133,17 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
             </div>
             <button
               onClick={handleAudioToggle}
-              className={`w-[48px] h-[28px] rounded-full transition-colors ${audioOn ? 'bg-accent-green border-2 border-accent-green/50' : 'bg-secondary border-2 border-accent-blue/40'}`}
+              className="shrink-0 w-[48px] h-[28px] rounded-full transition-colors border-2 bg-secondary border-accent-blue/40 relative"
             >
               <div
-                className={`w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${audioOn ? 'translate-x-[24px]' : 'translate-x-[4px]'}`}
+                className={`absolute top-[2px] w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${audioOn ? 'translate-x-[24px]' : 'translate-x-[2px]'}`}
               />
             </button>
           </div>
 
           {/* Haptics toggle */}
-          <div className="flex items-center justify-between">
-            <div>
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-primary">
                 {hapticsOn ? '📳 Haptics On' : '📴 Haptics Off'}
               </p>
@@ -146,10 +155,32 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
             </div>
             <button
               onClick={handleHapticsToggle}
-              className={`w-[48px] h-[28px] rounded-full transition-colors ${hapticsOn ? 'bg-accent-green border-2 border-accent-green/50' : 'bg-secondary border-2 border-accent-blue/40'}`}
+              className="shrink-0 w-[48px] h-[28px] rounded-full transition-colors border-2 bg-secondary border-accent-blue/40 relative"
             >
               <div
-                className={`w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${hapticsOn ? 'translate-x-[24px]' : 'translate-x-[4px]'}`}
+                className={`absolute top-[2px] w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${hapticsOn ? 'translate-x-[24px]' : 'translate-x-[2px]'}`}
+              />
+            </button>
+          </div>
+
+          {/* BGM toggle */}
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-primary">
+                {bgmOn ? '🎵 Music On' : '🔇 Music Off'}
+              </p>
+              <p className="text-xs text-muted">
+                {bgmOn
+                  ? 'You are on hold. Forever.'
+                  : 'No hold music. Suspiciously peaceful.'}
+              </p>
+            </div>
+            <button
+              onClick={handleBgmToggle}
+              className="shrink-0 w-[48px] h-[28px] rounded-full transition-colors border-2 bg-secondary border-accent-blue/40 relative"
+            >
+              <div
+                className={`absolute top-[2px] w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${bgmOn ? 'translate-x-[24px]' : 'translate-x-[2px]'}`}
               />
             </button>
           </div>

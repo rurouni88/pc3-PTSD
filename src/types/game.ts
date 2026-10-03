@@ -183,4 +183,7 @@ export interface RunStats {
   importantSelected: boolean;
   faceIdDistractions: number;
   fingerprintSmudges: number;
+  passkeyResends: number;
+  updateDecoysTapped: number;
+  zoomNotifications: number;
 }

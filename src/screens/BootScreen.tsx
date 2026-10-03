@@ -6,6 +6,7 @@ import { HelpModal } from '../components/HelpModal';
 import { LeaderboardModal } from '../components/LeaderboardModal';
 import { loadUnlocked } from '../engine/achievements';
 import { ACHIEVEMENTS } from '../engine/achievements';
+import { initBgm } from '../engine/bgm';
 
 interface BootScreenProps {
   onReady: (seed: string) => void;
@@ -70,6 +71,7 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
   }, []);
 
   const handleStart = () => {
+    initBgm();
     if (SEED_RE.test(seed)) {
       RngEngine.seedWith(seed);
     } else {

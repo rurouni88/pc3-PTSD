@@ -3,12 +3,11 @@ import { Hint } from '../Hint';
 import { RngEngine } from '../../engine/seeded-rng';
 import { playSound } from '../../engine/sound';
 import { playHaptic } from '../../engine/haptics';
-import type { ZoomConfig, Difficulty, ForeignLanguage, MiniGameQuality } from '../../types/game';
+import type { ZoomConfig, Difficulty, MiniGameQuality } from '../../types/game';
 
 interface ZoomOutProps {
   difficulty: string;
   zoomConfig: ZoomConfig;
-  foreignLanguage: ForeignLanguage | null;
   onComplete: (quality?: MiniGameQuality) => void;
   onCancel: () => void;
 }
@@ -46,7 +45,7 @@ const COMPLETION_MESSAGES: Record<Difficulty, string> = {
 // App icons to show in the grid
 const APP_ICONS = ['📞', '✉️', '📷', '🌐', '🎵', '📅', '⚙️', '🗺️'];
 
-export function ZoomOut({ difficulty, zoomConfig, foreignLanguage, onComplete, onCancel }: ZoomOutProps) {
+export function ZoomOut({ difficulty, zoomConfig, onComplete, onCancel }: ZoomOutProps) {
   const [phase, setPhase] = useState<Phase>('hint');
   const [zoom, setZoom] = useState(zoomConfig.startZoom);
   const [notification, setNotification] = useState<string | null>(null);
