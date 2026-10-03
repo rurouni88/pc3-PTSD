@@ -9,6 +9,7 @@ import { useGameEngine } from '../hooks/useGameEngine';
 import { LevelConfig, MiniGameType, ForeignLanguage, MiniGameQuality } from '../types/game';
 import type { Achievement } from '../engine/achievements';
 import { MINI_GAME_REGISTRY, type MiniGameRenderProps } from '../components/mini-games/registry';
+import { HelpModal } from '../components/HelpModal';
 
 interface OSInterfaceProps {
   levelConfig: LevelConfig;
@@ -59,6 +60,7 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
   const [activeMiniGame, setActiveMiniGame] = useState<MiniGameType | null>(null);
   const [activeIssueId, setActiveIssueId] = useState<string | null>(null);
   const [showPauseMenu, setShowPauseMenu] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
 
   const handleIssueTap = useCallback((issueId: string, issueType: MiniGameType) => {
     playHaptic('click');
@@ -120,12 +122,19 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
             Resume
           </button>
           <button
+            onClick={() => setShowHelp(true)}
+            className="w-full py-3 bg-tertiary text-primary font-bold rounded-xl active:scale-95 transition-transform"
+          >
+            How To Play
+          </button>
+          <button
             onClick={onExit}
             className="w-full py-3 bg-tertiary text-primary font-bold rounded-xl active:scale-95 transition-transform"
           >
             Exit to Menu
           </button>
         </div>
+        {showHelp && <HelpModal onClose={() => setShowHelp(false)} />}
       </div>
     );
   }

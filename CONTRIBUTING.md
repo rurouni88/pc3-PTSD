@@ -151,4 +151,4 @@ npm test             # Vitest engine tests
 - CI: typecheck + test + build ✓
 - GitHub Pages deployment ✓
 - Engine tests (88 tests) ✓
-- **v0.4.1**
+- **v0.5.0**
