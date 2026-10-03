@@ -33,6 +33,13 @@
   --accent-blue: #2563eb;
 }
 
+@theme {
+  --color-accent-red: var(--accent-red);
+  --color-accent-green: var(--accent-green);
+  --color-accent-yellow: var(--accent-yellow);
+  --color-accent-blue: var(--accent-blue);
+}
+
 @utility bg-primary { background-color: var(--bg-primary); }
 @utility bg-secondary { background-color: var(--bg-secondary); }
 @utility bg-tertiary { background-color: var(--bg-tertiary); }
@@ -40,13 +47,7 @@
 @utility text-secondary { color: var(--text-secondary); }
 @utility text-muted { color: var(--text-muted); }
 @utility border-theme { border-color: var(--border-theme); }
-@utility text-accent-red { color: var(--accent-red); }
-@utility bg-accent-red { background-color: var(--accent-red); }
-@utility bg-accent-green { background-color: var(--accent-green); }
-@utility bg-accent-blue { background-color: var(--accent-blue); }
-@utility text-accent-green { color: var(--accent-green); }
-@utility text-accent-yellow { color: var(--accent-yellow); }
-@utility text-accent-blue { color: var(--accent-blue); }
+@utility border-tertiary { border-color: var(--bg-tertiary); }
 
 @keyframes slide-down {
   from { transform: translateY(-100%); opacity: 0; }
