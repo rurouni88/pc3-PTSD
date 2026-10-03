@@ -95,7 +95,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     const baseDrain = 0.05;
     const penalty = issues.reduce((sum, issue) => sum + (issue.isResolved ? 0 : issue.drainPenalty), 0);
     const guiltPenalty = guiltTripActive ? 0.08 : 0;
-    return baseDrain + penalty * 0.1 + guiltPenalty;
+    return baseDrain + penalty * 0.2 + guiltPenalty;
   }, [guiltTripActive]);
 
   const triggerPrompt = useCallback(() => {

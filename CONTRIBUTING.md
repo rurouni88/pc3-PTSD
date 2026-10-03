@@ -145,7 +145,7 @@ npm test             # Vitest engine tests
 - Settings modal (theme, audio, haptics, volume, reset achievements, reset leaderboard) ✓
 - Help modal (7 mini-game descriptions) ✓
 - Dynamic interruption cadence (scales with performance) ✓
-- Variable starting battery (Dad 50%, Mum 40%, Grandma 100%) ✓
+- Variable starting battery (Dad 50%, Mum 40%, Grandma 60%) ✓
 - Victory/defeat jingle ✓
 - Desktop iPhone frame ✓
 - CI: typecheck + test + build ✓

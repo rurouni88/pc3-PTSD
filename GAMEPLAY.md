@@ -41,7 +41,7 @@ Same seed = same selection. Different seed = different mix.
 |-------|----------|-----------------|-------------|
 | **Easy** | Dad | 50% | RAM boosters, golf tabs, fake antivirus, FaceID drift, passkey setup, system update, zoom |
 | **Normal** | Mum | 40% | Photo gallery clutter, cloud storage, WhatsApp guilt, fingerprint smudges, passkey, update, zoom |
-| **Hardest** | Grandma | 100% | Foreign language, ghost touches, 7-photo dedup, 47 browser tabs, all 10 mini-games in pool |
+| **Hardest** | Grandma | 60% | Foreign language, ghost touches, 7-photo dedup, 47 browser tabs, all 10 mini-games in pool |
 
 ## 🔋 The Battery Engine
 

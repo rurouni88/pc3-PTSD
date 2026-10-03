@@ -314,7 +314,7 @@ export const levels: Record<string, LevelConfig> = {
     name: 'Grandma',
     description: 'Phone in Chinese, ghost touches from tea spill, mute switch toggled.',
     durationSeconds: 60,
-    initialBattery: 100,
+    initialBattery: 60,
     issuePool: [
       { id: 'grandma-language', type: 'blind-translation', isResolved: false, drainPenalty: 0.8 },
       { id: 'grandma-ghost-touch', type: 'physical-override', isResolved: false, drainPenalty: 0.7 },
