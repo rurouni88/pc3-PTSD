@@ -95,8 +95,8 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
 
         <div className="flex flex-col gap-4">
           {/* Theme toggle */}
-          <div className="flex items-center justify-between">
-            <div>
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-primary">
                 {theme === 'dark' ? '🌙 Dark Mode' : '☀️ Light Mode'}
               </p>
@@ -108,10 +108,10 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
             </div>
             <button
               onClick={handleThemeToggle}
-              className={`w-[48px] h-[28px] rounded-full transition-colors ${theme === 'dark' ? 'bg-accent-green border-2 border-accent-green/50' : 'bg-secondary border-2 border-accent-blue/40'}`}
+              className="shrink-0 w-[48px] h-[28px] rounded-full transition-colors border-2 bg-secondary border-accent-blue/40 relative"
             >
               <div
-                className={`w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${theme === 'dark' ? 'translate-x-[24px]' : 'translate-x-[4px]'}`}
+                className={`absolute top-[2px] w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${theme === 'dark' ? 'translate-x-[24px]' : 'translate-x-[2px]'}`}
               />
             </button>
           </div>
@@ -120,8 +120,8 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
           <div className="border-t border-theme" />
 
           {/* Audio toggle */}
-          <div className="flex items-center justify-between">
-            <div>
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-primary">
                 {audioOn ? '🔊 Sound On' : '🔇 Sound Off'}
               </p>
@@ -133,17 +133,17 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
             </div>
             <button
               onClick={handleAudioToggle}
-              className={`w-[48px] h-[28px] rounded-full transition-colors ${audioOn ? 'bg-accent-green border-2 border-accent-green/50' : 'bg-secondary border-2 border-accent-blue/40'}`}
+              className="shrink-0 w-[48px] h-[28px] rounded-full transition-colors border-2 bg-secondary border-accent-blue/40 relative"
             >
               <div
-                className={`w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${audioOn ? 'translate-x-[24px]' : 'translate-x-[4px]'}`}
+                className={`absolute top-[2px] w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${audioOn ? 'translate-x-[24px]' : 'translate-x-[2px]'}`}
               />
             </button>
           </div>
 
           {/* Haptics toggle */}
-          <div className="flex items-center justify-between">
-            <div>
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-primary">
                 {hapticsOn ? '📳 Haptics On' : '📴 Haptics Off'}
               </p>
@@ -155,17 +155,17 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
             </div>
             <button
               onClick={handleHapticsToggle}
-              className={`w-[48px] h-[28px] rounded-full transition-colors ${hapticsOn ? 'bg-accent-green border-2 border-accent-green/50' : 'bg-secondary border-2 border-accent-blue/40'}`}
+              className="shrink-0 w-[48px] h-[28px] rounded-full transition-colors border-2 bg-secondary border-accent-blue/40 relative"
             >
               <div
-                className={`w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${hapticsOn ? 'translate-x-[24px]' : 'translate-x-[4px]'}`}
+                className={`absolute top-[2px] w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${hapticsOn ? 'translate-x-[24px]' : 'translate-x-[2px]'}`}
               />
             </button>
           </div>
 
           {/* BGM toggle */}
-          <div className="flex items-center justify-between">
-            <div>
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-primary">
                 {bgmOn ? '🎵 Music On' : '🔇 Music Off'}
               </p>
@@ -177,10 +177,10 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
             </div>
             <button
               onClick={handleBgmToggle}
-              className={`w-[48px] h-[28px] rounded-full transition-colors ${bgmOn ? 'bg-accent-green border-2 border-accent-green/50' : 'bg-secondary border-2 border-accent-blue/40'}`}
+              className="shrink-0 w-[48px] h-[28px] rounded-full transition-colors border-2 bg-secondary border-accent-blue/40 relative"
             >
               <div
-                className={`w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${bgmOn ? 'translate-x-[24px]' : 'translate-x-[4px]'}`}
+                className={`absolute top-[2px] w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${bgmOn ? 'translate-x-[24px]' : 'translate-x-[2px]'}`}
               />
             </button>
           </div>
