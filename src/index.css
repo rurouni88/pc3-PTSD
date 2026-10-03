@@ -71,12 +71,33 @@
   75% { transform: rotate(3deg); }
 }
 
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
+
+@keyframes flash-green {
+  0% { box-shadow: inset 0 0 0px transparent; }
+  50% { box-shadow: inset 0 0 30px var(--accent-green); }
+  100% { box-shadow: inset 0 0 0px transparent; }
+}
+
 @utility animate-slide-down { animation: slide-down 0.3s ease-out; }
 @utility animate-slide-up { animation: slide-up 0.3s ease-out; }
 @utility animate-slam-in { animation: slam-in 0.4s ease-out; }
 @utility animate-jiggle { animation: jiggle 0.5s ease-in-out infinite; }
 @utility animate-spin-slow { animation: spin-slow 3s linear infinite; }
 @utility animate-signal { animation: signal-pulse 3s ease-in-out infinite; }
+@utility animate-shake { animation: shake 0.3s ease-in-out; }
+@utility animate-flash-green { animation: flash-green 0.4s ease-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-shake { animation: none; }
+  .animate-flash-green { animation: none; }
+}
 
 @keyframes spin-slow {
   from { transform: rotate(0deg); }

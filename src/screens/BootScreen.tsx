@@ -172,6 +172,18 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
         >
           Start
         </button>
+        <button
+          onClick={() => {
+            initBgm();
+            const dailySeed = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+            RngEngine.seedWith(dailySeed);
+            onReady(dailySeed);
+          }}
+          className="w-full py-3 bg-tertiary text-primary font-bold rounded-xl active:scale-95 transition-transform"
+        >
+          📅 Today's Phone
+          <span className="block text-xs font-normal text-muted">Same seed for everyone</span>
+        </button>
         {onContinue && (
           <button
             onClick={() => { initBgm(); onContinue(); }}

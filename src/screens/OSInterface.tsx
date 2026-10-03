@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { playHaptic } from '../engine/haptics';
 import { StatusBar } from '../components/StatusBar';
 
@@ -63,6 +63,25 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
   const [showPauseMenu, setShowPauseMenu] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [effect, setEffect] = useState<'shake' | 'flash' | null>(null);
+  const effectTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const triggerEffect = useCallback((e: 'shake' | 'flash') => {
+    if (effectTimeout.current) clearTimeout(effectTimeout.current);
+    setEffect(e);
+    effectTimeout.current = setTimeout(() => setEffect(null), 400);
+  }, []);
+
+  useEffect(() => () => { if (effectTimeout.current) clearTimeout(effectTimeout.current); }, []);
+
+  // Shake on battery death
+  const prevBattery = useRef(state.batteryLevel);
+  useEffect(() => {
+    if (prevBattery.current > 0 && state.batteryLevel <= 0) {
+      triggerEffect('shake');
+    }
+    prevBattery.current = state.batteryLevel;
+  }, [state.batteryLevel, triggerEffect]);
 
   const handleIssueTap = useCallback((issueId: string, issueType: MiniGameType) => {
     playHaptic('click');
@@ -77,12 +96,14 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
     setActiveMiniGame(null);
     setActiveIssueId(null);
     playHaptic('complete');
-  }, [activeIssueId, resolveIssue]);
+    triggerEffect('flash');
+  }, [activeIssueId, resolveIssue, triggerEffect]);
 
   const handleMiniGameCancel = useCallback(() => {
     setActiveMiniGame(null);
     setActiveIssueId(null);
-  }, []);
+    triggerEffect('shake');
+  }, [triggerEffect]);
 
   const activeIssueList = state.activeIssues.filter((i) => !i.isResolved);
 
@@ -149,7 +170,7 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
   }
 
   return (
-    <div className="h-full flex flex-col bg-primary select-none overflow-hidden">
+    <div className={`h-full flex flex-col bg-primary select-none overflow-hidden ${effect === 'shake' ? 'animate-shake' : ''} ${effect === 'flash' ? 'animate-flash-green' : ''}`}>
       {guiltTripActive && (
         <div className="absolute inset-0 border-8 border-gray-600/40 pointer-events-none z-30" />
       )}
