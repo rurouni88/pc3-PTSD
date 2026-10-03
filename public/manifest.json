@@ -1,0 +1,17 @@
+{
+  "name": "PTSD — Parents (and above) Tech Support Dungeon",
+  "short_name": "PTSD",
+  "description": "Fix your relative's phone before the battery dies. 60 seconds. Good luck.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

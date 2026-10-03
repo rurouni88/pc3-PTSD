@@ -24,6 +24,37 @@ const difficultyNames: Record<Difficulty, string> = {
   grandma: 'Grandma',
 };
 
+const WIN_LINES = [
+  'Phone fixed. Relative unimpressed.',
+  'Survived the afternoon. Barely.',
+  'The phone works. The relationship may not.',
+  'Fixed. They broke it again by Tuesday.',
+];
+
+const LOSE_LINES = [
+  'The phone is still broken. You are not a technician.',
+  'Battery died. Dignity died with it.',
+  'You lost. The RAM Booster sends its regards.',
+  'Grandma has taken the phone and is showing it to Linda.',
+];
+
+function buildRunSummary(
+  result: { success: boolean; timeRemaining: number; batteryLevel: number; seed: string },
+  difficulty: Difficulty
+): string {
+  const lines = result.success ? WIN_LINES : LOSE_LINES;
+  const line = lines[Math.floor(Math.random() * lines.length)];
+  const time = Math.round(result.timeRemaining);
+  const battery = Math.round(result.batteryLevel);
+
+  return [
+    `📱💀 PTSD — ${difficultyNames[difficulty]} (${result.success ? 'WIN' : 'LOSS'})`,
+    `⏱️ ${time}s left · 🔋 ${battery}% battery`,
+    `🎲 Seed: ${result.seed}`,
+    `\"${line}\"`,
+  ].join('\n');
+}
+
 export function Results({ result, difficulty, onReplay, onMenu }: ResultsProps) {
   useEffect(() => {
     if (!result.success) playHaptic('defeat');
@@ -67,6 +98,10 @@ export function Results({ result, difficulty, onReplay, onMenu }: ResultsProps) 
           </div>
         </div>
       )}
+
+      <div className="mb-4 text-center">
+        <CopyButton text={buildRunSummary(result, difficulty)} label="Copy Summary" />
+      </div>
 
       {bestTime > 0 && (
         <div className="flex gap-6 mb-4">
