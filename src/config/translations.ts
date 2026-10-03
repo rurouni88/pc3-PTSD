@@ -34,6 +34,17 @@ const greek: TranslationTable = {
   'fingerprint.sweat': 'Ιδρώς',
   'fingerprint.flour': 'Αλεύρι',
   'fingerprint.mud': 'Λασπόνι',
+  'passkey.title': 'Ρύθμιση Passkey',
+  'passkey.step': 'Βήμα {n}/{total}',
+  'passkey.resend': 'Επαναστάλωση κωδικού',
+  'passkey.verification': 'Κωδικός επαλήθευσης εστάλη',
+  'update.title': 'Ενημέρωση Συστήματος',
+  'update.doNothing': 'Μην κάνεις τίποτα',
+  'update.progress': '{n}%',
+  'zoom.title': 'Διόρθωση Ζουμ',
+  'zoom.level': 'Ζουμ: {n}%',
+  'zoom.tapOut': 'Πάτησε για zoom out',
+  'zoom.rezoomed': '{n} σε έκαναν re-zoom',
 };
 
 const arabic: TranslationTable = {
@@ -64,6 +75,17 @@ const arabic: TranslationTable = {
   'fingerprint.sweat': 'عرق',
   'fingerprint.flour': 'دقيق',
   'fingerprint.mud': 'وحل',
+  'passkey.title': 'إعداد مفتاح المرور',
+  'passkey.step': 'الخطوة {n}/{total}',
+  'passkey.resend': 'إعادة إرسال الرمز',
+  'passkey.verification': 'تم إرسال رمز التحقق',
+  'update.title': 'تحديث النظام',
+  'update.doNothing': 'لا تفعل شيئاً',
+  'update.progress': '{n}%',
+  'zoom.title': 'إصلاح التكبير',
+  'zoom.level': 'التكبير: {n}%',
+  'zoom.tapOut': 'اضغط للتصغير',
+  'zoom.rezoomed': '{n} كبّروك مرة أخرى',
 };
 
 const korean: TranslationTable = {
@@ -94,6 +116,17 @@ const korean: TranslationTable = {
   'fingerprint.sweat': '땀',
   'fingerprint.flour': '밀가루',
   'fingerprint.mud': '진흙',
+  'passkey.title': '패스키 설정',
+  'passkey.step': '{n}/{total}단계',
+  'passkey.resend': '코드 재전송',
+  'passkey.verification': '확인 코드 전송됨',
+  'update.title': '시스템 업데이트',
+  'update.doNothing': '아무것도 하지 마세요',
+  'update.progress': '{n}%',
+  'zoom.title': '줌 수정',
+  'zoom.level': '줌: {n}%',
+  'zoom.tapOut': '탭하여 줍아웃',
+  'zoom.rezoomed': '{n}번 재줌됨',
 };
 
 const japanese: TranslationTable = {
@@ -124,6 +157,17 @@ const japanese: TranslationTable = {
   'fingerprint.sweat': '汗',
   'fingerprint.flour': '小麦粉',
   'fingerprint.mud': '泥',
+  'passkey.title': 'パスキー設定',
+  'passkey.step': '{n}/{total}ステップ',
+  'passkey.resend': 'コード再送信',
+  'passkey.verification': '確認コードを送信しました',
+  'update.title': 'システム更新',
+  'update.doNothing': '何もせず',
+  'update.progress': '{n}%',
+  'zoom.title': 'ズーム修正',
+  'zoom.level': 'ズーム: {n}%',
+  'zoom.tapOut': 'タップでズームアウト',
+  'zoom.rezoomed': '{n}回リズームされました',
 };
 
 const hindi: TranslationTable = {
@@ -154,6 +198,17 @@ const hindi: TranslationTable = {
   'fingerprint.sweat': 'पसीना',
   'fingerprint.flour': 'आटा',
   'fingerprint.mud': 'कचरा',
+  'passkey.title': 'पासकी सेटअप',
+  'passkey.step': 'चरण {n}/{total}',
+  'passkey.resend': 'कोड दोबारा भेजें',
+  'passkey.verification': 'सत्यापन कोड भेजा गया',
+  'update.title': 'सिस्टम अपडेट',
+  'update.doNothing': 'कुछ न करें',
+  'update.progress': '{n}%',
+  'zoom.title': 'ज़ूम ठीक करें',
+  'zoom.level': 'ज़ूम: {n}%',
+  'zoom.tapOut': 'ज़ूम आउट के लिए टैप करें',
+  'zoom.rezoomed': '{n} बार री-ज़ूम हुआ',
 };
 
 const chinese: TranslationTable = {
@@ -184,6 +239,17 @@ const chinese: TranslationTable = {
   'fingerprint.sweat': '汗水',
   'fingerprint.flour': '面粉',
   'fingerprint.mud': '泥土',
+  'passkey.title': '设置通行密钥',
+  'passkey.step': '第 {n}/{total} 步',
+  'passkey.resend': '重新发送验证码',
+  'passkey.verification': '验证码已发送',
+  'update.title': '系统更新',
+  'update.doNothing': '什么都不要做',
+  'update.progress': '{n}%',
+  'zoom.title': '修复缩放',
+  'zoom.level': '缩放: {n}%',
+  'zoom.tapOut': '点击缩小',
+  'zoom.rezoomed': '{n} 次重新放大',
 };
 
 const english: TranslationTable = {
