@@ -14,9 +14,9 @@ Each level has a **pool** of mini-games. The seeded RNG selects a subset per run
 
 | Difficulty | Pool Size | Selected | Example |
 |---|---|---|---|
-| Dad | 4 | 3 | Always plays 3 of 4 |
-| Mum | 5 | 4 | Always plays 4 of 5 |
-| Grandma | 7 | 5 | Plays 5 of 7 (2 randomly excluded) |
+| Dad | 7 | 3 | Plays 3 of 7 (4 randomly excluded) |
+| Mum | 8 | 4 | Plays 4 of 8 (4 randomly excluded) |
+| Grandma | 10 | 5 | Plays 5 of 10 (5 randomly excluded) |
 
 Same seed = same selection. Different seed = different mix.
 
@@ -39,9 +39,9 @@ Same seed = same selection. Different seed = different mix.
 
 | Level | Relative | Starting Battery | Key Hazards |
 |-------|----------|-----------------|-------------|
-| **Easy** | Dad | 50% | RAM boosters, golf tabs, fake antivirus, FaceID drift |
-| **Normal** | Mum | 40% | Photo gallery clutter, cloud storage, WhatsApp guilt, fingerprint smudges |
-| **Hardest** | Grandma | 100% | Foreign language, ghost touches, 7-photo dedup, 47 browser tabs, all 7 mini-games in pool |
+| **Easy** | Dad | 50% | RAM boosters, golf tabs, fake antivirus, FaceID drift, passkey setup, system update, zoom |
+| **Normal** | Mum | 40% | Photo gallery clutter, cloud storage, WhatsApp guilt, fingerprint smudges, passkey, update, zoom |
+| **Hardest** | Grandma | 60% | Foreign language, ghost touches, 7-photo dedup, 47 browser tabs, all 10 mini-games in pool |
 
 ## 🔋 The Battery Engine
 
@@ -50,7 +50,7 @@ Same seed = same selection. Different seed = different mix.
 - **The Clutch Mechanic**: Players can ask the parent for a charger, restoring battery at the cost of precious seconds.
 - **Guilt Trip Drain**: A "Generational Guilt Trip" prompt causes a temporary battery drain increase for 10 seconds.
 
-## Mini Games (7 Total)
+## Mini Games (10 Total)
 
 The mini-games are the "rooms" or "monsters" of your dungeon. They look and feel exactly like interacting with a broken, frustrating mobile operating system.
 
@@ -99,6 +99,36 @@ When a player taps a broken feature, a full-screen viewport opens. Clearing the 
 - **The Mechanic**: Rapidly tap the fingerprint sensor to increase match % (5%/tap when clean).
 - **The Catch**: Random smudge events spawn (lotion 🧴, toast crumbs 🍞, sweat 💦, flour 🌾, mud 🟤). While smudged, taps give 0–2% and the percentage **drains**. Tap "Wipe Screen with Shirt" to clear the modifier.
 - **Difficulty**: Smudge frequency and drain rate scale up (Dad: 4s interval, Grandma: 2.5s).
+
+### 🔑 8. The Passkey (Security — All Levels)
+
+- **The Problem**: Set up a passkey for their email instead of a password.
+- **The Mechanic**: A 5-step wizard. At each step, the parent complicates things:
+  1. **Face ID** — Drag the scan frame over their drifting face
+  2. **Email** — Autocorrect mangled it. Pick the right one from 3 options
+  3. **Verify** — "We sent a code to your email." "Which email?" "The one we're setting up." Find the code in a fake inbox
+  4. **Backup Code** — Stop the stylus before it scribbles on the code (or erase it)
+  5. **Punchline** — "Delete your old password?" **"NO."** (scripted)
+- **The Catch**: The entire point of a passkey is to eliminate the password. The parent keeps the password. You've added complexity, not removed it.
+- **Punchline**: "Passkey active. Password: also active. 'What's a passkey again?'"
+
+### 📲 9. The System Update (Restraint — All Levels)
+
+- **The Problem**: A forced system update is installing. Your job: **do nothing**.
+- **The Mechanic**: A progress bar crawls from 0→100%. While it progresses:
+  - **Decoy buttons** appear ("Skip Update", "Factory Reset") — tapping any loses 15–20% progress
+  - **Parent prompts** ("Is it almost done?") — pick the safe answer or lose progress
+  - **Stall events** freeze progress ("Preparing...", "Don't turn off your phone")
+- **The Catch**: You're being punished for doing nothing. The "fix" is to not fix anything.
+- **Difficulty**: Dad (4 decoys, 2 prompts, 1 stall) → Grandma (8 decoys, 4 prompts, 3 stalls)
+
+### 🔍 10. The Zoom (Counter-Action — All Levels)
+
+- **The Problem**: They've zoomed in to 500%. Get it back to 100%.
+- **The Mechanic**: Tap "Zoom Out" to reduce by 50% per tap. But notifications pop up and re-zoom them (+100% or +150%). You're always one zoom behind.
+- **The Catch**: You can't win against a parent's notifications. Every time you make progress, Linda texts, the cat cam triggers, or the air fryer goes on sale.
+- **Difficulty**: Dad (400% start, 2 notifications) → Grandma (500% start, 5 notifications, +150% rezoom)
+- **Punchline**: "Zoom fixed. Grandma asks if you can make the cat photo 'bigger, not smaller.'"
 
 ## 🗣️ The "Couch Interruption" Layer
 

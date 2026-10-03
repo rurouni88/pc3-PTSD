@@ -108,7 +108,7 @@ npm test             # Vitest engine tests
 ```
 
 - Engine modules (`src/engine/`) have **zero React imports**
-- Tests in `src/engine/__tests__/` — 73 tests
+- Tests in `src/engine/__tests__/` — 88 tests
 - CI: `typecheck` + `test` + `build` (parallel jobs, all must pass)
 
 ## 📋 Roadmap
@@ -130,8 +130,8 @@ npm test             # Vitest engine tests
 
 ## ✅ Current State
 
-- 7 mini-games with per-difficulty variety ✓
-- Seeded issue pool selection (Dad 3/4, Mum 4/5, Grandma 5/7) ✓
+- 10 mini-games with per-difficulty variety ✓
+- Seeded issue pool selection (Dad 3/7, Mum 4/8, Grandma 5/10) ✓
 - Seeded runs (reproducible + re-enter seed) ✓
 - 20 satirical achievements (alphabetical, behavioral tracking) ✓
 - Foreign language sharing (Grandma) + Chinese Easter Egg ✓
@@ -145,10 +145,10 @@ npm test             # Vitest engine tests
 - Settings modal (theme, audio, haptics, volume, reset achievements, reset leaderboard) ✓
 - Help modal (7 mini-game descriptions) ✓
 - Dynamic interruption cadence (scales with performance) ✓
-- Variable starting battery (Dad 50%, Mum 40%, Grandma 100%) ✓
+- Variable starting battery (Dad 50%, Mum 40%, Grandma 60%) ✓
 - Victory/defeat jingle ✓
 - Desktop iPhone frame ✓
 - CI: typecheck + test + build ✓
 - GitHub Pages deployment ✓
-- Engine tests (73 tests) ✓
-- **v0.4.0**
+- Engine tests (88 tests) ✓
+- **v0.5.0**
