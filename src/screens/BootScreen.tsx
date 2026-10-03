@@ -174,7 +174,7 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
         </button>
         {onContinue && (
           <button
-            onClick={onContinue}
+            onClick={() => { initBgm(); onContinue(); }}
             className="w-full py-3 bg-tertiary text-primary font-bold rounded-xl active:scale-95 transition-transform"
           >
             Continue
