@@ -4,9 +4,10 @@ import { playSound } from '../engine/sound';
 interface CopyButtonProps {
   text: string;
   className?: string;
+  label?: string;
 }
 
-export function CopyButton({ text, className = '' }: CopyButtonProps) {
+export function CopyButton({ text, className = '', label }: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = useCallback(() => {
@@ -25,7 +26,7 @@ export function CopyButton({ text, className = '' }: CopyButtonProps) {
       {copied ? (
         <><span className="text-accent-green">✓</span> Copied</>
       ) : (
-        <><span>📋</span> Copy</>
+        <><span>📋</span> {label ?? 'Copy'}</>
       )}
     </button>
   );
