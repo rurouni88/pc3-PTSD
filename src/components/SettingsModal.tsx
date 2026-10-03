@@ -108,7 +108,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
             </div>
             <button
               onClick={handleThemeToggle}
-              className="shrink-0 w-[48px] h-[28px] rounded-full transition-colors border-2 bg-secondary border-accent-blue/40 relative"
+              className={`shrink-0 w-[48px] h-[28px] rounded-full transition-colors border-2 relative ${theme === 'dark' ? 'bg-accent-green border-accent-green/50' : 'bg-secondary border-accent-blue/40'}`}
             >
               <div
                 className={`absolute top-[2px] w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${theme === 'dark' ? 'translate-x-[24px]' : 'translate-x-[2px]'}`}
@@ -133,7 +133,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
             </div>
             <button
               onClick={handleAudioToggle}
-              className="shrink-0 w-[48px] h-[28px] rounded-full transition-colors border-2 bg-secondary border-accent-blue/40 relative"
+              className={`shrink-0 w-[48px] h-[28px] rounded-full transition-colors border-2 relative ${audioOn ? 'bg-accent-green border-accent-green/50' : 'bg-secondary border-accent-blue/40'}`}
             >
               <div
                 className={`absolute top-[2px] w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${audioOn ? 'translate-x-[24px]' : 'translate-x-[2px]'}`}
@@ -155,7 +155,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
             </div>
             <button
               onClick={handleHapticsToggle}
-              className="shrink-0 w-[48px] h-[28px] rounded-full transition-colors border-2 bg-secondary border-accent-blue/40 relative"
+              className={`shrink-0 w-[48px] h-[28px] rounded-full transition-colors border-2 relative ${hapticsOn ? 'bg-accent-green border-accent-green/50' : 'bg-secondary border-accent-blue/40'}`}
             >
               <div
                 className={`absolute top-[2px] w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${hapticsOn ? 'translate-x-[24px]' : 'translate-x-[2px]'}`}
@@ -177,7 +177,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
             </div>
             <button
               onClick={handleBgmToggle}
-              className="shrink-0 w-[48px] h-[28px] rounded-full transition-colors border-2 bg-secondary border-accent-blue/40 relative"
+              className={`shrink-0 w-[48px] h-[28px] rounded-full transition-colors border-2 relative ${bgmOn ? 'bg-accent-green border-accent-green/50' : 'bg-secondary border-accent-blue/40'}`}
             >
               <div
                 className={`absolute top-[2px] w-[20px] h-[20px] bg-white rounded-full shadow-md transition-transform ${bgmOn ? 'translate-x-[24px]' : 'translate-x-[2px]'}`}
