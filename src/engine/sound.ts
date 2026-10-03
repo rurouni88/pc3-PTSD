@@ -166,6 +166,10 @@ export function saveVolume(v: number): void {
   volume = v;
 }
 
+export function getVolume(): number {
+  return volume;
+}
+
 export function toggleAudio(): boolean {
   audioOn = !audioOn;
   saveAudioPref(audioOn);
