@@ -42,6 +42,8 @@
 @utility border-theme { border-color: var(--border-theme); }
 @utility text-accent-red { color: var(--accent-red); }
 @utility bg-accent-red { background-color: var(--accent-red); }
+@utility bg-accent-green { background-color: var(--accent-green); }
+@utility bg-accent-blue { background-color: var(--accent-blue); }
 @utility text-accent-green { color: var(--accent-green); }
 @utility text-accent-yellow { color: var(--accent-yellow); }
 @utility text-accent-blue { color: var(--accent-blue); }
