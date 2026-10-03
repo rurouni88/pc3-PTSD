@@ -4,6 +4,8 @@
 // Uses the same AudioContext as the SFX engine.
 // Respects audio on/off and volume settings.
 
+import { getVolume } from './sound';
+
 const BGM_KEY = 'ptsd_bgm';
 
 const BPM = 120;
@@ -133,9 +135,10 @@ function scheduleLoop(audioCtx: AudioContext, startTime: number): void {
     const t = startTime + note.time;
     const attack = 0.015;
     const release = Math.min(0.08, note.duration * 0.3);
+    const vol = note.gain * getVolume();
     gain.gain.setValueAtTime(0, t);
-    gain.gain.linearRampToValueAtTime(note.gain, t + attack);
-    gain.gain.setValueAtTime(note.gain, t + note.duration - release);
+    gain.gain.linearRampToValueAtTime(vol, t + attack);
+    gain.gain.setValueAtTime(vol, t + note.duration - release);
     gain.gain.linearRampToValueAtTime(0, t + note.duration);
 
     osc.start(t);
