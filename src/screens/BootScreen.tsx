@@ -4,14 +4,16 @@ import { SettingsModal } from '../components/SettingsModal';
 import { AchievementsModal } from '../components/AchievementsModal';
 import { HelpModal } from '../components/HelpModal';
 import { LeaderboardModal } from '../components/LeaderboardModal';
+import { Modal } from '../components/Modal';
 import { loadUnlocked } from '../engine/achievements';
 import { ACHIEVEMENTS } from '../engine/achievements';
 import { initBgm } from '../engine/bgm';
+import type { MiniGameType } from '../types/game';
 
 interface BootScreenProps {
   onReady: (seed: string) => void;
   onContinue?: () => void;
-  onGym?: () => void;
+  onPlayGym?: (gameType: MiniGameType) => void;
 }
 
 const TAGLINES = [
@@ -63,7 +65,20 @@ function pickTagline(seed: string): string {
 
 const SEED_RE = /^[A-Z0-9]{8}$/;
 
-export function BootScreen({ onReady, onContinue, onGym }: BootScreenProps) {
+const GYM_GAMES: { type: MiniGameType; label: string; icon: string; desc: string }[] = [
+  { type: 'infinite-tab-sweep', label: 'Tab Sweep', icon: '🌐', desc: 'Close tabs. They multiply.' },
+  { type: 'physical-override', label: 'Quick Settings', icon: '🔦', desc: 'Find the flashlight. Page 2 of 6.' },
+  { type: 'duplicate-doom', label: 'Duplicate Doom', icon: '📷', desc: 'Delete duplicates. Keep the roses.' },
+  { type: 'antivirus-whack-a-mole', label: 'Antivirus', icon: '🛡️', desc: 'Long-press the fakes. Not the real ones.' },
+  { type: 'blind-translation', label: 'Blind Translation', icon: '🔤', desc: 'Pick the right language. You can\'t read it.' },
+  { type: 'faceid-setup', label: 'FaceID', icon: '🔐', desc: 'Hold the frame on their face. They won\'t stop moving.' },
+  { type: 'fingerprint-scan', label: 'Fingerprint', icon: '👆', desc: 'Tap the sensor. Wipe the smudges.' },
+  { type: 'passkey-setup', label: 'Passkey', icon: '🔑', desc: '5 steps. They will complicate all of them.' },
+  { type: 'system-update', label: 'System Update', icon: '📲', desc: 'Do nothing. Survive the decoys.' },
+  { type: 'zoom-out', label: 'Zoom Fix', icon: '🔍', desc: 'Zoom out. Notifications re-zoom. Repeat.' },
+];
+
+export function BootScreen({ onReady, onContinue, onPlayGym }: BootScreenProps) {
   const [seed, setSeed] = useState<string>(() => RngEngine.generateSeed());
   const [editing, setEditing] = useState(false);
   const [taglineIndex, setTaglineIndex] = useState(0);
@@ -71,6 +86,7 @@ export function BootScreen({ onReady, onContinue, onGym }: BootScreenProps) {
   const [showAchievements, setShowAchievements] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [showGym, setShowGym] = useState(false);
 
   // Cycle through taglines every 4 seconds while loading
   useEffect(() => {
@@ -173,9 +189,9 @@ export function BootScreen({ onReady, onContinue, onGym }: BootScreenProps) {
         >
           ⚙️ Settings
         </button>
-        {onGym && (
+        {onPlayGym && (
           <button
-            onClick={onGym}
+            onClick={() => setShowGym(true)}
             className="py-2.5 rounded bg-tertiary border border-theme text-secondary text-sm hover:border-accent-red/50 hover:text-primary transition-colors col-span-2"
           >
             🏋️ Boot Camp
@@ -223,6 +239,29 @@ export function BootScreen({ onReady, onContinue, onGym }: BootScreenProps) {
       {showAchievements && <AchievementsModal onClose={() => setShowAchievements(false)} />}
       {showHelp && <HelpModal onClose={() => setShowHelp(false)} />}
       {showLeaderboard && <LeaderboardModal onClose={() => setShowLeaderboard(false)} />}
+      {showGym && onPlayGym && (
+        <Modal onClose={() => setShowGym(false)}>
+          <div className="p-4 border-b border-theme">
+            <h2 className="text-lg font-bold text-primary">🏋️ Boot Camp</h2>
+            <p className="text-xs text-secondary mt-1">Practice mini-games. No timer, no battery, no pressure.</p>
+          </div>
+          <div className="flex-1 overflow-y-auto p-4">
+            <div className="grid grid-cols-2 gap-2">
+              {GYM_GAMES.map((game) => (
+                <button
+                  key={game.type}
+                  onClick={() => { setShowGym(false); onPlayGym(game.type); }}
+                  className="flex flex-col items-center gap-1 p-3 bg-tertiary rounded-xl border border-theme active:scale-95 transition-transform"
+                >
+                  <span className="text-xl">{game.icon}</span>
+                  <span className="text-xs font-bold text-primary">{game.label}</span>
+                  <span className="text-[0.6rem] text-muted text-center leading-tight">{game.desc}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }

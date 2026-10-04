@@ -6,7 +6,7 @@ import { Results } from './screens/Results';
 import { MiniGameGym } from './screens/MiniGameGym';
 import { iPhoneFrame } from './components/iPhoneFrame';
 import { levels } from './config/levels';
-import { Difficulty, GameState } from './types/game';
+import { Difficulty, GameState, MiniGameType } from './types/game';
 import { RngEngine } from './engine/seeded-rng';
 import { SaveSystem } from './engine/save';
 import { applyTheme, loadTheme } from './engine/theme';
@@ -26,6 +26,7 @@ export function App() {
   const [gameState, setGameState] = useState<GameState>('boot');
   const [difficulty, setDifficulty] = useState<Difficulty | null>(null);
   const [lastResult, setLastResult] = useState<GameResult | null>(null);
+  const [gymGame, setGymGame] = useState<MiniGameType | null>(null);
 
   // Apply saved theme + font scale on mount
   useEffect(() => {
@@ -72,8 +73,14 @@ export function App() {
     setGameState('boot');
   }, []);
 
+  const handlePlayGym = useCallback((gameType: MiniGameType) => {
+    setGymGame(gameType);
+    setGameState('gym');
+  }, []);
+
   const handleExitToBoot = useCallback(() => {
     setDifficulty(null);
+    setGymGame(null);
     setGameState('boot');
   }, []);
 
@@ -82,7 +89,7 @@ export function App() {
 
   const renderGame = () => {
     if (gameState === 'boot') {
-      return <BootScreen onReady={handleBoot} onContinue={hasSave ? handleContinue : undefined} onGym={() => setGameState('gym')} />;
+      return <BootScreen onReady={handleBoot} onContinue={hasSave ? handleContinue : undefined} onPlayGym={handlePlayGym} />;
     }
     if (gameState === 'level-select') {
       return <LevelSelect onSelect={handleSelectLevel} />;
@@ -106,8 +113,8 @@ export function App() {
         />
       );
     }
-    if (gameState === 'gym') {
-      return <MiniGameGym onExit={() => setGameState('boot')} />;
+    if (gameState === 'gym' && gymGame) {
+      return <MiniGameGym gameType={gymGame} onExit={handleExitToBoot} />;
     }
     return null;
   };
