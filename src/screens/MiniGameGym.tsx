@@ -5,6 +5,8 @@ import { useState, useCallback } from 'react';
 import { RngEngine } from '../engine/seeded-rng';
 import { levels } from '../config/levels';
 import { MINI_GAME_REGISTRY, type MiniGameRenderProps } from '../components/mini-games/registry';
+import { StatusBar } from '../components/StatusBar';
+import { BottomBar } from '../components/BottomBar';
 import type { MiniGameType, MiniGameQuality } from '../types/game';
 
 interface MiniGameGymProps {
@@ -40,13 +42,26 @@ export function MiniGameGym({ onExit }: MiniGameGymProps) {
   }, []);
 
   if (activeGame) {
+    const gameLabel = GYM_GAMES.find((g) => g.type === activeGame)?.label ?? 'Training';
     return (
-      <div className="h-full bg-primary select-none overflow-hidden">
-        <MiniGameGymRender
-          type={activeGame}
-          onComplete={handleComplete}
-          onCancel={handleCancel}
-        />
+      <div className="h-full flex flex-col bg-primary select-none overflow-hidden">
+        <StatusBar batteryLevel={100} timeRemaining={0} mode="TRAINING" />
+        <div className="flex-1 min-h-0 overflow-hidden">
+          <MiniGameGymRender
+            type={activeGame}
+            onComplete={handleComplete}
+            onCancel={handleCancel}
+          />
+        </div>
+        <div className="flex items-center justify-between px-4 py-2 bg-secondary border-t border-theme">
+          <span className="text-xs text-muted">{gameLabel}</span>
+          <button
+            onClick={handleCancel}
+            className="text-xs text-primary font-medium active:scale-95 transition-transform"
+          >
+            ← Back
+          </button>
+        </div>
       </div>
     );
   }
