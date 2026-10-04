@@ -39,6 +39,15 @@ const TAGLINES = [
   'Grandma pressed every button. The phone is now in Greek. She is proud.',
   'You have 47 WhatsApp groups. You are the admin of 46 of them.',
   'The phone is at 1%. The guilt trip is at 100%. The outcome is uncertain.',
+  'Dad\'s phone has a "protection" app. It protects the ads. From being closed.',
+  'Mum\'s voice notes are 4 minutes long. The actual question is at 3:52.',
+  'Grandma\'s phone has a wallpaper of a cat. There are 47 cats. They are all the same cat.',
+  'You fixed the phone. The phone is now fine. The phone will not be fine by Tuesday.',
+  'The "storage full" warning appeared. You have 3 photos of the same parking meter.',
+  'Dad\'s "important email" is a newsletter about timeshare properties in Portugal.',
+  'Mum\'s "quick question" is a 12-step tutorial she wants you to do while she watches.',
+  'Grandma\'s phone has a passcode. The passcode is the year you were born. It\'s 1987.',
+  'You\'re not tech support. You\'re a hostage. The ransom is a sandwich. It\'s ham.',
 ];
 
 function pickTagline(seed: string): string {
@@ -84,8 +93,8 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
   const unlockedCount = loadUnlocked().length;
 
   return (
-    <div className="h-full flex flex-col items-center justify-center bg-primary select-none p-4">
-      <div className="text-center mb-4">
+    <div className="h-full flex flex-col items-center overflow-y-auto bg-primary select-none p-4">
+      <div className="text-center mb-4 mt-auto pt-4">
         {/* Spinning phone logo — bigger + satirical loading spinner */}
         <div className="w-20 h-20 mx-auto mb-3 animate-spin-slow">
           <div className="w-full h-full bg-secondary rounded-3xl flex items-center justify-center border-2 border-accent-red/30 relative overflow-hidden">
@@ -165,13 +174,26 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
         </button>
       </div>
 
-      <div className="flex flex-col gap-3 w-full max-w-xs">
+      <div className="flex flex-col gap-3 w-full max-w-xs mb-auto pb-4">
         <button
           onClick={handleStart}
           className="w-full py-3 bg-accent-red text-primary font-bold rounded-xl text-lg active:scale-95 transition-transform"
         >
           Start
         </button>
+        {/* TODO: Enable daily challenge for v0.6 release */}
+        {/* <button
+          onClick={() => {
+            initBgm();
+            const dailySeed = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+            RngEngine.seedWith(dailySeed);
+            onReady(dailySeed);
+          }}
+          className="w-full py-3 bg-tertiary text-primary font-bold rounded-xl active:scale-95 transition-transform"
+        >
+          📅 Today's Phone
+          <span className="block text-xs font-normal text-muted">Same seed for everyone</span>
+        </button> */}
         {onContinue && (
           <button
             onClick={() => { initBgm(); onContinue(); }}
@@ -182,9 +204,10 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
         )}
       </div>
 
-      <p className="absolute bottom-6 text-center text-xs text-muted">
+      <p className="text-center text-xs text-muted py-4">
         Copyright 2026 PC3 Enterprises
       </p>
+      <div className="h-4" />
 
       {/* Modals */}
       {showSettings && <SettingsModal onClose={() => setShowSettings(false)} />}

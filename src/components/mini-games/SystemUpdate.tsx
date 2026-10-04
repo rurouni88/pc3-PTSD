@@ -3,12 +3,13 @@ import { Hint } from '../Hint';
 import { RngEngine } from '../../engine/seeded-rng';
 import { playSound } from '../../engine/sound';
 import { playHaptic } from '../../engine/haptics';
-import type { SystemUpdateConfig, Difficulty, MiniGameQuality } from '../../types/game';
+import { t, isRTL } from '../../config/translations';
+import type { SystemUpdateConfig, Difficulty, MiniGameQuality, ForeignLanguage } from '../../types/game';
 
 interface SystemUpdateProps {
   difficulty: string;
   systemUpdateConfig: SystemUpdateConfig;
-
+  foreignLanguage: ForeignLanguage | null;
   onComplete: (quality?: MiniGameQuality) => void;
   onCancel: () => void;
 }
@@ -72,7 +73,7 @@ const COMPLETION_MESSAGES: Record<Difficulty, string> = {
   grandma: 'Update complete. Grandma asks if the update "fixed the cat photo".',
 };
 
-export function SystemUpdate({ difficulty, systemUpdateConfig, onComplete, onCancel }: SystemUpdateProps) {
+export function SystemUpdate({ difficulty, systemUpdateConfig, foreignLanguage, onComplete, onCancel }: SystemUpdateProps) {
   const [phase, setPhase] = useState<Phase>('hint');
   const [progress, setProgress] = useState(0);
   const [decoys, setDecoys] = useState<DecoyButton[]>([]);
@@ -245,10 +246,9 @@ export function SystemUpdate({ difficulty, systemUpdateConfig, onComplete, onCan
     return (
       <div className="flex flex-col items-center justify-center h-full gap-4 p-6">
         <div className="text-5xl">📲</div>
-        <h3 className="text-sm font-bold text-primary">System Update</h3>
+        <h3 className="text-sm font-bold text-primary">{t(foreignLanguage, 'update.title')}</h3>
         <p className="text-xs text-secondary text-center max-w-[200px]">
-          An update is installing. Your job: <span className="text-red-400 font-bold">do nothing</span>.
-          Don't tap the scary buttons. Wait for your parent. Survive the stalls.
+          {t(foreignLanguage, 'update.doNothing')}. Wait. Survive.
         </p>
         <button
           onClick={() => setPhase('playing')}

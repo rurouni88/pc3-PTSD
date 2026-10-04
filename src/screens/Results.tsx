@@ -4,6 +4,7 @@ import { MetaStore } from '../engine/meta';
 import { RngEngine } from '../engine/seeded-rng';
 import type { Achievement } from '../engine/achievements';
 import { CopyButton } from '../components/CopyButton';
+import { AftermathMessage } from '../components/AftermathMessage';
 import { playHaptic } from '../engine/haptics';
 
 interface ResultsProps {
@@ -132,7 +133,12 @@ export function Results({ result, difficulty, onReplay, onMenu }: ResultsProps) 
         </div>
       )}
 
-      <div className="flex gap-4 w-full max-w-xs mt-auto mb-8">
+      <AftermathMessage
+        difficulty={difficulty}
+        outcome={result.success ? 'win' : result.batteryLevel <= 0 ? 'battery' : 'timeout'}
+      />
+
+      <div className="flex gap-4 w-full max-w-xs mt-6 mb-4">
         <button
           onClick={onMenu}
           className="flex-1 py-3 bg-tertiary text-primary font-bold rounded-xl active:scale-95 transition-transform"
