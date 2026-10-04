@@ -11,6 +11,7 @@ import { initBgm } from '../engine/bgm';
 interface BootScreenProps {
   onReady: (seed: string) => void;
   onContinue?: () => void;
+  onGym?: () => void;
 }
 
 const TAGLINES = [
@@ -62,7 +63,7 @@ function pickTagline(seed: string): string {
 
 const SEED_RE = /^[A-Z0-9]{8}$/;
 
-export function BootScreen({ onReady, onContinue }: BootScreenProps) {
+export function BootScreen({ onReady, onContinue, onGym }: BootScreenProps) {
   const [seed, setSeed] = useState<string>(() => RngEngine.generateSeed());
   const [editing, setEditing] = useState(false);
   const [taglineIndex, setTaglineIndex] = useState(0);
@@ -172,6 +173,14 @@ export function BootScreen({ onReady, onContinue }: BootScreenProps) {
         >
           ⚙️ Settings
         </button>
+        {onGym && (
+          <button
+            onClick={onGym}
+            className="py-2.5 rounded bg-tertiary border border-theme text-secondary text-sm hover:border-accent-red/50 hover:text-primary transition-colors col-span-2"
+          >
+            🏋️ Boot Camp
+          </button>
+        )}
       </div>
 
       <div className="flex flex-col gap-3 w-full max-w-xs mb-auto pb-4">

@@ -3,6 +3,7 @@ import { BootScreen } from './screens/BootScreen';
 import { LevelSelect } from './screens/LevelSelect';
 import { OSInterface } from './screens/OSInterface';
 import { Results } from './screens/Results';
+import { MiniGameGym } from './screens/MiniGameGym';
 import { iPhoneFrame } from './components/iPhoneFrame';
 import { levels } from './config/levels';
 import { Difficulty, GameState } from './types/game';
@@ -81,7 +82,7 @@ export function App() {
 
   const renderGame = () => {
     if (gameState === 'boot') {
-      return <BootScreen onReady={handleBoot} onContinue={hasSave ? handleContinue : undefined} />;
+      return <BootScreen onReady={handleBoot} onContinue={hasSave ? handleContinue : undefined} onGym={() => setGameState('gym')} />;
     }
     if (gameState === 'level-select') {
       return <LevelSelect onSelect={handleSelectLevel} />;
@@ -104,6 +105,9 @@ export function App() {
           onMenu={handleMenu}
         />
       );
+    }
+    if (gameState === 'gym') {
+      return <MiniGameGym onExit={() => setGameState('boot')} />;
     }
     return null;
   };
