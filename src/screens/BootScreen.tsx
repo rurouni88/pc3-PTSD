@@ -248,7 +248,7 @@ export function BootScreen({ onReady, onContinue, onPlayGym }: BootScreenProps) 
             </div>
             <button
               onClick={() => setShowGym(false)}
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-tertiary text-muted hover:text-primary active:scale-90 transition-all"
+              className="shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-tertiary text-muted hover:text-primary active:scale-90 transition-all"
             >
               ✕
             </button>
