@@ -79,17 +79,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
   };
 
   return (
-    <Modal onClose={onClose} maxHeight="100dvh" className="p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-bold text-primary">Settings</h2>
-          <button
-            onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-full bg-tertiary text-muted hover:text-primary active:scale-90 transition-all"
-          >
-            ✕
-          </button>
-        </div>
-
+    <Modal onClose={onClose} title="Settings" maxHeight="100dvh" className="p-6">
         <div className="flex flex-col gap-4">
           {/* Theme toggle */}
           <div className="flex items-center justify-between gap-3">

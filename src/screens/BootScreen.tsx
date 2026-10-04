@@ -240,19 +240,7 @@ export function BootScreen({ onReady, onContinue, onPlayGym }: BootScreenProps) 
       {showHelp && <HelpModal onClose={() => setShowHelp(false)} />}
       {showLeaderboard && <LeaderboardModal onClose={() => setShowLeaderboard(false)} />}
       {showGym && onPlayGym && (
-        <Modal onClose={() => setShowGym(false)}>
-          <div className="flex items-center justify-between p-4 border-b border-theme">
-            <div>
-              <h2 className="text-lg font-bold text-primary">🏋️ Boot Camp</h2>
-              <p className="text-xs text-secondary mt-1">Practice mini-games. No timer, no battery, no pressure.</p>
-            </div>
-            <button
-              onClick={() => setShowGym(false)}
-              className="shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-tertiary text-muted hover:text-primary active:scale-90 transition-all"
-            >
-              ✕
-            </button>
-          </div>
+        <Modal onClose={() => setShowGym(false)} title="🏋️ Boot Camp" subtitle="Practice mini-games. No timer, no battery, no pressure.">
           <div className="flex-1 overflow-y-auto p-4">
             <div className="grid grid-cols-2 gap-2">
               {GYM_GAMES.map((game) => (

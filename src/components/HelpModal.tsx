@@ -17,18 +17,7 @@ export function HelpModal({ onClose }: HelpModalProps) {
   const [tab, setTab] = useState<Tab>('play');
 
   return (
-    <Modal onClose={onClose}>
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-theme">
-          <h2 className="text-lg font-bold text-primary">How To Play</h2>
-          <button
-            onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-full bg-tertiary text-muted hover:text-primary active:scale-90 transition-all"
-          >
-            ✕
-          </button>
-        </div>
-
+    <Modal onClose={onClose} title="How To Play">
         {/* Tabs */}
         <div className="flex border-b border-theme">
           {TABS.map((t) => (
