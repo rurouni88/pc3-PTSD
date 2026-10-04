@@ -100,6 +100,11 @@ export function saveBgmPref(on: boolean): void {
 export function toggleBgm(): boolean {
   bgmOn = !bgmOn;
   saveBgmPref(bgmOn);
+  if (bgmOn) {
+    startBgm();
+  } else {
+    stopBgm();
+  }
   return bgmOn;
 }
 
