@@ -23,7 +23,7 @@ export function HelpModal({ onClose }: HelpModalProps) {
           <h2 className="text-lg font-bold text-primary">How To Play</h2>
           <button
             onClick={onClose}
-            className="text-muted hover:text-primary transition-colors active:scale-90"
+            className="w-8 h-8 flex items-center justify-center rounded-full bg-tertiary text-muted hover:text-primary active:scale-90 transition-all"
           >
             ✕
           </button>
