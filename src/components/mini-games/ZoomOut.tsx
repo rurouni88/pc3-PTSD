@@ -3,11 +3,13 @@ import { Hint } from '../Hint';
 import { RngEngine } from '../../engine/seeded-rng';
 import { playSound } from '../../engine/sound';
 import { playHaptic } from '../../engine/haptics';
-import type { ZoomConfig, Difficulty, MiniGameQuality } from '../../types/game';
+import { t, isRTL } from '../../config/translations';
+import type { ZoomConfig, Difficulty, MiniGameQuality, ForeignLanguage } from '../../types/game';
 
 interface ZoomOutProps {
   difficulty: string;
   zoomConfig: ZoomConfig;
+  foreignLanguage: ForeignLanguage | null;
   onComplete: (quality?: MiniGameQuality) => void;
   onCancel: () => void;
 }
@@ -45,7 +47,7 @@ const COMPLETION_MESSAGES: Record<Difficulty, string> = {
 // App icons to show in the grid
 const APP_ICONS = ['📞', '✉️', '📷', '🌐', '🎵', '📅', '⚙️', '🗺️'];
 
-export function ZoomOut({ difficulty, zoomConfig, onComplete, onCancel }: ZoomOutProps) {
+export function ZoomOut({ difficulty, zoomConfig, foreignLanguage, onComplete, onCancel }: ZoomOutProps) {
   const [phase, setPhase] = useState<Phase>('hint');
   const [zoom, setZoom] = useState(zoomConfig.startZoom);
   const [notification, setNotification] = useState<string | null>(null);
@@ -115,10 +117,9 @@ export function ZoomOut({ difficulty, zoomConfig, onComplete, onCancel }: ZoomOu
     return (
       <div className="flex flex-col items-center justify-center h-full gap-4 p-6">
         <div className="text-5xl">🔍</div>
-        <h3 className="text-sm font-bold text-primary">Zoom Fix</h3>
+        <h3 className="text-sm font-bold text-primary">{t(foreignLanguage, 'zoom.title')}</h3>
         <p className="text-xs text-secondary text-center max-w-[200px]">
-          They zoomed in to {config.startZoom}%. Get it back to {config.targetZoom}%.
-          But notifications keep re-zooming them.
+          {t(foreignLanguage, 'zoom.level', { n: config.startZoom })} → {config.targetZoom}%. Don't let notifications re-zoom you.
         </p>
         <button
           onClick={() => setPhase('playing')}
@@ -139,7 +140,7 @@ export function ZoomOut({ difficulty, zoomConfig, onComplete, onCancel }: ZoomOu
         <div className="text-5xl">✅</div>
         <p className="text-sm text-primary text-center font-medium">{COMPLETION_MESSAGES[d]}</p>
         {notifCount > 0 && (
-          <p className="text-xs text-muted">{notifCount} notification{notifCount > 1 ? 's' : ''} re-zoomed you</p>
+          <p className="text-xs text-muted">{t(foreignLanguage, 'zoom.rezoomed', { n: notifCount })}</p>
         )}
       </div>
     );
@@ -159,7 +160,7 @@ export function ZoomOut({ difficulty, zoomConfig, onComplete, onCancel }: ZoomOu
 
       {/* Zoom indicator */}
       <div className="flex items-center gap-2 mt-4">
-        <span className="text-xs text-muted">Zoom:</span>
+        <span className="text-xs text-muted">{t(foreignLanguage, 'zoom.level', { n: '' }).replace(' ', '')}</span>
         <span className={`text-sm font-bold ${zoom <= config.targetZoom ? 'text-green-400' : 'text-primary'}`}>
           {zoom}%
         </span>

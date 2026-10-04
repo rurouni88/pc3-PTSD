@@ -4,13 +4,14 @@ import { Hint } from '../Hint';
 import { RngEngine } from '../../engine/seeded-rng';
 import { playSound } from '../../engine/sound';
 import { playHaptic } from '../../engine/haptics';
-import type { PasskeyConfig, Difficulty, MiniGameQuality } from '../../types/game';
+import { t, isRTL } from '../../config/translations';
+import type { PasskeyConfig, Difficulty, MiniGameQuality, ForeignLanguage } from '../../types/game';
 import type { Character } from '../CharacterAvatar';
 
 interface PasskeySetupProps {
   difficulty: string;
   passkeyConfig: PasskeyConfig;
-
+  foreignLanguage: ForeignLanguage | null;
   onComplete: (quality?: MiniGameQuality) => void;
   onCancel: () => void;
 }
@@ -89,7 +90,7 @@ function generateInbox(code: string): InboxEmail[] {
 
 // --- Main component ---
 
-export function PasskeySetup({ difficulty, passkeyConfig, onComplete, onCancel }: PasskeySetupProps) {
+export function PasskeySetup({ difficulty, passkeyConfig, foreignLanguage, onComplete, onCancel }: PasskeySetupProps) {
   const [phase, setPhase] = useState<Phase>('hint');
   const [step, setStep] = useState<Step>(1);
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
@@ -346,7 +347,7 @@ export function PasskeySetup({ difficulty, passkeyConfig, onComplete, onCancel }
     return (
       <div className="flex flex-col items-center justify-center h-full gap-4 p-6">
         <div className="text-5xl">🔑</div>
-        <h3 className="text-sm font-bold text-primary">Passkey Setup</h3>
+        <h3 className="text-sm font-bold text-primary">{t(foreignLanguage, 'passkey.title')}</h3>
         <p className="text-xs text-secondary text-center max-w-[200px]">
           Help {d === 'dad' ? 'Dad' : d === 'mum' ? 'Mum' : 'Grandma'} set up a passkey for their email.
           Five steps. They will complicate all of them.
