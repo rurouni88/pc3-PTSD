@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { CharacterAvatar } from '../CharacterAvatar';
+import { CancelButton } from '../CancelButton';
 import { Hint } from '../Hint';
 import { RngEngine } from '../../engine/seeded-rng';
 import { playSound } from '../../engine/sound';
@@ -406,12 +407,7 @@ export function PasskeySetup({ difficulty, passkeyConfig, foreignLanguage, onCom
       </div>
 
       {/* Cancel */}
-      <button
-        onClick={onCancel}
-        className="absolute top-2 right-2 w-7 h-7 flex items-center justify-center rounded-full bg-secondary text-muted text-xs"
-      >
-        ✕
-      </button>
+      <CancelButton onClick={onCancel} />
 
       {/* Step content */}
       <div className="flex-1 flex flex-col">

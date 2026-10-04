@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Modal } from './Modal';
 import { Theme, loadTheme, saveTheme, applyTheme, toggleTheme } from '../engine/theme';
 import {
   loadAudioPref,
@@ -78,11 +79,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={onClose}>
-      <div
-        className="w-full max-w-xs max-h-full overflow-y-auto bg-secondary rounded-2xl border border-theme p-6 animate-slam-in"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <Modal onClose={onClose} maxHeight="100dvh" className="p-6">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-bold text-primary">Settings</h2>
           <button
@@ -250,8 +247,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
             <p className="text-[0.65rem] text-muted mt-1">v{__APP_VERSION__}</p>
           </div>
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 }
 
