@@ -1,5 +1,8 @@
 # Coding Standards
 
+> **Version**: 1.01  
+> **Last updated**: 2026-10-04
+
 **Owner:** PC3 and AI invoked for coding 
 **Applies to:** All code produced by AI Agents for ANY codebase, repo — scripts, hooks, tests, and guides  
 **Principle:** Consistency over cleverness. Read before writing. Follow what exists.
@@ -72,6 +75,17 @@ When you *do* validate (at boundaries per the rules above), handle failures expl
 - **Report all problems, not just the first.** A `validate()` function should collect every error and return them together, so the caller fixes everything in one pass.
 
 **This does NOT mean:** wrapping every internal function call in try/catch, checking `if (x)` before every property access, or guarding against "what if the framework breaks." Trust internal code. Defend the edges.
+
+### Build-time validation for config data
+
+If your project has **configuration as data** (levels, difficulty settings, content definitions), validate it at **build time** (a script in CI), not at runtime:
+
+- A `validate-config.ts` script runs in the `build` npm script (or as a separate CI step)
+- It checks invariants: required fields present, values in valid ranges, no duplicates, array lengths match expectations
+- If validation fails, the build fails. The developer fixes the config before it ships.
+- This is distinct from runtime validation (§5 above): runtime validation protects against **external** corruption (localStorage, API responses). Build-time validation protects against **developer** errors (typos in config, out-of-range values).
+
+The test: "If I change this config value to something invalid, will the build catch it?" If no, add a check.
 
 ---
 
