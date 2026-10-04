@@ -1,8 +1,7 @@
 # Coding Standards
 
 > **Version**: 1.01  
-> **Last updated**: 2026-10-04  
-> **Source of truth**: This file is the canonical version. When syncing to other repos, copy this file in its entirety. If a repo's copy has a different `Last updated` date, the newer one wins.
+> **Last updated**: 2026-10-04
 
 **Owner:** PC3 and AI invoked for coding 
 **Applies to:** All code produced by AI Agents for ANY codebase, repo — scripts, hooks, tests, and guides  
