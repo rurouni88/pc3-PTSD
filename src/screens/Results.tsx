@@ -138,7 +138,7 @@ export function Results({ result, difficulty, onReplay, onMenu }: ResultsProps) 
         outcome={result.success ? 'win' : result.batteryLevel <= 0 ? 'battery' : 'timeout'}
       />
 
-      <div className="flex gap-4 w-full max-w-xs mt-auto mb-8">
+      <div className="flex gap-4 w-full max-w-xs mt-6 mb-4">
         <button
           onClick={onMenu}
           className="flex-1 py-3 bg-tertiary text-primary font-bold rounded-xl active:scale-95 transition-transform"
