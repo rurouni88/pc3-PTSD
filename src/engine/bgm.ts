@@ -67,7 +67,7 @@ const BASS: BgmNote[] = [
 
 const LOOP_DURATION = BEAT * 16; // 8 seconds
 
-let bgmOn = true;
+let bgmOn = loadBgmPref();
 let intervalId: ReturnType<typeof setInterval> | null = null;
 let ctx: AudioContext | null = null;
 let nextLoopTime = 0;
