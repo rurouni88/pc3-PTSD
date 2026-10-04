@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { CancelButton } from '../CancelButton';
 import { Hint } from '../Hint';
 import { RngEngine } from '../../engine/seeded-rng';
 import { playSound } from '../../engine/sound';
@@ -208,12 +209,7 @@ export function FingerprintScan({ difficulty, foreignLanguage, onComplete, onCan
       </button>
 
       {/* Cancel */}
-      <button
-        onClick={onCancel}
-        className="absolute top-2 right-2 w-7 h-7 flex items-center justify-center rounded-full bg-secondary text-muted text-xs"
-      >
-        ✕
-      </button>
+      <CancelButton onClick={onCancel} />
     </div>
   );
 }

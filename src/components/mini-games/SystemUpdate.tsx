@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { CancelButton } from '../CancelButton';
 import { Hint } from '../Hint';
 import { RngEngine } from '../../engine/seeded-rng';
 import { playSound } from '../../engine/sound';
@@ -280,12 +281,7 @@ export function SystemUpdate({ difficulty, systemUpdateConfig, foreignLanguage, 
   return (
     <div className="relative flex flex-col items-center justify-center h-full p-4 select-none">
       {/* Cancel */}
-      <button
-        onClick={onCancel}
-        className="absolute top-2 right-2 w-7 h-7 flex items-center justify-center rounded-full bg-secondary text-muted text-xs"
-      >
-        ✕
-      </button>
+      <CancelButton onClick={onCancel} />
 
       {/* Hint */}
       <Hint>Don't tap anything. Just wait. (This is the hardest part.)</Hint>

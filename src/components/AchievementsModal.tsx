@@ -1,6 +1,6 @@
-import { loadUnlocked } from '../engine/achievements';
-import { ACHIEVEMENTS } from '../engine/achievements';
+import { loadUnlocked, ACHIEVEMENTS } from '../engine/achievements';
 import { CopyButton } from './CopyButton';
+import { Modal } from './Modal';
 
 interface AchievementsModalProps {
   onClose: () => void;
@@ -50,43 +50,38 @@ export function AchievementsModal({ onClose }: AchievementsModalProps) {
   const unlocked = new Set(loadUnlocked());
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={onClose}>
-      <div
-        className="w-full max-w-xs max-h-[80dvh] flex flex-col bg-secondary rounded-2xl border border-theme animate-slam-in"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-theme">
-          <h2 className="text-lg font-bold text-primary">Achievements</h2>
-          <button
-            onClick={onClose}
-            className="text-muted hover:text-primary transition-colors active:scale-90"
-          >
-            ✕
-          </button>
-        </div>
-
-        {/* List */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-2">
-          {ACHIEVEMENTS.map((ach) =>
-            renderAchievementCard(ach, getAchievementState(ach.id, unlocked))
-          )}
-        </div>
-
-        {/* Footer */}
-        <div className="p-4 border-t border-theme text-center">
-          <p className="text-xs text-muted mb-2">
-            {unlocked.size}/{ACHIEVEMENTS.length} unlocked
-          </p>
-          {unlocked.size > 0 && (
-            <CopyButton
-              text={buildAchievementsSummary(unlocked)}
-              label="Copy Achievements"
-              className="px-3 py-1.5 text-xs"
-            />
-          )}
-        </div>
+    <Modal onClose={onClose}>
+      {/* Header */}
+      <div className="flex items-center justify-between p-4 border-b border-theme">
+        <h2 className="text-lg font-bold text-primary">Achievements</h2>
+        <button
+          onClick={onClose}
+          className="text-muted hover:text-primary transition-colors active:scale-90"
+        >
+          ✕
+        </button>
       </div>
-    </div>
+
+      {/* List */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-2">
+        {ACHIEVEMENTS.map((ach) =>
+          renderAchievementCard(ach, getAchievementState(ach.id, unlocked))
+        )}
+      </div>
+
+      {/* Footer */}
+      <div className="p-4 border-t border-theme text-center">
+        <p className="text-xs text-muted mb-2">
+          {unlocked.size}/{ACHIEVEMENTS.length} unlocked
+        </p>
+        {unlocked.size > 0 && (
+          <CopyButton
+            text={buildAchievementsSummary(unlocked)}
+            label="Copy Achievements"
+            className="px-3 py-1.5 text-xs"
+          />
+        )}
+      </div>
+    </Modal>
   );
 }

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Modal } from './Modal';
 
 interface HelpModalProps {
   onClose: () => void;
@@ -16,11 +17,7 @@ export function HelpModal({ onClose }: HelpModalProps) {
   const [tab, setTab] = useState<Tab>('play');
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={onClose}>
-      <div
-        className="w-full max-w-xs max-h-[80dvh] flex flex-col bg-secondary rounded-2xl border border-theme animate-slam-in"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <Modal onClose={onClose}>
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-theme">
           <h2 className="text-lg font-bold text-primary">How To Play</h2>
@@ -55,8 +52,7 @@ export function HelpModal({ onClose }: HelpModalProps) {
           {tab === 'minigames' && <MiniGamesTab />}
           {tab === 'survive' && <SurviveTab />}
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 }
 
