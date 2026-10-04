@@ -5,13 +5,15 @@ import { AchievementsModal } from '../components/AchievementsModal';
 import { HelpModal } from '../components/HelpModal';
 import { LeaderboardModal } from '../components/LeaderboardModal';
 import { Modal } from '../components/Modal';
+import { CharacterAvatar } from '../components/CharacterAvatar';
 import { loadUnlocked } from '../engine/achievements';
 import { ACHIEVEMENTS } from '../engine/achievements';
 import { initBgm } from '../engine/bgm';
-import type { MiniGameType } from '../types/game';
+import { levels } from '../config/levels';
+import type { MiniGameType, Difficulty } from '../types/game';
 
 interface BootScreenProps {
-  onReady: (seed: string) => void;
+  onStartGame: (difficulty: Difficulty, seed: string) => void;
   onContinue?: () => void;
   onPlayGym?: (gameType: MiniGameType) => void;
 }
@@ -78,7 +80,7 @@ const GYM_GAMES: { type: MiniGameType; label: string; icon: string; desc: string
   { type: 'zoom-out', label: 'Zoom Fix', icon: '🔍', desc: 'Zoom out. Notifications re-zoom. Repeat.' },
 ];
 
-export function BootScreen({ onReady, onContinue, onPlayGym }: BootScreenProps) {
+export function BootScreen({ onStartGame, onContinue, onPlayGym }: BootScreenProps) {
   const [seed, setSeed] = useState<string>(() => RngEngine.generateSeed());
   const [editing, setEditing] = useState(false);
   const [taglineIndex, setTaglineIndex] = useState(0);
@@ -87,6 +89,7 @@ export function BootScreen({ onReady, onContinue, onPlayGym }: BootScreenProps) 
   const [showHelp, setShowHelp] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showGym, setShowGym] = useState(false);
+  const [showLevelSelect, setShowLevelSelect] = useState(false);
 
   // Cycle through taglines every 4 seconds while loading
   useEffect(() => {
@@ -103,7 +106,12 @@ export function BootScreen({ onReady, onContinue, onPlayGym }: BootScreenProps) 
     } else {
       RngEngine.seedWith(RngEngine.generateSeed());
     }
-    onReady(seed);
+    setShowLevelSelect(true);
+  };
+
+  const handleSelectDifficulty = (difficulty: Difficulty) => {
+    setShowLevelSelect(false);
+    onStartGame(difficulty, seed);
   };
 
   const displayedTagline = TAGLINES[taglineIndex];
@@ -239,6 +247,34 @@ export function BootScreen({ onReady, onContinue, onPlayGym }: BootScreenProps) 
       {showAchievements && <AchievementsModal onClose={() => setShowAchievements(false)} />}
       {showHelp && <HelpModal onClose={() => setShowHelp(false)} />}
       {showLeaderboard && <LeaderboardModal onClose={() => setShowLeaderboard(false)} />}
+      {showLevelSelect && (
+        <Modal onClose={() => setShowLevelSelect(false)} title="Choose Your Relative" subtitle="You have one afternoon. Make it count.">
+          <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
+            {(Object.entries(levels) as [Difficulty, (typeof levels)[Difficulty]][]).map(([key, level]) => (
+              <button
+                key={key}
+                onClick={() => handleSelectDifficulty(key)}
+                className="flex items-center gap-4 p-4 bg-tertiary rounded-2xl border-2 border-theme active:scale-95 transition-transform"
+              >
+                <CharacterAvatar character={key as 'dad' | 'mum' | 'grandma'} size={48} />
+                <div className="flex-1 text-left">
+                  <p className="text-base font-bold text-primary">{level.name}</p>
+                  <p className="text-xs text-secondary">{level.description}</p>
+                </div>
+              </button>
+            ))}
+            {/* Teaser — locked level */}
+            <div className="flex items-center gap-4 p-4 bg-tertiary/50 rounded-2xl border-2 border-theme opacity-60 cursor-not-allowed">
+              <CharacterAvatar character="partner" size={48} />
+              <div className="flex-1 text-left">
+                <p className="text-base font-bold text-secondary">Significant Other</p>
+                <p className="text-xs text-muted">They don't know anything about phones. Worse.</p>
+              </div>
+              <span className="text-lg">🔒</span>
+            </div>
+          </div>
+        </Modal>
+      )}
       {showGym && onPlayGym && (
         <Modal onClose={() => setShowGym(false)} title="🏋️ Boot Camp" subtitle="Practice mini-games. No timer, no battery, no pressure.">
           <div className="flex-1 overflow-y-auto p-4">

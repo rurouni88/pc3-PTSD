@@ -1,6 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
 import { BootScreen } from './screens/BootScreen';
-import { LevelSelect } from './screens/LevelSelect';
 import { OSInterface } from './screens/OSInterface';
 import { Results } from './screens/Results';
 import { MiniGameGym } from './screens/MiniGameGym';
@@ -34,9 +33,9 @@ export function App() {
     applyFontScale(loadFontScale());
   }, []);
 
-  const handleBoot = useCallback((seed: string) => {
-    // Seed is already set by BootScreen before calling this
-    setGameState('level-select');
+  const handleStartGame = useCallback((difficulty: Difficulty, seed: string) => {
+    setDifficulty(difficulty);
+    setGameState('playing');
   }, []);
 
   const handleContinue = useCallback(() => {
@@ -46,14 +45,11 @@ export function App() {
       setDifficulty(save.state.difficulty);
       setGameState('playing');
     } else {
-      setGameState('level-select');
+      setGameState('boot');
     }
   }, []);
 
-  const handleSelectLevel = useCallback((selected: Difficulty) => {
-    setDifficulty(selected);
-    setGameState('playing');
-  }, []);
+
 
   const handleComplete = useCallback((result: GameResult) => {
     SaveSystem.deleteSave();
@@ -89,10 +85,7 @@ export function App() {
 
   const renderGame = () => {
     if (gameState === 'boot') {
-      return <BootScreen onReady={handleBoot} onContinue={hasSave ? handleContinue : undefined} onPlayGym={handlePlayGym} />;
-    }
-    if (gameState === 'level-select') {
-      return <LevelSelect onSelect={handleSelectLevel} />;
+      return <BootScreen onStartGame={handleStartGame} onContinue={hasSave ? handleContinue : undefined} onPlayGym={handlePlayGym} />;
     }
     if (gameState === 'playing' && difficulty) {
       return (

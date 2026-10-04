@@ -2,7 +2,7 @@
 
 export type Difficulty = 'dad' | 'mum' | 'grandma';
 
-export type GameState = 'boot' | 'level-select' | 'playing' | 'results' | 'gym';
+export type GameState = 'boot' | 'playing' | 'results' | 'gym';
 
 export interface GameIssue {
   id: string;
