@@ -122,8 +122,8 @@ const SOUND_DEFS: Record<SoundType, SoundDef> = {
 };
 
 let audioCtx: AudioContext | null = null;
-let audioOn = true;
-let volume = 0.5;
+let audioOn = loadAudioPref();
+let volume = loadVolume();
 
 export function loadAudioPref(): boolean {
   try {
