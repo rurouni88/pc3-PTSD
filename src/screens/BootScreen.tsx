@@ -254,11 +254,16 @@ export function BootScreen({ onStartGame, onContinue, onPlayGym }: BootScreenPro
               <button
                 key={key}
                 onClick={() => handleSelectDifficulty(key)}
-                className="flex items-center gap-4 p-4 bg-tertiary rounded-2xl border-2 border-theme active:scale-95 transition-transform"
+                className={`flex items-center gap-4 p-4 bg-tertiary rounded-2xl border-2 active:scale-95 transition-transform ${
+                  key === 'dad' ? 'border-accent-green' : key === 'mum' ? 'border-accent-yellow' : 'border-accent-red'
+                }`}
               >
                 <CharacterAvatar character={key as 'dad' | 'mum' | 'grandma'} size={48} />
                 <div className="flex-1 text-left">
-                  <p className="text-base font-bold text-primary">{level.name}</p>
+                  <p className="text-base font-bold text-primary">
+                    {level.name}
+                    <span className="ml-2 text-xs">{key === 'dad' ? '💀' : key === 'mum' ? '💀💀' : '💀💀💀'}</span>
+                  </p>
                   <p className="text-xs text-secondary">{level.description}</p>
                 </div>
               </button>
