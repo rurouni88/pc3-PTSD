@@ -79,8 +79,8 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
   };
 
   return (
-    <Modal onClose={onClose} title="Settings" maxHeight="100dvh" className="p-6">
-        <div className="flex flex-col gap-4">
+    <Modal onClose={onClose} title="Settings" maxHeight="100dvh">
+        <div className="flex flex-col gap-4 p-4">
           {/* Theme toggle */}
           <div className="flex items-center justify-between gap-3">
             <div className="flex-1 min-w-0">
