@@ -181,3 +181,70 @@ export function initBgm(): void {
     startBgm();
   }
 }
+
+// --- One-shot jingles (victory / defeat) ---
+
+interface JingleNote {
+  freq: number;
+  time: number;
+  duration: number;
+  gain: number;
+  oscType: OscillatorType;
+}
+
+// Victory: ascending C major arpeggio + bright "ta-da" hold.
+// Feels like a slightly over-the-top "level complete" fanfare.
+const VICTORY_NOTES: JingleNote[] = [
+  { freq: 523, time: 0, duration: 0.15, gain: 0.05, oscType: 'sine' },      // C5
+  { freq: 659, time: 0.12, duration: 0.15, gain: 0.05, oscType: 'sine' },   // E5
+  { freq: 784, time: 0.24, duration: 0.15, gain: 0.05, oscType: 'sine' },   // G5
+  { freq: 1047, time: 0.36, duration: 0.5, gain: 0.06, oscType: 'sine' },   // C6 (hold)
+  { freq: 1319, time: 0.36, duration: 0.4, gain: 0.02, oscType: 'sine' },   // E6 (sparkle)
+  { freq: 1568, time: 0.36, duration: 0.3, gain: 0.015, oscType: 'sine' },  // G6 (sparkle)
+];
+
+// Defeat: slow descending "womp womp". Minor key, sad trombone energy.
+const DEFEAT_NOTES: JingleNote[] = [
+  { freq: 330, time: 0, duration: 0.3, gain: 0.05, oscType: 'triangle' },   // E4
+  { freq: 294, time: 0.3, duration: 0.3, gain: 0.05, oscType: 'triangle' }, // D4
+  { freq: 262, time: 0.6, duration: 0.3, gain: 0.05, oscType: 'triangle' }, // C4
+  { freq: 233, time: 0.9, duration: 0.6, gain: 0.06, oscType: 'triangle' }, // Bb3 (sad hold)
+  { freq: 117, time: 0.9, duration: 0.5, gain: 0.03, oscType: 'sine' },     // Bb2 (bass womp)
+];
+
+function playJingle(notes: JingleNote[]): void {
+  const audioCtx = ensureContext();
+  if (!audioCtx) return;
+
+  const startTime = audioCtx.currentTime + 0.05;
+  for (const note of notes) {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = note.oscType;
+    osc.frequency.setValueAtTime(note.freq, startTime + note.time);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    const t = startTime + note.time;
+    const attack = 0.01;
+    const release = Math.min(0.1, note.duration * 0.4);
+    const vol = note.gain * getVolume();
+    gain.gain.setValueAtTime(0, t);
+    gain.gain.linearRampToValueAtTime(vol, t + attack);
+    gain.gain.setValueAtTime(vol, t + note.duration - release);
+    gain.gain.linearRampToValueAtTime(0, t + note.duration);
+
+    osc.start(t);
+    osc.stop(t + note.duration + 0.01);
+  }
+}
+
+/** Play the victory fanfare. Call on Results screen when success. */
+export function playVictoryJingle(): void {
+  playJingle(VICTORY_NOTES);
+}
+
+/** Play the defeat "womp womp". Call on Results screen when failure. */
+export function playDefeatJingle(): void {
+  playJingle(DEFEAT_NOTES);
+}

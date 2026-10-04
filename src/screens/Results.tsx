@@ -6,6 +6,7 @@ import type { Achievement } from '../engine/achievements';
 import { CopyButton } from '../components/CopyButton';
 import { AftermathMessage } from '../components/AftermathMessage';
 import { playHaptic } from '../engine/haptics';
+import { playVictoryJingle, playDefeatJingle } from '../engine/bgm';
 
 interface ResultsProps {
   result: {
@@ -59,7 +60,12 @@ function buildRunSummary(
 
 export function Results({ result, difficulty, onReplay, onMenu }: ResultsProps) {
   useEffect(() => {
-    if (!result.success) playHaptic('defeat');
+    if (result.success) {
+      playVictoryJingle();
+    } else {
+      playDefeatJingle();
+      playHaptic('defeat');
+    }
   }, [result.success]);
 
   const meta = MetaStore.load();
