@@ -15,7 +15,7 @@ export function InfoTooltip({ content, onClose }: InfoTooltipProps) {
       {/* Transparent hit-area for tap-to-dismiss */}
       <div className="fixed inset-0 z-[55]" onClick={onClose} />
       <div
-        className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[60] max-w-xs w-[90%] bg-secondary border border-theme rounded-xl p-3 shadow-lg animate-slide-up"
+        className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[60] max-w-xs w-[90%] bg-primary border border-theme rounded-xl p-3 shadow-lg animate-slide-up"
         onClick={onClose}
       >
         <p className="text-sm font-bold text-primary">{content.title}</p>
