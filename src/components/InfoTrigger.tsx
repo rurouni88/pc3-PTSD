@@ -14,7 +14,7 @@ export function InfoTrigger({ onClick, label }: InfoTriggerProps) {
       aria-label={label || 'More info'}
       className="w-8 h-8 flex items-center justify-center rounded-full bg-tertiary border-2 border-muted text-muted text-sm font-bold active:scale-90 transition-transform shrink-0"
     >
-      ?
+      <span aria-hidden="true">?</span>
     </button>
   );
 }

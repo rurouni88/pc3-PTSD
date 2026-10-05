@@ -204,7 +204,7 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
     <div className={`h-full flex flex-col bg-primary select-none overflow-hidden animate-fade-in ${effect === 'shake' ? 'animate-shake' : ''} ${effect === 'flash' ? 'animate-flash-green' : ''}`}>
       {countdown > 0 && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-primary/90">
-          <span key={countdown} className="text-7xl font-bold text-primary animate-countdown-pop">
+          <span key={countdown} role="timer" aria-live="assertive" className="text-7xl font-bold text-primary animate-countdown-pop">
             {countdown}
           </span>
         </div>
