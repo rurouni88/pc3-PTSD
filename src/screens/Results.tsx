@@ -7,6 +7,8 @@ import { CopyButton } from '../components/CopyButton';
 import { AftermathMessage } from '../components/AftermathMessage';
 import { playHaptic } from '../engine/haptics';
 import { playVictoryJingle, playDefeatJingle } from '../engine/bgm';
+import { showToast } from '../engine/toast';
+import { playSound } from '../engine/sound';
 
 interface ResultsProps {
   result: {
@@ -66,7 +68,14 @@ export function Results({ result, difficulty, onReplay, onMenu }: ResultsProps) 
       playDefeatJingle();
       playHaptic('defeat');
     }
-  }, [result.success]);
+    // Toast for newly unlocked achievements
+    if (result.achievements.length > 0) {
+      playSound('achievement');
+      for (const ach of result.achievements) {
+        showToast(`🏅 ${ach.emoji} ${ach.title}`, 'success');
+      }
+    }
+  }, [result.success, result.achievements]);
 
   const meta = MetaStore.load();
   const bestTime = meta.bestTimes[difficulty];

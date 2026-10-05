@@ -10,6 +10,8 @@ import { loadUnlocked } from '../engine/achievements';
 import { ACHIEVEMENTS } from '../engine/achievements';
 import { initBgm } from '../engine/bgm';
 import { levels } from '../config/levels';
+import { InfoTooltip } from '../components/InfoTooltip';
+import { InfoTrigger } from '../components/InfoTrigger';
 import type { MiniGameType, Difficulty } from '../types/game';
 
 interface BootScreenProps {
@@ -67,6 +69,16 @@ function pickTagline(seed: string): string {
 
 const SEED_RE = /^[A-Z0-9]{8}$/;
 
+const DIFFICULTY_TIPS: Record<Difficulty, string> = {
+  dad: 'Starts at 50% battery. 3 issues to fix. Dad is logical but specific — he knows exactly what he wants and will not accept your solution. RAM Boosters, misplaced widgets, and "it worked yesterday."',
+  mum: 'Starts at 40% battery. 4 issues to fix. Mum has maxed out every subscription, cloud storage is full, and the text is set to "LARGE." She will call you back while you\'re still helping.',
+  grandma: 'Starts at 60% battery. 5 issues to fix. The phone is in Chinese, there\'s a ghost touch from a tea spill, and the mute switch keeps toggling. She will also ask you to "make the pictures bigger."',
+};
+
+function getDifficultyTip(key: Difficulty): string {
+  return DIFFICULTY_TIPS[key];
+}
+
 const GYM_GAMES: { type: MiniGameType; label: string; icon: string; desc: string }[] = [
   { type: 'infinite-tab-sweep', label: 'Tab Sweep', icon: '🌐', desc: 'Close tabs. They multiply.' },
   { type: 'physical-override', label: 'Quick Settings', icon: '🔦', desc: 'Find the flashlight. Page 2 of 6.' },
@@ -90,6 +102,7 @@ export function BootScreen({ onStartGame, onContinue, onPlayGym }: BootScreenPro
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showGym, setShowGym] = useState(false);
   const [showLevelSelect, setShowLevelSelect] = useState(false);
+  const [levelTip, setLevelTip] = useState<{ title: string; description: string } | null>(null);
 
   // Cycle through taglines every 4 seconds while loading
   useEffect(() => {
@@ -266,6 +279,13 @@ export function BootScreen({ onStartGame, onContinue, onPlayGym }: BootScreenPro
                   </p>
                   <p className="text-xs text-secondary">{level.description}</p>
                 </div>
+                <InfoTrigger
+                  label={`About ${level.name}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLevelTip({ title: level.name, description: getDifficultyTip(key) });
+                  }}
+                />
               </button>
             ))}
             {/* Teaser — locked level */}
@@ -280,6 +300,7 @@ export function BootScreen({ onStartGame, onContinue, onPlayGym }: BootScreenPro
           </div>
         </Modal>
       )}
+      <InfoTooltip content={levelTip} onClose={() => setLevelTip(null)} />
       {showGym && onPlayGym && (
         <Modal onClose={() => setShowGym(false)} title="🏋️ Boot Camp" subtitle="Practice mini-games. No timer, no battery, no pressure.">
           <div className="flex-1 overflow-y-auto p-4">

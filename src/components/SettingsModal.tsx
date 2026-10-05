@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Modal } from './Modal';
+import { InfoTooltip } from './InfoTooltip';
+import { InfoTrigger } from './InfoTrigger';
 import { Theme, loadTheme, saveTheme, applyTheme, toggleTheme } from '../engine/theme';
 import {
   loadAudioPref,
@@ -19,6 +21,15 @@ interface SettingsModalProps {
   onClose: () => void;
 }
 
+const SETTING_TIPS: Record<string, string> = {
+  theme: 'Switches between dark and light mode. Saved on this device.',
+  audio: 'Controls all sound effects: clicks, notifications, jingles. The volume slider adjusts the level.',
+  haptics: 'Vibrations on supported devices (Android). Not available on iOS or desktop.',
+  bgm: 'Background music loop. Independent from sound effects — you can have music on but SFX off.',
+  volume: 'Controls loudness of all audio (SFX + BGM). 0% is silent, 100% is "Dad is on speakerphone".',
+  font: 'Scales all text in the game. Useful if you\'re helping your grandmother and need to read the screen.',
+};
+
 export function SettingsModal({ onClose }: SettingsModalProps) {
   const [theme, setTheme] = useState<Theme>(loadTheme());
   const [audioOn, setAudioOn] = useState<boolean>(loadAudioPref);
@@ -26,6 +37,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
   const [hapticsOn, setHapticsOn] = useState<boolean>(loadHapticsPref);
   const [bgmOn, setBgmOn] = useState<boolean>(loadBgmPref);
   const [fontScale, setFontScale] = useState<number>(loadFontScale);
+  const [tip, setTip] = useState<{ title: string; description: string } | null>(null);
 
   // Sync if settings change externally
   useEffect(() => {
@@ -84,9 +96,12 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
           {/* Theme toggle */}
           <div className="flex items-center justify-between gap-3">
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-primary">
-                {theme === 'dark' ? '🌙 Dark Mode' : '☀️ Light Mode'}
-              </p>
+              <div className="flex items-center gap-1">
+                <p className="text-sm font-medium text-primary">
+                  {theme === 'dark' ? '🌙 Dark Mode' : '☀️ Light Mode'}
+                </p>
+                <InfoTrigger label="About theme" onClick={() => setTip({ title: 'Theme', description: SETTING_TIPS.theme })} />
+              </div>
               <p className="text-xs text-muted">
                 {theme === 'dark'
                   ? 'Because productivity is overrated.'
@@ -109,9 +124,12 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
           {/* Audio toggle */}
           <div className="flex items-center justify-between gap-3">
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-primary">
-                {audioOn ? '🔊 Sound On' : '🔇 Sound Off'}
-              </p>
+              <div className="flex items-center gap-1">
+                <p className="text-sm font-medium text-primary">
+                  {audioOn ? '🔊 Sound On' : '🔇 Sound Off'}
+                </p>
+                <InfoTrigger label="About sound" onClick={() => setTip({ title: 'Sound', description: SETTING_TIPS.audio })} />
+              </div>
               <p className="text-xs text-muted">
                 {audioOn
                   ? 'Beep boop. Your ears will thank you.'
@@ -131,9 +149,12 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
           {/* Haptics toggle */}
           <div className="flex items-center justify-between gap-3">
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-primary">
-                {hapticsOn ? '📳 Haptics On' : '📴 Haptics Off'}
-              </p>
+              <div className="flex items-center gap-1">
+                <p className="text-sm font-medium text-primary">
+                  {hapticsOn ? '📳 Haptics On' : '📴 Haptics Off'}
+                </p>
+                <InfoTrigger label="About haptics" onClick={() => setTip({ title: 'Haptics', description: SETTING_TIPS.haptics })} />
+              </div>
               <p className="text-xs text-muted">
                 {hapticsOn
                   ? 'Feel the chaos.'
@@ -153,9 +174,12 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
           {/* BGM toggle */}
           <div className="flex items-center justify-between gap-3">
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-primary">
-                {bgmOn ? '🎵 Music On' : '🔇 Music Off'}
-              </p>
+              <div className="flex items-center gap-1">
+                <p className="text-sm font-medium text-primary">
+                  {bgmOn ? '🎵 Music On' : '🔇 Music Off'}
+                </p>
+                <InfoTrigger label="About music" onClick={() => setTip({ title: 'Music', description: SETTING_TIPS.bgm })} />
+              </div>
               <p className="text-xs text-muted">
                 {bgmOn
                   ? 'You are on hold. Forever.'
@@ -175,7 +199,10 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
           {/* Volume slider */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
-              <p className="text-xs font-medium text-muted">Volume</p>
+              <div className="flex items-center gap-1">
+                <p className="text-xs font-medium text-muted">Volume</p>
+                <InfoTrigger label="About volume" onClick={() => setTip({ title: 'Volume', description: SETTING_TIPS.volume })} />
+              </div>
               <p className="text-xs font-mono text-muted">{Math.round(volume * 100)}%</p>
             </div>
             <input
@@ -192,7 +219,10 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
           {/* Font Size slider */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
-              <p className="text-xs font-medium text-muted">🔤 Font Size</p>
+              <div className="flex items-center gap-1">
+                <p className="text-xs font-medium text-muted">🔤 Font Size</p>
+                <InfoTrigger label="About font size" onClick={() => setTip({ title: 'Font Size', description: SETTING_TIPS.font })} />
+              </div>
               <p className="text-xs font-mono text-muted">{fontScale}%</p>
             </div>
             <input
@@ -237,6 +267,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
             <p className="text-[0.65rem] text-muted mt-1">v{__APP_VERSION__}</p>
           </div>
         </div>
+      <InfoTooltip content={tip} onClose={() => setTip(null)} />
     </Modal>
   );
 }

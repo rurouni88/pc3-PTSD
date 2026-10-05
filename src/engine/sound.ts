@@ -15,7 +15,8 @@ export type SoundType =
   | 'charger'
   | 'battery-low'
   | 'achievement'
-  | 'ticker';
+  | 'ticker'
+  | 'toast';
 
 interface SoundDef {
   oscType?: OscillatorType;
@@ -32,6 +33,16 @@ const SOUND_DEFS: Record<SoundType, SoundDef> = {
     gain: 0.08,
     gainRampEnd: 0.005,
     gainRampDuration: 0.04,
+  },
+  toast: {
+    oscType: 'sine',
+    notes: [
+      { freq: 880, time: 0 },
+      { freq: 1100, time: 0.06 },
+    ],
+    gain: 0.06,
+    gainRampEnd: 0.003,
+    gainRampDuration: 0.12,
   },
   success: {
     oscType: 'sine',

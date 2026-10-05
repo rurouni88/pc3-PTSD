@@ -12,6 +12,7 @@ import { applyTheme, loadTheme } from './engine/theme';
 import { applyFontScale, loadFontScale } from './engine/font-scale';
 import type { Achievement } from './engine/achievements';
 import { useIsDesktop } from './hooks/useIsDesktop';
+import { ToastContainer } from './components/ToastContainer';
 
 interface GameResult {
   success: boolean;
@@ -124,6 +125,7 @@ export function App() {
       ) : (
         <div className="h-dvh w-screen overflow-hidden">{renderGame()}</div>
       )}
+      <ToastContainer />
     </>
   );
 }
