@@ -167,7 +167,7 @@ npm run validate:levels # build-time config validation
 - [ ] More mini-games (The Password, The Storage Treadmill, The Screenshot)
 - [ ] "Significant Other" difficulty (4th level, new avatar, new prompts)
 - [ ] Daily Challenge (seed = YYYYMMDD, enable for v0.6)
-- [ ] Accessibility: ARIA attributes, focus trap on modals
+- [x] Accessibility: ARIA attributes, focus trap on modals
 - [ ] Combo/streak indicator (pure juice)
 
 ### Considered and Deferred
