@@ -3,6 +3,7 @@
 // When `title` is provided, renders a standard header with title + close button.
 
 import type { ReactNode } from 'react';
+import { playSound } from '../engine/sound';
 
 interface ModalProps {
   onClose: () => void;
@@ -35,7 +36,7 @@ export function Modal({ onClose, children, title, subtitle, maxHeight = '80dvh',
               {subtitle && <p className="text-xs text-secondary mt-1">{subtitle}</p>}
             </div>
             <button
-              onClick={onClose}
+              onClick={() => { playSound('click'); onClose(); }}
               className="shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-tertiary text-muted hover:text-primary active:scale-90 transition-all"
             >
               ✕

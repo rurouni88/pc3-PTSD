@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { playSound } from '../engine/sound';
+import { showToast } from '../engine/toast';
 
 interface CopyButtonProps {
   text: string;
@@ -13,6 +14,7 @@ export function CopyButton({ text, className = '', label }: CopyButtonProps) {
   const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(text);
     playSound('click');
+    showToast('📋 Copied to clipboard', 'success');
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   }, [text]);
