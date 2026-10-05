@@ -16,6 +16,7 @@ import { MetaStore, RunRecord } from '../engine/meta';
 import { checkAchievements, Achievement } from '../engine/achievements';
 import { playHaptic } from '../engine/haptics';
 import { playSound } from '../engine/sound';
+import { showToast } from '../engine/toast';
 
 
 interface UseGameEngineProps {
@@ -68,6 +69,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
   const shownPromptIdsRef = useRef<Set<string>>(new Set());
   const completedRef = useRef(false);
   const tickerPlayedRef = useRef(false);
+  const batteryWarnedRef = useRef(false);
   const lastPassiveDrainRef = useRef(0);
 
   // Run stats — tracked via refs to avoid re-renders
@@ -202,6 +204,12 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
         playSound('ticker');
       }
 
+      // Battery critical warning (one-time)
+      if (newBattery <= 15 && prev.batteryLevel > 15 && !batteryWarnedRef.current) {
+        batteryWarnedRef.current = true;
+        showToast('⚡ Battery critical!', 'warning');
+      }
+
       const updated: GameEngineState = {
         ...prev,
         timeRemaining: newTimeRemaining,
@@ -238,6 +246,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
   const resume = useCallback(() => {
     resetLastTick();
     tickerPlayedRef.current = false;
+    batteryWarnedRef.current = false;
     setState((prev) => ({ ...prev, isPaused: false }));
   }, [resetLastTick]);
 
