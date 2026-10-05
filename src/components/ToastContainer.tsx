@@ -2,9 +2,9 @@
 // Listens to the toast engine via subscribeToasts.
 
 import { useEffect, useState } from 'react';
-import { subscribeToasts, type ToastItem } from '../engine/toast';
+import { subscribeToasts, type ToastItem, type ToastType } from '../engine/toast';
 
-const borderColors: Record<string, string> = {
+const borderColors: Record<ToastType, string> = {
   success: 'border-accent-green',
   error: 'border-accent-red',
   warning: 'border-accent-yellow',
@@ -24,7 +24,7 @@ export function ToastContainer() {
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className={`bg-secondary border rounded-lg px-3 py-2 shadow-lg text-xs text-primary max-w-[280px] animate-slide-up ${borderColors[toast.type]}`}
+          className={`bg-secondary border rounded-lg px-3 py-2 shadow-lg text-xs text-primary max-w-[280px] animate-slide-in-right ${borderColors[toast.type]}`}
         >
           {toast.message}
         </div>
