@@ -207,6 +207,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
       // Battery critical warning (one-time)
       if (newBattery <= 15 && prev.batteryLevel > 15 && !batteryWarnedRef.current) {
         batteryWarnedRef.current = true;
+        playSound('battery-low');
         showToast('⚡ Battery critical!', 'warning');
       }
 

@@ -8,6 +8,7 @@ import { AftermathMessage } from '../components/AftermathMessage';
 import { playHaptic } from '../engine/haptics';
 import { playVictoryJingle, playDefeatJingle } from '../engine/bgm';
 import { showToast } from '../engine/toast';
+import { playSound } from '../engine/sound';
 
 interface ResultsProps {
   result: {
@@ -68,8 +69,11 @@ export function Results({ result, difficulty, onReplay, onMenu }: ResultsProps) 
       playHaptic('defeat');
     }
     // Toast for newly unlocked achievements
-    for (const ach of result.achievements) {
-      showToast(`🏅 ${ach.emoji} ${ach.title}`, 'success');
+    if (result.achievements.length > 0) {
+      playSound('achievement');
+      for (const ach of result.achievements) {
+        showToast(`🏅 ${ach.emoji} ${ach.title}`, 'success');
+      }
     }
   }, [result.success, result.achievements]);
 
