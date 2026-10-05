@@ -6,7 +6,7 @@ import { ParentInterrupt } from '../components/ParentInterrupt';
 import { Charger } from '../components/Charger';
 import { SpamSystem } from '../components/SpamSystem';
 import { useGameEngine } from '../hooks/useGameEngine';
-import { LevelConfig, MiniGameType, ForeignLanguage, MiniGameQuality } from '../types/game';
+import { LevelConfig, MiniGameType, ForeignLanguage, MiniGameQuality, RunStats } from '../types/game';
 import type { Achievement } from '../engine/achievements';
 import { MINI_GAME_REGISTRY, type MiniGameRenderProps } from '../components/mini-games/registry';
 import { HelpModal } from '../components/HelpModal';
@@ -20,6 +20,7 @@ interface OSInterfaceProps {
     batteryLevel: number;
     seed: string;
     achievements: Achievement[];
+    runStats: RunStats;
   }) => void;
   onExit: () => void;
 }
@@ -68,12 +69,17 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
   const [resolving, setResolving] = useState(false);
   const effectTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Countdown: 3 → 2 → 1 → GO!
+  // Countdown: 3 → 2 → 1 → GO! (timer paused during countdown)
   useEffect(() => {
-    if (countdown <= 0) return;
+    if (countdown <= 0) {
+      resume();
+      return;
+    }
     const t = setTimeout(() => setCountdown((c) => c - 1), 800);
     return () => clearTimeout(t);
-  }, [countdown]);
+  }, [countdown, resume]);
+
+
 
   const triggerEffect = useCallback((e: 'shake' | 'flash') => {
     if (effectTimeout.current) clearTimeout(effectTimeout.current);
@@ -152,7 +158,7 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
       <div className="h-full flex flex-col items-center justify-center bg-primary select-none">
         <span className="text-5xl mb-6">⏸️</span>
         <h2 className="text-2xl font-bold text-primary mb-2">Paused</h2>
-        <p className="text-sm text-secondary mb-8">
+        <p className="text-sm text-secondary mb-8 text-center max-w-xs px-4">
           {state.difficulty === 'grandma'
             ? 'Grandma is watching you pause. She is not amused.'
             : state.difficulty === 'mum'
@@ -212,7 +218,7 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
         timeRemaining={state.timeRemaining}
       />
 
-      <SpamSystem active={!activePrompt && !state.isPaused} onBatteryDrain={applySpamDrain} />
+      <SpamSystem active={!activePrompt && !state.isPaused && countdown === 0} onBatteryDrain={applySpamDrain} />
 
       <div className="flex-1 min-h-0 overflow-y-auto p-4">
         <div className="flex flex-col gap-3">

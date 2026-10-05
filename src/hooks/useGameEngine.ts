@@ -27,6 +27,7 @@ interface UseGameEngineProps {
     batteryLevel: number;
     seed: string;
     achievements: Achievement[];
+    runStats: RunStats;
   }) => void;
 }
 
@@ -51,7 +52,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     difficulty: levelConfig.difficulty,
     timeRemaining: levelConfig.durationSeconds,
     batteryLevel: levelConfig.initialBattery,
-    isPaused: false,
+    isPaused: true, // Starts paused; countdown resume() un-pauses
     activeIssues: selectIssues(levelConfig.issuePool, levelConfig.selectedIssueCount),
     completedIssues: [],
     currentMiniGame: null,
@@ -161,6 +162,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
       batteryLevel: finalState.batteryLevel,
       seed,
       achievements: newAchievements,
+      runStats: runStatsRef.current,
     });
   }, [onComplete]);
 
