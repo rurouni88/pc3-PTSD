@@ -41,6 +41,9 @@ export function FirstRunTutorial({ onDismiss }: { onDismiss: () => void }) {
           <p className="text-sm text-secondary">
             <span className="text-accent-yellow font-bold">Your parent</span> will interrupt. Try to ignore them.
           </p>
+          <p className="text-sm text-secondary">
+            <span className="text-accent-blue font-bold">📲 Install as app</span> for the best experience (Share → Add to Home Screen).
+          </p>
         </div>
         <p className="text-xs text-muted mt-6">Tap anywhere to start</p>
       </div>
