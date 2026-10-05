@@ -52,7 +52,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
     difficulty: levelConfig.difficulty,
     timeRemaining: levelConfig.durationSeconds,
     batteryLevel: levelConfig.initialBattery,
-    isPaused: false,
+    isPaused: true, // Starts paused; countdown resume() un-pauses
     activeIssues: selectIssues(levelConfig.issuePool, levelConfig.selectedIssueCount),
     completedIssues: [],
     currentMiniGame: null,

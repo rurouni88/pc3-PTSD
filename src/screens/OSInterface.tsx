@@ -79,10 +79,7 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
     return () => clearTimeout(t);
   }, [countdown, resume]);
 
-  // Pause immediately on mount (countdown is running)
-  useEffect(() => {
-    pause();
-  }, [pause]);
+
 
   const triggerEffect = useCallback((e: 'shake' | 'flash') => {
     if (effectTimeout.current) clearTimeout(effectTimeout.current);
@@ -221,7 +218,7 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
         timeRemaining={state.timeRemaining}
       />
 
-      <SpamSystem active={!activePrompt && !state.isPaused} onBatteryDrain={applySpamDrain} />
+      <SpamSystem active={!activePrompt && !state.isPaused && countdown === 0} onBatteryDrain={applySpamDrain} />
 
       <div className="flex-1 min-h-0 overflow-y-auto p-4">
         <div className="flex flex-col gap-3">
