@@ -69,12 +69,20 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
   const [resolving, setResolving] = useState(false);
   const effectTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Countdown: 3 → 2 → 1 → GO!
+  // Countdown: 3 → 2 → 1 → GO! (timer paused during countdown)
   useEffect(() => {
-    if (countdown <= 0) return;
+    if (countdown <= 0) {
+      resume();
+      return;
+    }
     const t = setTimeout(() => setCountdown((c) => c - 1), 800);
     return () => clearTimeout(t);
-  }, [countdown]);
+  }, [countdown, resume]);
+
+  // Pause immediately on mount (countdown is running)
+  useEffect(() => {
+    pause();
+  }, [pause]);
 
   const triggerEffect = useCallback((e: 'shake' | 'flash') => {
     if (effectTimeout.current) clearTimeout(effectTimeout.current);
