@@ -90,6 +90,28 @@
   100% { box-shadow: inset 0 0 0px transparent; }
 }
 
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes countdown-pop {
+  0% { transform: scale(2); opacity: 0; }
+  50% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.8; }
+}
+
+@keyframes confetti-fall {
+  0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+@keyframes resolve-stamp {
+  0% { transform: scale(1.5); opacity: 0; }
+  50% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 @utility animate-slide-down { animation: slide-down 0.3s ease-out; }
 @utility animate-slide-up { animation: slide-up 0.3s ease-out; }
 @utility animate-slide-in-right { animation: slide-in-right 0.3s ease-out; }
@@ -99,10 +121,16 @@
 @utility animate-signal { animation: signal-pulse 3s ease-in-out infinite; }
 @utility animate-shake { animation: shake 0.3s ease-in-out; }
 @utility animate-flash-green { animation: flash-green 0.4s ease-out; }
+@utility animate-fade-in { animation: fade-in 0.2s ease-out; }
+@utility animate-countdown-pop { animation: countdown-pop 0.8s ease-out; }
+@utility animate-confetti { animation: confetti-fall 2.5s ease-in forwards; }
+@utility animate-resolve-stamp { animation: resolve-stamp 0.3s ease-out; }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-shake { animation: none; }
   .animate-flash-green { animation: none; }
+  .animate-confetti { animation: none; }
+  .animate-countdown-pop { animation: none; }
 }
 
 @keyframes spin-slow {

@@ -82,7 +82,8 @@ export function Results({ result, difficulty, onReplay, onMenu }: ResultsProps) 
   const bestBattery = meta.bestBatteries[difficulty];
 
   return (
-    <div className="h-full flex flex-col items-center bg-primary p-6 select-none overflow-y-auto">
+    <div className="h-full flex flex-col items-center bg-primary p-6 select-none overflow-y-auto animate-fade-in overflow-hidden">
+      {result.success && <Confetti />}
       <div className="flex flex-col items-center mt-8">
         <span className="text-6xl mb-4">{result.success ? '🎉' : '💀'}</span>
         <h1 className={`text-3xl font-bold mb-2 ${result.success ? 'text-accent-green' : 'text-accent-red'}`}>
@@ -175,6 +176,39 @@ export function Results({ result, difficulty, onReplay, onMenu }: ResultsProps) 
       <p className="text-center text-xs text-muted">
         Copyright 2026 PC3 Enterprises
       </p>
+    </div>
+  );
+}
+
+const CONFETTI_COLORS = ['#ef4444', '#22c55e', '#eab308', '#3b82f6', '#a855f7', '#f97316'];
+const CONFETTI_COUNT = 30;
+
+function Confetti() {
+  // Deterministic positions (no Math.random — use index-based spread)
+  const pieces = Array.from({ length: CONFETTI_COUNT }, (_, i) => ({
+    left: `${(i * 137.5) % 100}%`, // Golden angle spread
+    delay: `${(i * 0.08) % 1.5}s`,
+    color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
+    size: 6 + (i % 4) * 2,
+  }));
+
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+      {pieces.map((p, i) => (
+        <div
+          key={i}
+          className="absolute animate-confetti"
+          style={{
+            left: p.left,
+            top: '-10px',
+            width: `${p.size}px`,
+            height: `${p.size}px`,
+            backgroundColor: p.color,
+            borderRadius: i % 2 === 0 ? '50%' : '2px',
+            animationDelay: p.delay,
+          }}
+        />
+      ))}
     </div>
   );
 }

@@ -64,7 +64,16 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
   const [showHelp, setShowHelp] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [effect, setEffect] = useState<'shake' | 'flash' | null>(null);
+  const [countdown, setCountdown] = useState<number>(3);
+  const [resolving, setResolving] = useState(false);
   const effectTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Countdown: 3 → 2 → 1 → GO!
+  useEffect(() => {
+    if (countdown <= 0) return;
+    const t = setTimeout(() => setCountdown((c) => c - 1), 800);
+    return () => clearTimeout(t);
+  }, [countdown]);
 
   const triggerEffect = useCallback((e: 'shake' | 'flash') => {
     if (effectTimeout.current) clearTimeout(effectTimeout.current);
@@ -84,17 +93,25 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
   }, [state.batteryLevel, triggerEffect]);
 
   const handleIssueTap = useCallback((issueId: string, issueType: MiniGameType) => {
+    if (countdown > 0) return; // Ignore taps during countdown
     playHaptic('click');
     setActiveIssueId(issueId);
     setActiveMiniGame(issueType);
-  }, []);
+  }, [countdown]);
 
   const handleMiniGameComplete = useCallback((quality?: MiniGameQuality, selectedLanguage?: string) => {
     if (activeIssueId) {
-      resolveIssue(activeIssueId, selectedLanguage, quality);
+      setResolving(true);
+      setTimeout(() => {
+        resolveIssue(activeIssueId, selectedLanguage, quality);
+        setResolving(false);
+        setActiveMiniGame(null);
+        setActiveIssueId(null);
+      }, 500);
+    } else {
+      setActiveMiniGame(null);
+      setActiveIssueId(null);
     }
-    setActiveMiniGame(null);
-    setActiveIssueId(null);
     playHaptic('complete');
     triggerEffect('flash');
   }, [activeIssueId, resolveIssue, triggerEffect]);
@@ -109,7 +126,7 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
 
   if (activeMiniGame) {
     return (
-      <div className="h-full bg-primary select-none overflow-hidden">
+      <div className="h-full bg-primary select-none overflow-hidden relative">
         <MiniGameView
           type={activeMiniGame}
           difficulty={levelConfig.difficulty}
@@ -118,6 +135,14 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
           onComplete={handleMiniGameComplete}
           onCancel={handleMiniGameCancel}
         />
+        {resolving && (
+          <div className="absolute inset-0 z-40 flex items-center justify-center bg-primary/60">
+            <div className="animate-resolve-stamp text-center">
+              <span className="text-5xl">✅</span>
+              <p className="text-xl font-bold text-accent-green mt-2">Resolved!</p>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -170,7 +195,14 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
   }
 
   return (
-    <div className={`h-full flex flex-col bg-primary select-none overflow-hidden ${effect === 'shake' ? 'animate-shake' : ''} ${effect === 'flash' ? 'animate-flash-green' : ''}`}>
+    <div className={`h-full flex flex-col bg-primary select-none overflow-hidden animate-fade-in ${effect === 'shake' ? 'animate-shake' : ''} ${effect === 'flash' ? 'animate-flash-green' : ''}`}>
+      {countdown > 0 && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-primary/90">
+          <span key={countdown} className="text-7xl font-bold text-primary animate-countdown-pop">
+            {countdown}
+          </span>
+        </div>
+      )}
       {guiltTripActive && (
         <div className="absolute inset-0 border-8 border-gray-600/40 pointer-events-none z-30" />
       )}
