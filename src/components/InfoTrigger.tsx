@@ -12,7 +12,7 @@ export function InfoTrigger({ onClick, label }: InfoTriggerProps) {
     <button
       onClick={onClick}
       aria-label={label || 'More info'}
-      className="w-7 h-7 flex items-center justify-center rounded-full bg-tertiary border border-theme text-muted text-sm font-bold active:scale-90 transition-transform shrink-0"
+      className="w-8 h-8 flex items-center justify-center rounded-full bg-tertiary border border-theme text-muted text-sm font-bold active:scale-90 transition-transform shrink-0"
     >
       ?
     </button>
