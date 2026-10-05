@@ -25,6 +25,9 @@ export function FirstRunTutorial({ onDismiss }: { onDismiss: () => void }) {
 
   return (
     <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Welcome to Tech Support"
       className="absolute inset-0 z-50 flex items-center justify-center bg-primary/95 p-6 animate-fade-in"
       onClick={handleDismiss}
     >
