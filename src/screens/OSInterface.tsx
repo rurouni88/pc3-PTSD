@@ -6,7 +6,7 @@ import { ParentInterrupt } from '../components/ParentInterrupt';
 import { Charger } from '../components/Charger';
 import { SpamSystem } from '../components/SpamSystem';
 import { useGameEngine } from '../hooks/useGameEngine';
-import { LevelConfig, MiniGameType, ForeignLanguage, MiniGameQuality } from '../types/game';
+import { LevelConfig, MiniGameType, ForeignLanguage, MiniGameQuality, RunStats } from '../types/game';
 import type { Achievement } from '../engine/achievements';
 import { MINI_GAME_REGISTRY, type MiniGameRenderProps } from '../components/mini-games/registry';
 import { HelpModal } from '../components/HelpModal';
@@ -20,6 +20,7 @@ interface OSInterfaceProps {
     batteryLevel: number;
     seed: string;
     achievements: Achievement[];
+    runStats: RunStats;
   }) => void;
   onExit: () => void;
 }

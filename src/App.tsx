@@ -5,7 +5,7 @@ import { Results } from './screens/Results';
 import { MiniGameGym } from './screens/MiniGameGym';
 import { iPhoneFrame } from './components/iPhoneFrame';
 import { levels } from './config/levels';
-import { Difficulty, GameState, MiniGameType } from './types/game';
+import { Difficulty, GameState, MiniGameType, RunStats } from './types/game';
 import { RngEngine } from './engine/seeded-rng';
 import { SaveSystem } from './engine/save';
 import { applyTheme, loadTheme } from './engine/theme';
@@ -20,6 +20,7 @@ interface GameResult {
   batteryLevel: number;
   seed: string;
   achievements: Achievement[];
+  runStats: RunStats;
 }
 
 export function App() {

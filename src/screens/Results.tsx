@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Difficulty } from '../types/game';
+import { Difficulty, RunStats } from '../types/game';
 import { MetaStore } from '../engine/meta';
 import { RngEngine } from '../engine/seeded-rng';
 import type { Achievement } from '../engine/achievements';
@@ -17,6 +17,7 @@ interface ResultsProps {
     batteryLevel: number;
     seed: string;
     achievements: Achievement[];
+    runStats: RunStats;
   };
   difficulty: Difficulty;
   onReplay: () => void;
@@ -106,6 +107,8 @@ export function Results({ result, difficulty, onReplay, onMenu }: ResultsProps) 
           <p className="text-xs text-muted">Battery</p>
         </div>
       </div>
+
+      <RunReceipt stats={result.runStats} difficulty={difficulty} />
 
       {result.seed && (
         <div className="mb-4 text-center">
@@ -209,6 +212,54 @@ function Confetti() {
           }}
         />
       ))}
+    </div>
+  );
+}
+
+function RunReceipt({ stats, difficulty }: { stats: RunStats; difficulty: Difficulty }) {
+  const lines: string[] = [];
+
+  if (stats.miniGamesCompleted.length > 0) {
+    lines.push(`Issues fixed: ${stats.miniGamesCompleted.length}`);
+  }
+  if (stats.interruptionsSurvived > 0) {
+    lines.push(`"Can you just..." survived: ${stats.interruptionsSurvived}`);
+  }
+  if (stats.liesTold > 0) {
+    lines.push(`Lies told: ${stats.liesTold}`);
+  }
+  if (stats.explanationsGiven > 0) {
+    lines.push(`Explanations given: ${stats.explanationsGiven}`);
+  }
+  if (stats.guiltTripsTaken > 0) {
+    lines.push(`Guilt trips endured: ${stats.guiltTripsTaken}`);
+  }
+  if (stats.spamsReceived > 0) {
+    lines.push(`Spam notifications: ${stats.spamsReceived}`);
+  }
+  if (stats.adsTriggered > 0) {
+    lines.push(`Ads accidentally tapped: ${stats.adsTriggered}`);
+  }
+  if (stats.decoysTapped > 0) {
+    lines.push(`"Safe" apps whacked: ${stats.decoysTapped}`);
+  }
+  if (stats.zoomNotifications > 0) {
+    lines.push(`Re-zoomed by notifications: ${stats.zoomNotifications}`);
+  }
+  if (stats.chargerUsed) {
+    lines.push(`Charger used: yes (desperate)`);
+  }
+
+  if (lines.length === 0) return null;
+
+  return (
+    <div className="w-full max-w-xs my-4 p-3 bg-secondary rounded-xl border border-theme">
+      <p className="text-xs font-bold text-muted mb-2">🧾 {difficultyNames[difficulty]} Support Receipt</p>
+      <div className="flex flex-col gap-1">
+        {lines.map((line, i) => (
+          <p key={i} className="text-[0.7rem] text-secondary">{line}</p>
+        ))}
+      </div>
     </div>
   );
 }

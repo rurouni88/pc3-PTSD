@@ -27,6 +27,7 @@ interface UseGameEngineProps {
     batteryLevel: number;
     seed: string;
     achievements: Achievement[];
+    runStats: RunStats;
   }) => void;
 }
 
@@ -161,6 +162,7 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
       batteryLevel: finalState.batteryLevel,
       seed,
       achievements: newAchievements,
+      runStats: runStatsRef.current,
     });
   }, [onComplete]);
 
