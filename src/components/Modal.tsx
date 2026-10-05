@@ -37,7 +37,7 @@ export function Modal({ onClose, children, title, subtitle, maxHeight = '80dvh',
             </div>
             <button
               onClick={() => { playSound('click'); onClose(); }}
-              className="shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-tertiary text-muted hover:text-primary active:scale-90 transition-all"
+              className="shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-tertiary border-2 border-muted text-muted hover:text-primary active:scale-90 transition-all"
             >
               ✕
             </button>
