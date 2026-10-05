@@ -153,7 +153,7 @@ export function OSInterface({ levelConfig, onComplete, onExit }: OSInterfaceProp
       <div className="h-full flex flex-col items-center justify-center bg-primary select-none">
         <span className="text-5xl mb-6">⏸️</span>
         <h2 className="text-2xl font-bold text-primary mb-2">Paused</h2>
-        <p className="text-sm text-secondary mb-8">
+        <p className="text-sm text-secondary mb-8 text-center max-w-xs px-4">
           {state.difficulty === 'grandma'
             ? 'Grandma is watching you pause. She is not amused.'
             : state.difficulty === 'mum'
