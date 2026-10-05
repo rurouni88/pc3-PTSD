@@ -2,7 +2,7 @@
 // Reusable across any screen/modal that needs contextual help.
 
 interface InfoTriggerProps {
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   /** Accessible label for screen readers */
   label?: string;
 }
