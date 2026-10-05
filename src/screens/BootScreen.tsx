@@ -131,7 +131,7 @@ export function BootScreen({ onStartGame, onContinue, onPlayGym }: BootScreenPro
   const unlockedCount = loadUnlocked().length;
 
   return (
-    <div className="h-full flex flex-col items-center overflow-y-auto bg-primary select-none p-4">
+    <div className="h-full flex flex-col items-center overflow-y-auto bg-primary select-none p-4 animate-fade-in">
       <div className="text-center mb-4 mt-auto pt-4">
         {/* Spinning phone logo — bigger + satirical loading spinner */}
         <div className="w-20 h-20 mx-auto mb-3 animate-spin-slow">
