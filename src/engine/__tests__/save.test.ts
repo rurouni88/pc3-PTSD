@@ -92,7 +92,7 @@ describe('SaveData validation', () => {
   it('accepts valid save data', () => {
     const errors = SaveData.validate({
       state: mockState,
-      rng: { seed: 'TESTSEED', state: 12345 },
+      rng: { seed: 'TESTSEED', state: [1, 2, 3, 4, 5, 6] },
       timestamp: Date.now(),
     });
     expect(errors).toEqual([]);
