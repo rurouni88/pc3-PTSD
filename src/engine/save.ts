@@ -50,8 +50,10 @@ export class SaveData {
     const rng = save.rng as Record<string, unknown> | undefined;
     if (rng !== undefined && rng !== null) {
       if (typeof rng.seed !== 'string') errors.push('rng.seed is not a string');
-      if (rng.state !== null && typeof rng.state !== 'number') {
-        errors.push('rng.state is not a number or null');
+      if (rng.state !== null) {
+        if (!Array.isArray(rng.state) || rng.state.length !== 6 || rng.state.some((v) => typeof v !== 'number')) {
+          errors.push('rng.state is not a 6-element number array or null');
+        }
       }
     }
 
