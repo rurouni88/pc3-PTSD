@@ -8,7 +8,7 @@ import { Modal } from '../components/Modal';
 import { CharacterAvatar } from '../components/CharacterAvatar';
 import { loadUnlocked } from '../engine/achievements';
 import { ACHIEVEMENTS } from '../engine/achievements';
-import { initBgm } from '../engine/bgm';
+import { initBgm, setBgmTheme } from '../engine/bgm';
 import { levels } from '../config/levels';
 import { InfoTooltip } from '../components/InfoTooltip';
 import { InfoTrigger } from '../components/InfoTrigger';
@@ -124,6 +124,7 @@ export function BootScreen({ onStartGame, onContinue, onPlayGym }: BootScreenPro
   };
 
   const handleSelectDifficulty = (difficulty: Difficulty) => {
+    setBgmTheme(difficulty);
     setShowLevelSelect(false);
     onStartGame(difficulty, seed);
   };
