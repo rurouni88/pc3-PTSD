@@ -81,20 +81,25 @@ pc3-PTSD/
 │   ├── types/
 │   │   └── game.ts               # Central TypeScript interfaces
 │   ├── App.tsx                   # Root layout + view state machine + ErrorBoundary
-│   ├── main.tsx                  # Vite entry + sprite injection
+│   ├── main.tsx                  # Vite entry + sprite injection + gesture guards + SW registration
 │   ├── index.css                 # Tailwind v4 + CSS custom properties + animations
 │   └── vite-env.d.ts             # Vite client types + __APP_VERSION__
 ├── public/
 │   ├── favicon.svg
 │   ├── icons/
-│   │   └── sprite.svg
-│   └── manifest.json             # PWA manifest
+│   │   ├── sprite.svg
+│   │   ├── icon-192.png          # PWA manifest icon
+│   │   ├── icon-512.png          # PWA manifest icon
+│   │   ├── icon-maskable-512.png # PWA manifest icon (maskable safe zone)
+│   │   └── apple-touch-icon.png  # iOS home screen icon (180px)
+│   ├── manifest.json             # PWA manifest (PNG icons, any + maskable)
+│   └── sw.js                     # Service worker: offline shell + font cache
 ├── .github/workflows/
 │   ├── pr-checks.yml             # CI: typecheck + test + build (@v5)
 │   └── deploy-pages.yml          # Deploy: build + upload dist/ to GitHub Pages
 ├── scripts/
 │   └── validate-levels.ts        # CLI: npm run validate:levels
-├── index.html                    # Vite entry (PWA manifest link)
+├── index.html                    # Vite entry (PWA meta: manifest, apple-touch-icon, viewport-fit)
 ├── package.json                  # v0.5.4, scripts: dev, build, test, validate:levels
 ├── tsconfig.json                 # TypeScript config (strict)
 ├── vite.config.ts                # Vite + Tailwind v4 plugin + __APP_VERSION__ define
@@ -130,7 +135,7 @@ npm run dev      # start Vite dev server (http://localhost:5173)
 - **Vitest 5** — Engine tests (pure logic, no DOM)
 - **LocalStorage** — Saves, meta, leaderboard, theme, audio, haptics, font scale, BGM pref, tutorial seen
 - **Seeded RNG (Mulberry32)** — Deterministic runs
-- **PWA** — manifest.json, installable on iOS/Android
+- **PWA** — manifest + PNG/maskable icons, installable on iOS/Android; sw.js for offline play (precached shell, font cache)
 - **Mobile-First** — Touch targets ≥ 44px, desktop iPhone frame
 
 ## 🧪 Building & Verifying
@@ -152,6 +157,7 @@ npm run validate:levels # build-time config validation
 - [x] Shareable run summaries (Copy Summary button)
 - [x] Error boundaries + satirical crash UI
 - [x] PWA support (manifest, install hint)
+- [x] PWA offline (service worker, PNG app icons, mobile gesture hygiene)
 - [x] BGM engine (looping, toggle, volume)
 - [x] Toast notification system (achievements, battery, copy)
 - [x] First-run tutorial (one-time overlay)
@@ -205,7 +211,7 @@ npm run validate:levels # build-time config validation
 - InfoTooltip + InfoTrigger (Settings, Level Select, Boot Camp) ✓
 - Boot Camp / Mini-Game Gym (practice mode) ✓
 - Aftermath messages (27 variants, 3 outcomes × 3 difficulties × 3) ✓
-- PWA (manifest, installable) ✓
+- PWA (manifest, PNG icons, installable, offline via sw.js) ✓
 - Error boundary (satirical crash messages) ✓
 - Desktop iPhone frame ✓
 - CI: typecheck + test + build ✓
