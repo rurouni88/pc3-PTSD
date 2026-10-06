@@ -12,7 +12,7 @@ if (spriteContainer) {
 }
 
 // Mobile gesture hygiene: kill pinch gestures, double-tap zoom and
-// long-press callouts, which fight the drag interactions (Blockbeast pattern).
+// long-press callouts, which fight the drag interactions.
 document.addEventListener('gesturestart', (e) => e.preventDefault());
 document.addEventListener('dblclick', (e) => e.preventDefault());
 const rootEl = document.getElementById('root');
