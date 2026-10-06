@@ -11,6 +11,13 @@ if (spriteContainer) {
   spriteContainer.innerHTML = spriteSvg;
 }
 
+// Mobile gesture hygiene: kill pinch gestures, double-tap zoom and
+// long-press callouts, which fight the drag interactions (Blockbeast pattern).
+document.addEventListener('gesturestart', (e) => e.preventDefault());
+document.addEventListener('dblclick', (e) => e.preventDefault());
+const rootEl = document.getElementById('root');
+rootEl?.addEventListener('contextmenu', (e) => e.preventDefault());
+
 // Register service worker for offline support (production only).
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => {
