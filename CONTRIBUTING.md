@@ -58,7 +58,7 @@ pc3-PTSD/
 │   │   ├── haptics.ts            # 18 vibration patterns (Android only)
 │   │   ├── meta.ts               # Meta progression + leaderboard (localStorage)
 │   │   ├── save.ts               # Save/load system (validate on load)
-│   │   ├── seeded-rng.ts         # Mulberry32 PRNG (deterministic runs)
+│   │   ├── seeded-rng.ts         # sfc32 + SplitMix32 PRNG (deterministic runs)
 │   │   ├── sound.ts              # Web Audio API SFX (10 types)
 │   │   ├── theme.ts              # Dark/light theme store
 │   │   ├── toast.ts              # Pub/sub toast manager (showToast, subscribe)
@@ -134,7 +134,7 @@ npm run dev      # start Vite dev server (http://localhost:5173)
 - **Navigator Vibration API** — 18 haptic patterns (Android, no-op on iOS)
 - **Vitest 5** — Engine tests (pure logic, no DOM)
 - **LocalStorage** — Saves, meta, leaderboard, theme, audio, haptics, font scale, BGM pref, tutorial seen
-- **Seeded RNG (Mulberry32)** — Deterministic runs
+- **Seeded RNG (sfc32 + SplitMix32)** — Deterministic runs
 - **PWA** — manifest + PNG/maskable icons, installable on iOS/Android; sw.js for offline play (precached shell, font cache)
 - **Mobile-First** — Touch targets ≥ 44px, desktop iPhone frame
 
