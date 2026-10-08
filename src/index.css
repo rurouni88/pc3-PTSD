@@ -138,8 +138,4 @@
   to { transform: rotate(360deg); }
 }
 
-@keyframes signal-fill {
-  0%, 15% { opacity: 0; }
-  20%, 75% { opacity: 1; }
-  85%, 100% { opacity: 0; }
-}
+

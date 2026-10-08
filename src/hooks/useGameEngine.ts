@@ -204,12 +204,14 @@ export function useGameEngine({ levelConfig, onComplete }: UseGameEngineProps) {
       if (newTimeRemaining <= 10 && prev.timeRemaining > 10 && !tickerPlayedRef.current) {
         tickerPlayedRef.current = true;
         playSound('ticker');
+        playHaptic('timer-warn');
       }
 
       // Battery critical warning (one-time)
       if (newBattery <= 15 && prev.batteryLevel > 15 && !batteryWarnedRef.current) {
         batteryWarnedRef.current = true;
         playSound('battery-low');
+        playHaptic('battery-low');
         showToast('⚡ Battery critical!', 'warning');
       }
 

@@ -72,6 +72,7 @@ export function Results({ result, difficulty, onReplay, onMenu }: ResultsProps) 
     // Toast for newly unlocked achievements
     if (result.achievements.length > 0) {
       playSound('achievement');
+      playHaptic('achievement');
       for (const ach of result.achievements) {
         showToast(`🏅 ${ach.emoji} ${ach.title}`, 'success');
       }

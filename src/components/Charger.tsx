@@ -44,6 +44,7 @@ export function Charger({ onCharge }: ChargerProps) {
         setTimeout(() => {
           setPhase('idle');
           setItems(junkDrawerItems);
+          playHaptic('charger-off');
         }, 1000);
       }, 800);
     } else {
