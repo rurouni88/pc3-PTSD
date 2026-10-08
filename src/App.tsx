@@ -120,7 +120,7 @@ export function App() {
     <>
       {/* Desktop: frame around all screens */}
       {isDesktop ? (
-        <div className="min-h-screen w-full bg-gradient-to-br from-slate-800 via-slate-700 to-slate-800 flex items-center justify-center p-4 sm:p-8">
+        <div className="min-h-screen w-full bg-gradient-to-br from-slate-700 via-slate-600 to-slate-700 flex items-center justify-center p-4 sm:p-8">
           <Frame>{renderGame()}</Frame>
         </div>
       ) : (
