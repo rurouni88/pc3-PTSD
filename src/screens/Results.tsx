@@ -157,18 +157,18 @@ export function Results({ result, difficulty, onReplay, onMenu }: ResultsProps) 
         outcome={result.success ? 'win' : result.batteryLevel <= 0 ? 'battery' : 'timeout'}
       />
 
-      <div className="flex gap-4 w-full max-w-xs mt-6 mb-4">
-        <button
-          onClick={onMenu}
-          className="flex-1 py-3 bg-tertiary text-primary font-bold rounded-xl active:scale-95 transition-transform"
-        >
-          Menu
-        </button>
+      <div className="flex flex-col gap-3 w-full max-w-xs mt-6 mb-4">
         <button
           onClick={onReplay}
-          className="flex-1 py-3 bg-accent-red text-primary font-bold rounded-xl active:scale-95 transition-transform"
+          className="w-full py-4 bg-accent-red text-primary font-bold rounded-xl text-lg active:scale-95 transition-transform"
         >
-          Retry
+          ⚡ One More Run
+        </button>
+        <button
+          onClick={onMenu}
+          className="w-full py-2.5 bg-tertiary text-primary font-semibold rounded-xl active:scale-95 transition-transform"
+        >
+          Menu
         </button>
       </div>
 

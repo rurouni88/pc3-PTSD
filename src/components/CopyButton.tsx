@@ -11,9 +11,19 @@ interface CopyButtonProps {
 export function CopyButton({ text, className = '', label }: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
 
-  const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText(text);
+  const handleCopy = useCallback(async () => {
     playSound('click');
+    // Try native share first (mobile), fall back to clipboard
+    if (navigator.share) {
+      try {
+        await navigator.share({ text });
+        showToast('📤 Shared!', 'success');
+        return;
+      } catch {
+        // User cancelled or share failed — fall through to clipboard
+      }
+    }
+    navigator.clipboard.writeText(text);
     showToast('📋 Copied to clipboard', 'success');
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
