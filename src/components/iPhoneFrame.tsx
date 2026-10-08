@@ -6,7 +6,7 @@ interface iPhoneFrameProps {
 
 export function iPhoneFrame({ children }: iPhoneFrameProps) {
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4 sm:p-8">
+    <div className="min-h-screen w-full bg-gradient-to-br from-slate-700 via-slate-600 to-slate-700 flex items-center justify-center p-4 sm:p-8">
       {/* Ambient glow behind the phone */}
       <div className="absolute w-[320px] h-[680px] sm:w-[380px] sm:h-[800px] rounded-[3rem] bg-accent-blue/5 blur-3xl" />
 

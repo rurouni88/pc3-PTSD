@@ -12,10 +12,8 @@ export function StatusBar({ batteryLevel, timeRemaining, mode }: StatusBarProps)
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const batteryColor =
-    batteryLevel > 50 ? 'var(--accent-green)' :
-    batteryLevel > 20 ? 'var(--accent-yellow)' :
-    'var(--accent-red)';
+  // Smooth color: green (120°) → yellow (60°) → red (0°) based on battery %
+  const batteryColor = `hsl(${Math.max(0, batteryLevel * 1.2)}, 70%, 45%)`;
 
   return (
     <div className="flex items-center justify-between px-4 py-1 bg-secondary border-b border-theme text-xs select-none">
