@@ -111,16 +111,6 @@ export function Results({ result, difficulty, onReplay, onMenu }: ResultsProps) 
 
       <RunReceipt stats={result.runStats} difficulty={difficulty} />
 
-      {result.seed && (
-        <div className="mb-4 text-center">
-          <p className="text-xs text-muted">Run seed</p>
-          <div className="flex items-center justify-center gap-2">
-            <p className="text-sm font-mono text-primary">{result.seed}</p>
-            <CopyButton text={result.seed} />
-          </div>
-        </div>
-      )}
-
       <div className="mb-4 text-center">
         <CopyButton text={buildRunSummary(result, difficulty)} label="Copy Summary" />
       </div>
