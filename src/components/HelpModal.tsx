@@ -113,6 +113,7 @@ function MiniGamesTab() {
         <MiniGame icon="🔑" name="Passkey Setup" desc="5-step wizard. They'll complicate every step. The password stays. Obviously." />
         <MiniGame icon="📲" name="System Update" desc="Do nothing. Tap nothing. The decoy buttons are traps. Just wait." />
         <MiniGame icon="🔍" name="Zoom Out" desc="Zoom back to 100%. Notifications keep re-zooming them. You can't win." />
+        <MiniGame icon="🔒" name="Password Reset" desc="Meet the requirements. They change every 4 seconds. Round 3 contradicts itself. 3 rejections = locked out." />
       </ul>
     </>
   );

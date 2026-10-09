@@ -184,7 +184,7 @@ npm run validate:levels # build-time config validation
 | Mini-game base class | 2 props of boilerplate. Over-engineering. |
 | Telemetry / analytics | Local browser game. No server. |
 | Pause persistence | `isPaused` flag works because mini-games replace the view. |
-| Mini-game shared hook | 10 games, zero shared logic. Revisit at 15+ games. |
+| Mini-game shared hook | 11 games, zero shared logic. Revisit at 15+ games. |
 | State management library | `useState` + custom hook is sufficient for a 2-minute game. |
 | Routing library | 4 screen states. A `switch` is fine. |
 | CSS-in-JS | Tailwind v4 + CSS custom properties covers everything. |
@@ -192,7 +192,7 @@ npm run validate:levels # build-time config validation
 
 ## ✅ Current State (v0.5.4)
 
-- 10 mini-games with per-difficulty variety ✓
+- 11 mini-games with per-difficulty variety ✓
 - Seeded issue pool selection (Dad 3/7, Mum 4/8, Grandma 5/10) ✓
 - Seeded runs (reproducible + re-enter seed) ✓
 - 23 satirical achievements ✓
