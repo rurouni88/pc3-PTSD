@@ -36,6 +36,7 @@ const issueLabels: Record<MiniGameType, { label: string; icon: string }> = {
   'passkey-setup': { label: 'Set up passkey', icon: '🔑' },
   'system-update': { label: 'Update installing', icon: '📲' },
   'zoom-out': { label: 'Zoomed in too much', icon: '🔍' },
+  'password-reset': { label: 'Password reset', icon: '🔒' },
 };
 
 function MiniGameView(props: MiniGameRenderProps) {

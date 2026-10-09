@@ -27,6 +27,7 @@ const GAME_LABELS: Record<MiniGameType, string> = {
   'passkey-setup': 'Passkey',
   'system-update': 'System Update',
   'zoom-out': 'Zoom Fix',
+  'password-reset': 'Password Reset',
 };
 
 const GAME_TIPS: Record<MiniGameType, string> = {
@@ -40,6 +41,7 @@ const GAME_TIPS: Record<MiniGameType, string> = {
   'passkey-setup': 'Follow the 5-step passkey wizard. Your parent will make errors at each step. Correct them before they get worse.',
   'system-update': 'The phone wants to update. Hold it down (restraint) while avoiding the "Install" button that keeps appearing. Don\'t let it update.',
   'zoom-out': 'The text keeps zooming in. Tap to zoom out. Notifications will re-zoom it. Keep the text at a readable size.',
+  'password-reset': 'Build a password from the keyboard that meets ALL requirements. They change every 4 seconds. Round 3 has contradictions. 3 rejections = game over.',
 };
 
 export function MiniGameGym({ gameType, onExit }: MiniGameGymProps) {

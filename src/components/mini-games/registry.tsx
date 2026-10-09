@@ -13,6 +13,7 @@ import { FingerprintScan } from './FingerprintScan';
 import { PasskeySetup } from './PasskeySetup';
 import { SystemUpdate } from './SystemUpdate';
 import { ZoomOut } from './ZoomOut';
+import { PasswordReset } from './PasswordReset';
 
 export interface MiniGameRenderProps {
   type: MiniGameType;
@@ -53,5 +54,8 @@ export const MINI_GAME_REGISTRY: Record<MiniGameType, (props: Omit<MiniGameRende
   ),
   'zoom-out': ({ levelConfig, difficulty, foreignLanguage, onComplete, onCancel }) => (
     <ZoomOut difficulty={difficulty} zoomConfig={levelConfig.zoomConfig} foreignLanguage={foreignLanguage} onComplete={onComplete} onCancel={onCancel} />
+  ),
+  'password-reset': ({ difficulty, foreignLanguage, onComplete, onCancel }) => (
+    <PasswordReset difficulty={difficulty} foreignLanguage={foreignLanguage} onComplete={onComplete} onCancel={onCancel} />
   ),
 };

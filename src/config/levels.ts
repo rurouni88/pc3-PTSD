@@ -15,6 +15,7 @@ export const levels: Record<string, LevelConfig> = {
       { id: 'dad-passkey', type: 'passkey-setup', isResolved: false, drainPenalty: 0.3 },
       { id: 'dad-update', type: 'system-update', isResolved: false, drainPenalty: 0.4 },
       { id: 'dad-zoom', type: 'zoom-out', isResolved: false, drainPenalty: 0.2 },
+      { id: 'dad-password', type: 'password-reset', isResolved: false, drainPenalty: 0.3 },
     ],
     selectedIssueCount: 3,
     parentPrompts: [
@@ -164,6 +165,7 @@ export const levels: Record<string, LevelConfig> = {
       { id: 'mum-passkey', type: 'passkey-setup', isResolved: false, drainPenalty: 0.4 },
       { id: 'mum-update', type: 'system-update', isResolved: false, drainPenalty: 0.5 },
       { id: 'mum-zoom', type: 'zoom-out', isResolved: false, drainPenalty: 0.3 },
+      { id: 'mum-password', type: 'password-reset', isResolved: false, drainPenalty: 0.3 },
     ],
     selectedIssueCount: 4,
     parentPrompts: [
@@ -326,6 +328,7 @@ export const levels: Record<string, LevelConfig> = {
       { id: 'grandma-passkey', type: 'passkey-setup', isResolved: false, drainPenalty: 0.5 },
       { id: 'grandma-update', type: 'system-update', isResolved: false, drainPenalty: 0.6 },
       { id: 'grandma-zoom', type: 'zoom-out', isResolved: false, drainPenalty: 0.4 },
+      { id: 'grandma-password', type: 'password-reset', isResolved: false, drainPenalty: 0.3 },
     ],
     selectedIssueCount: 5,
     parentPrompts: [

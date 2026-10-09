@@ -21,7 +21,8 @@ export type MiniGameType =
   | 'fingerprint-scan'
   | 'passkey-setup'
   | 'system-update'
-  | 'zoom-out';
+  | 'zoom-out'
+  | 'password-reset';
 
 export type ForeignLanguage = 'greek' | 'arabic' | 'korean' | 'japanese' | 'hindi' | 'chinese';
 
