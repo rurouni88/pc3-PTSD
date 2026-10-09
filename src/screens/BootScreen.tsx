@@ -91,6 +91,7 @@ const GYM_GAMES: { type: MiniGameType; label: string; icon: string; desc: string
   { type: 'passkey-setup', label: 'Passkey', icon: '🔑', desc: '5 steps. They will complicate all of them.' },
   { type: 'system-update', label: 'System Update', icon: '📲', desc: 'Do nothing. Survive the decoys.' },
   { type: 'zoom-out', label: 'Zoom Fix', icon: '🔍', desc: 'Zoom out. Notifications re-zoom. Repeat.' },
+  { type: 'password-reset', label: 'Password', icon: '🔒', desc: 'Meet the requirements. They change. They contradict.' },
 ];
 
 export function BootScreen({ onStartGame, onContinue, onPlayGym }: BootScreenProps) {
