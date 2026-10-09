@@ -16,6 +16,7 @@ const VALID_MINI_GAME_TYPES: MiniGameType[] = [
   'passkey-setup',
   'system-update',
   'zoom-out',
+  'password-reset',
 ];
 const VALID_PROMPT_TYPES = ['direct-question', 'backseat-swiper', 'guilt-trip'] as const;
 
